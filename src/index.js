@@ -1,8 +1,10 @@
-import { createCommand } from 'cauldron';
+import { createCommand, alias } from 'cauldron';
 
 createCommand('test', {
-  description: 'This is a test', execute({ sender, label, args }) {
-    sender.sendMessage(`You tested ${args.join(', ')}`);
-    return true;
+  description: 'This is a test', execute({ args }) {
+    return `You tested ${args.join(', ')}`;
   }
 });
+
+const helloWorld = () => console.log('Hello world');
+alias(helloWorld);
