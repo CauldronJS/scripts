@@ -1,0 +1,4 @@
+# The directory that Cauldron will compile JS to and watch
+jscompiledir: ./dist
+# If Cauldron should run in debug mode
+debug: false
