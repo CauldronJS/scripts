@@ -1,10 +1,7 @@
-import { createCommand, alias } from 'cauldron';
+import Rinse from './rinse';
 
-createCommand('test', {
-  description: 'This is a test', execute({ args }) {
-    return `You tested ${args.join(', ')}`;
-  }
-});
+const TestComponent = () => (
+  <h1>Hello</h1>
+);
 
-const helloWorld = () => console.log('Hello world');
-alias(helloWorld);
+console.log(TestComponent.name);

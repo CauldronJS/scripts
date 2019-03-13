@@ -1,16 +1,17 @@
 {
   "main": "./dist/index.js",
   "scripts": {
-    "prestart": "babel src --out-dir dist",
+    "prestart": "npm scripts build",
     "start": "",
     "poststart": "",
-    "stop": ""
+    "stop": "",
+    "build": "babel src --out-dir dist"
   },
   "dependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
-    "@babel/preset-env": "^7.3.4",
-    "@babel/preset-react": "^7.0.0",
-    "react": "^16.8.4"
+    "@babel/plugin-syntax-jsx": "^7.2.0",
+    "@babel/plugin-transform-react-jsx": "^7.3.0",
+    "@babel/preset-env": "^7.3.4"
   }
 }
