@@ -1,17 +1,12 @@
 import Component from './component';
-import {hook} from './pipe';
+import Fragment from './fragment';
+import { mount } from './pipe';
 
 function Rinse(component, attrs, ...children) {
 
 }
 
-Rinse.hook = hook;
-
-class Fragment extends Component {
-  constructor() {
-    super(null);
-  }
-}
+Rinse.mount = mount;
 
 Rinse.Component = Component;
 Rinse.Fragment = Fragment;

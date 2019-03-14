@@ -1,7 +1,8 @@
 import Rinse from './rinse';
+import Notification from './rinse/components/notification';
 
-const TestComponent = () => (
-  <h1>Hello</h1>
+const CauldronApp = () => (
+  <Notification target={Bukkit.getConsoleSender()}>Hello world!</Notification>
 );
 
-console.log(TestComponent.name);
+Rinse.mount(<CauldronApp />);
