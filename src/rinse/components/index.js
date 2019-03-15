@@ -1,14 +1,15 @@
-class Component {
-  constructor(props) {
-    this.props = props;
-    this.name = this.constructor.name;
-    this.children = [];
-    this.__rinseComponent = true;
+function Component(props, context) {
+  const component = {
+    props,
+    context,
+    refs: {},
+    __rinseComponent: true
   }
-
-  setState(state) {
-    this.state = { ...this.state, ...state };
-  }
+  return component;
 }
+
+Component.prototype.setState = (partialState) => {
+  this.state = {...this.state, ...partialState};
+};
 
 export default Component;
