@@ -1,0 +1,35 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "extends": "standard",
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly",
+        "__cauldron__": "readonly",
+        "Bukkit": "readonly",
+        "load": "readonly",
+        "Java": "readonly",
+        "log": "readonly",
+        "debugMessages": "readonly",
+        "evalScript": "readonly"
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "semi": "off",
+        "no-unused-vars": "warn",
+        "no-unused-expressions": "warn",
+        "space-before-function-paren": "off",
+        "no-return-assign": "off"
+    }
+}

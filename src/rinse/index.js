@@ -1,34 +1,30 @@
-<<<<<<< HEAD
 import Component from './component';
 import Fragment from './fragment';
-import { mount } from './pipe';
-
-function Rinse(component, attrs, ...children) {
-
-}
-
-Rinse.mount = mount;
-
-Rinse.Component = Component;
-Rinse.Fragment = Fragment;
-
-=======
-import Component from './component';
-import Fragment from './fragment';
-import { mount } from './pipe';
+import Pipe from './pipe';
 
 /*
   Every time this function is called, the component is new. This function is
   solely in charge of creating the component object.
 */
-function Rinse(component, attrs, ...children) {
-  const compiledComponent = component({...attrs, children});
-  return compiledComponent;
+function Rinse(component, attrs, ..._children) {
+  if (typeof component !== 'function') {
+    throw new Error('Component must be a function or have "render"');
+  }
+  let children;
+  if (typeof _children[0] === 'string' || !isNaN(_children[0]) || typeof _children[0] === 'boolean') {
+    children = _children[0];
+  } else if (typeof _children[0] === 'function') {
+    children = _children[0](attrs || {});
+  } else {
+    if (Array.isArray(_children)) {
+      children = [].concat(children);
+    }
+  }
+  component({ ...attrs, children });
 }
-Rinse.mount = mount;
+
+Rinse.mount = Pipe.mount;
 
 Rinse.Component = Component;
 Rinse.Fragment = Fragment;
-
->>>>>>> 590f0e09a739743728e5fe34f052244cbaf4add8
 export default Rinse;

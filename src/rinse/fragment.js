@@ -1,7 +1,3 @@
-import Component from './component';
-
-class Fragment extends Component {
-  constructor() {super(null)}
-}
+const Fragment = ({ children }) => children;
 
 export default Fragment;

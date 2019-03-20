@@ -1,13 +1,5 @@
-<<<<<<< HEAD
 package-lock.json
 dist/
 node_modules/
 yarn.lock
 yarn-error.log
-=======
-package-lock.json
-dist/
-node_modules/
-yarn.lock
-yarn-error.log
->>>>>>> 590f0e09a739743728e5fe34f052244cbaf4add8
