@@ -14,7 +14,7 @@ function Rinse (component, attrs, ..._children) {
   if (typeof _children[0] === 'string' || !isNaN(_children[0]) || typeof _children[0] === 'boolean') {
     children = _children[0];
   } else if (typeof _children[0] === 'function') {
-    children = _children[0](attrs || {});
+    children = _children[0];
   } else {
     if (Array.isArray(_children)) {
       children = [].concat(children);
@@ -27,4 +27,5 @@ Rinse.mount = Pipe.mount;
 
 Rinse.Component = Component;
 Rinse.Fragment = Fragment;
+
 export default Rinse;
