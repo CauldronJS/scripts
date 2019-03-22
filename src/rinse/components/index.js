@@ -1,4 +1,4 @@
-function Component(props, context) {
+function Component (props, context) {
   const component = {
     props,
     context,

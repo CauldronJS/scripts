@@ -1,7 +1,7 @@
 import { identityHashCode } from '@java/java.lang.System';
 
 class Pipe {
-  static mount(app) {
+  static mount (app) {
     this._mounted = app;
   }
 }

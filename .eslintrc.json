@@ -29,7 +29,6 @@
         "semi": "off",
         "no-unused-vars": "warn",
         "no-unused-expressions": "warn",
-        "space-before-function-paren": "off",
         "no-return-assign": "off"
     }
 }

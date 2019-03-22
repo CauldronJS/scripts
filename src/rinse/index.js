@@ -6,7 +6,7 @@ import Pipe from './pipe';
   Every time this function is called, the component is new. This function is
   solely in charge of creating the component object.
 */
-function Rinse(component, attrs, ..._children) {
+function Rinse (component, attrs, ..._children) {
   if (typeof component !== 'function') {
     throw new Error('Component must be a function or have "render"');
   }
