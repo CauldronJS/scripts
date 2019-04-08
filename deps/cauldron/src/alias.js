@@ -26,4 +26,4 @@ class Alias {
 
 Alias.registeredAliases = Object.create(null);
 
-module.exports = Alias;
+export default Alias;

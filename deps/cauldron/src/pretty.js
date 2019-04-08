@@ -20,7 +20,7 @@ function pretty (content, color = true) {
       if (Array.isArray(content)) {
         result = content.map(item => pretty(item, color));
       } else {
-        result = [...content].map(item => item.pretty(item, color));
+        result = [...content].map(item => pretty(item, color));
       }
       return JSON.stringify(result, ' ', '\t').replace(/\t/g, '  ');
     default:
@@ -28,4 +28,4 @@ function pretty (content, color = true) {
   }
 }
 
-export default pretty;
+module.exports = pretty

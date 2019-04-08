@@ -1,0 +1,16 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "esmodules": false
+        }
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-syntax-jsx",
+    ["@babel/plugin-transform-react-jsx", { "pragma": "Rinse", "pragmaFrag": "Rinse.Fragment"}]
+  ]
+}

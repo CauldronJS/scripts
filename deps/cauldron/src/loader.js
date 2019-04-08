@@ -1,7 +1,9 @@
 /* eslint-disable */
-const { createCommand, unregisterCommand } = require('internal/cauldron/commands');
-const Alias = require('internal/cauldron/alias');
-const { getPlugin } = require('internal/cauldron/utils');
+import { createCommand, unregisterCommand } from './commands';
+import Alias from './alias';
+import { getPlugin } from './utils';
+import { useStore } from './store';
+import * as events from './events';
 
 const alias = Alias._create;
 
@@ -35,10 +37,12 @@ function initialize() {
   });
 }
 
-module.exports = {
+export default {
   createCommand,
   unregisterCommand,
   getPlugin,
   alias,
-  initialize
+  initialize,
+  events,
+  useStore
 }

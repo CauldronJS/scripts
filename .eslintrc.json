@@ -29,6 +29,7 @@
         "semi": "off",
         "no-unused-vars": "warn",
         "no-unused-expressions": "warn",
-        "no-return-assign": "off"
+        "no-return-assign": "off",
+        "max-len": ["warn", { "code": 80}]
     }
 }

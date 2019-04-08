@@ -1,5 +1,5 @@
-const pretty = require('./pretty');
-const { playerListener } = require('./events');
+import pretty from './pretty';
+import { playerListener } from './events';
 
 // setup bukkit for accessibility
 const bcmField = Bukkit.getServer().getClass().getDeclaredField('commandMap');
@@ -23,7 +23,7 @@ function getSenderId (sender) {
  * @param {{description: String, usage: String, aliases: String[], execute: ({sender, label: String, args: String[], useState: [], nextInput: Promise<String>}) => *}} config
  * @returns
  */
-function createCommand (name, {
+export function createCommand (name, {
   description = 'A Cauldron Command',
   usage = '/<command>',
   aliases = [],
@@ -59,21 +59,8 @@ function createCommand (name, {
           })
         });
         const result = execute({ sender, label, args: [...args], useState, nextInput });
-        switch (typeof result) {
-          case 'string':
-          case 'number':
-          case 'bigint':
-            sender.sendMessage(result);
-            return true;
-          case 'boolean':
-            return result;
-          case 'object':
-          case 'symbol':
-            sender.sendMessage(pretty(result));
-            return true;
-          default:
-            return !!result;
-        }
+        if (result !== undefined) sender.sendMessage(pretty(result));
+        return !!result;
       } catch (err) {
         sender.sendMessage(`\xA7c${err.toString()}`);
         return true;
@@ -90,12 +77,7 @@ function createCommand (name, {
   return command;
 }
 
-function unregisterCommand (command) {
+export function unregisterCommand (command) {
   if (!command.unregister) throw new Error('Cannot unregister non-command');
   return command.unregister(commandMap);
-}
-
-module.exports = {
-  createCommand,
-  unregisterCommand
 }

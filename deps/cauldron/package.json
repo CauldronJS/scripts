@@ -1,0 +1,4 @@
+{
+  "name": "cauldron",
+  "main": "dist/loader.js"
+}
