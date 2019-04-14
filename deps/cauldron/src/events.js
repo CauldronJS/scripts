@@ -255,6 +255,7 @@ class SpigotEmitter {
   constructor(name) {
     this.registeredEventClasses = {};
     this.callbacks = Object.create(null);
+    this._linkedTypes = Object.create(null);
     registeredListeners[name] = this;
   }
 
@@ -287,6 +288,7 @@ class SpigotEmitter {
     const levent = event.toLowerCase();
     if (!this.callbacks[levent]) {
       this.callbacks[levent] = [];
+      registerEvent(eventType, event => this.invoke(lname, event));
     }
     const cancelToken = new CancelToken(this, levent);
     const onceCallback = (...args) => {
@@ -307,7 +309,7 @@ class SpigotEmitter {
       );
     }
     const callbacks = this.callbacks[event.toLowerCase()];
-    if (!callbacks) return;
+    if (!callbacks || callbacks.length === 0) return;
     callbacks.forEach(callback => callback(...args));
   }
 

@@ -16,7 +16,7 @@ function initialize() {
     execute({ args, useState }) {
       const [state, setState] = useState;
       const patched = args.join('\n');
-      let result = __cauldron__.evalScript(patched, 'repl.js');
+      let result = __cauldron__.evalScript(patched, 'repl');
       return `\xA77=> \xA72${result}`;
     }
   });
@@ -36,6 +36,8 @@ function initialize() {
     }
   });
 }
+
+global.regeneratorRuntime = () => {};
 
 export default {
   createCommand,

@@ -11,7 +11,7 @@ As mentioned above, you need [GraalVM](https://www.graalvm.org/) in order to run
 
 1. [Download the latest version of GraalVM](https://github.com/oracle/graal/releases)
 2. Extract to a directory _that you remember_. We're going to be running GraalVM instead of Java for Bukkit/Spigot/Paper/etc. As far as I've tested, Graal works fine as a replacement. Their statement is that GraalVM is a drop-in-replacement. If there are things that break, then it's most likely a compatibilty issue with Java 8 since that's what Graal implements.
-3. You can either edit your PATH to `graalinstalldir/bin` and remove Java's, OR run `alias java='/graalinstalldir/bin/java` and `alias javac='/graalinstalldir/bin/javac'. If you're just testing to see compatibility, I'd recommend the latter as a simple restart of bash will remove the alias. 
+3. You can either edit your PATH to `graalinstalldir/bin` and remove Java's, OR run `alias java=/graalinstalldir/bin/java` and `alias javac=/graalinstalldir/bin/javac`. If you're just testing to see compatibility, I'd recommend the latter as a simple restart of bash will remove the alias. 
 4. Boot up the server without Cauldron to verify everything still works. If not, you can leave an issue explaining what happened and I'll respond as quickly as possible.
 
 Great. Now we're at the actual Cauldron steps. 
