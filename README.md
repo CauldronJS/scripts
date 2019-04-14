@@ -18,7 +18,11 @@ Great. Now we're at the actual Cauldron steps.
 
 1. Ensure Cauldron is installed on your server. It won't run off the bat successfully due to something wrong with how Graal unpacks resources on the fly, so hold off.
 2. Clone this repo into `plugins/Cauldron`. If you don't know what that is, you can simply download this repo as a zip and drag-and-drop into `plugins/Cauldron`.
-3. Start the server and everything should be good. If not, again, open an issue and I'll see what's up.
+3. Install the latest version of [NodeJS](https://nodejs.org/en/download/).
+4. Open your shell of choice (command prompt, bash, powershell, whatever) and navigate to the plugins directory.
+5. Run `npm install` from the directory. This will install all JS dependencies we need to get started.
+6. Run `npm scripts build`. This will compile everything from the `src` directory to the `dist` directory, what Cauldron will be using.
+7. Run Spigot! Everything should work fine, but there's always the chance that it won't. If it doesn't, report an issue and I'll get to it as quickly as possible.
 
 ## So What Actually Is Cauldron?
 
