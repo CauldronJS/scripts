@@ -2,7 +2,7 @@ import cauldron from 'cauldron';
 import { MongoClient } from 'mongodb';
 
 cauldron.initialize();
-cauldron.events.server.on('listping', ({ setMotd }) => setMotd('Testing'));
+cauldron.events.server.on('listping', async ({ setMotd }) => { await setMotd('Testing') });
 
 const client = new MongoClient('mongodb://localhost:27017');
 client.connect(err => {

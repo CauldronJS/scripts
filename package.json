@@ -5,7 +5,8 @@
     "start": "",
     "poststart": "",
     "stop": "",
-    "build": "babel src --out-dir dist"
+    "build": "babel src --out-dir dist",
+    "build-cauldron": "babel deps"
   },
   "dependencies": {
     "@babel/cli": "^7.2.3",
@@ -18,6 +19,7 @@
     "@babel/plugin-syntax-jsx": "^7.2.0",
     "@babel/plugin-transform-modules-commonjs": "^7.4.3",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
+    "@babel/preset-env": "^7.4.3",
     "mongodb": "^3.2.3",
     "yarn": "^1.15.2"
   },
