@@ -6,24 +6,42 @@ import Pipe from './pipe';
   Every time this function is called, the component is new. This function is
   solely in charge of creating the component object.
 */
-function Rinse (component, attrs, ..._children) {
+function Rinse (component, attrs, ...children) {
   if (typeof component !== 'function') {
-    throw new Error('Component must be a function or have "render"');
+    throw new Error('Component must be a function or have an "execute" prop');
   }
-  let children;
-  if (typeof _children[0] === 'string' || !isNaN(_children[0]) || typeof _children[0] === 'boolean') {
-    children = _children[0];
-  } else if (typeof _children[0] === 'function') {
-    children = _children[0];
-  } else {
-    if (Array.isArray(_children)) {
-      children = [].concat(children);
+  children.forEach(child => {
+    if (child.__rinseComponent) {
+      child.__parent = component;
+    }
+  });
+  return new RinsedComponent(component, attrs, children);
+}
+
+class RinsedComponent {
+  constructor (component, attrs, children) {
+    this.__component = component;
+    this.__attrs = attrs;
+    this.__children = () => children.forEach(child => child.activate());
+    this.__rinseComponent = true;
+  }
+
+  props () {
+    return {
+      ...this.__component.defaultProps || {},
+      ...this.__attrs,
+      children: this.__children,
+      __parent: this.__parent
     }
   }
-  component({ ...attrs, children });
+
+  activate () {
+    return this.__component(this.props());
+  }
 }
 
 Rinse.mount = Pipe.mount;
+Rinse.activate = rinsed => rinsed.activate();
 
 Rinse.Component = Component;
 Rinse.Fragment = Fragment;

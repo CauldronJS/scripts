@@ -4,6 +4,7 @@ import Alias from './alias';
 import { getPlugin } from './utils';
 import { useStore } from './store';
 import * as events from './events';
+import pretty from './pretty';
 
 const alias = Alias._create;
 
@@ -17,7 +18,7 @@ function initialize() {
       const [state, setState] = useState;
       const patched = args.join('\n');
       let result = __cauldron__.evalScript(patched, 'repl');
-      return `\xA77=> \xA72${result}`;
+      return `\xA77=> ${pretty(result)}`;
     }
   });
 
