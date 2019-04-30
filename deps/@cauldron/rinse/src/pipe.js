@@ -8,7 +8,7 @@ class RinsedComponent {
     this.__rinseComponent = true;
   }
 
-  props () {
+  props() {
     return {
       ...this.__Component.defaultProps || {},
       ...this.__attrs,
@@ -17,18 +17,18 @@ class RinsedComponent {
     }
   }
 
-  construct () {
+  construct() {
     const props = this.props();
     const component = Function.bind(this.__Component, props);
     this.__children.forEach(child => child.construct());
   }
 }
 
-export function mount (component) {
+export function mount(component) {
   component.construct();
 }
 
-export function rinse (Component, attrs, ...children) {
+export function rinse(Component, attrs, ...children) {
   if (typeof Component !== 'function') {
     throw new Error('Component must be a function or have an "execute" prop');
   }

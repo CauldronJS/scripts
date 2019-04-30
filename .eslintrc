@@ -21,7 +21,6 @@
     "extends": [
       "eslint:recommended",
       "plugin:react/recommended",
-      "plugin:jsx-a11y/recommended",
       "plugin:import/errors",
       "plugin:import/warnings",
       "plugin:flowtype/recommended"
@@ -147,7 +146,7 @@
         2,
         {
           "ignore": [
-            
+            "@java/"
           ]
         }
       ], // missing modules won't compile, and ignore externals completely
