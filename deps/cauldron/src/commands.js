@@ -1,5 +1,3 @@
-import Rinse from '@cauldron/rinse';
-import pretty from './pretty';
 import { playerListener } from './events';
 
 // setup bukkit for accessibility
@@ -48,7 +46,7 @@ function createCommandExecutor (sender, label, args, execute) {
   }
 }
 
-const Command = props => {
+export const Command = props => {
   const {
     name,
     description,
@@ -63,13 +61,15 @@ const Command = props => {
     const command = new BukkitCommand(name, {
       execute: (sender, label, args) => createCommandExecutor(sender, label, args, execute)
     });
-    command.setDecription(description);
+    command.setDescription(description);
     command.setUsage(usage);
     command.setAliases(aliases);
     command.setPermission(permission);
     commandMap.register(name, command);
-    children();
     console.log(`Registered command ${name}`);
+    return children;
+  } else {
+
   }
 };
 
