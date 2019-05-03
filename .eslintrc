@@ -14,9 +14,12 @@
       "Bukkit": "readonly",
       "load": "readonly",
       "Java": "readonly",
+      "BigInt": "readonly",
       "log": "readonly",
       "debugMessages": "readonly",
-      "evalScript": "readonly"
+      "evalScript": "readonly",
+      "module": "readonly",
+      "exports": "readonly"
     },
     "extends": [
       "eslint:recommended",
@@ -51,6 +54,17 @@
       "no-lonely-if": [1], // disallow if as the only statement in an else block
       "no-new-object": [1], // disallow the use of the Object constructor
       "curly": [2],
+      "global-require": [2],
+      "no-buffer-constructor": [2],
+      "no-mixed-requires": [2],
+      "no-new-require": [2],
+      "no-path-concat": [2],
+      "no-process-env": [2],
+      "no-restricted-modules": [2, {
+        "paths": [],
+        "patterns": ["internal/*", "internal/**"]
+      }],
+      "brace-style": [2, "1tbs", { "allowSingleLine": false }],
   
       // code
       "no-empty-pattern": [2], // disallow use of empty destructuring patterns
@@ -95,13 +109,10 @@
       "no-caller": [1], // disallow use of arguments.caller or arguments.callee
       "no-extra-bind": [1], // disallow unnecessary function binding
       "no-new-wrappers": [1], // disallows creating new instances of String, Number, and Boolean
-      "no-octal": [1], // disallow use of octal literals
-      "no-octal-escape": [1], // disallow use of octal escape sequences in string literals, such as var foo = "Copyright \251";
       "no-proto": [1], // disallow usage of __proto__ property
       "no-script-url": [1], // disallow use of javascript: urls.
       "no-void": [1], // disallow use of the void operator
       "no-with": [1], // disallow use of the with statement
-      "radix": [2], // require use of the second argument for parseInt() (off by default)
       "new-cap": [1, {"capIsNewExceptions": ["Deferred", "DataTable"]}], // require a capital letter for constructors
       "no-unneeded-ternary": [1], // disallow the use of ternary operators when a simpler alternative exists
       "no-fallthrough": [1],
@@ -135,11 +146,6 @@
       "no-useless-computed-key": [2],
       "prefer-template": [0],
       "arrow-body-style": [0, "as-needed"],
-      // something in stores calls document.createElement which breaks parsing with this rule:
-      // "react/void-dom-elements-no-children": [2], // Prevent void DOM elements (e.g. <img />, <br />) from receiving children
-  
-      "jsx-a11y/label-has-for": [2, {"required": {"some": ["nesting", "id"]}}], // Enforce form control labelling, but loosens default from "any" to "some"
-  
       /* Import */
       // analysis/correctness
       "import/no-unresolved": [
@@ -163,17 +169,11 @@
       "import/no-named-as-default": [2], // don't import the default using the same name as a named export
       "import/no-named-as-default-member": [2], // don't destructure defaults, use named imports
       "import/no-duplicates": [2], // don't import the same module more than once
-      "import/no-anonymous-default-export": [2], // prevent exporting an object as default; use individual exports instead
   
       // warnings
       "import/newline-after-import": [1], // keep your formatting nice
       "import/no-deprecated": [1], // Prevent import of deprecated members using @deprecated
 
-      "jsx-a11y/no-autofocus": [1], // Set the no-autofocus rule to just a warning
-      "jsx-a11y/no-onchange": [1], // Set the no-onchange rule to just a warning
-      "jsx-a11y/anchor-has-content": [1], // Anchor tags must have content (break while using our lnrs() helper)
-      "jsx-a11y/no-static-element-interactions": [1], // Disallow interactions on static elements, they have no semantic meaning
-      "jsx-a11y/media-has-caption": [1],
       // Explicitly disable rules that are handled by prettier
       "react/jsx-closing-bracket-location": "off",
       "react/jsx-closing-tag-location": "off",
@@ -199,7 +199,6 @@
       "arrow-parens": "off",
       "arrow-spacing": "off",
       "block-spacing": "off",
-      "brace-style": "off",
       "comma-dangle": "off",
       "comma-spacing": "off",
       "comma-style": "off",
@@ -234,7 +233,6 @@
       "no-wrap-func": "off",
       "nonblock-statement-body-position": "off",
       "object-curly-newline": "off",
-      "object-curly-spacing": "off",
       "object-property-newline": "off",
       "one-var-declaration-per-line": "off",
       "operator-linebreak": "off",

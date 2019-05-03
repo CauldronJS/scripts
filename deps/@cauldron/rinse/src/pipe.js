@@ -1,7 +1,7 @@
-import { identityHashCode } from '@java/java.lang.System';
-
 export const mount = rinsed => {
-  if (!rinsed) return;
+  if (!rinsed) {
+    return;
+  }
   const result = rinsed.component(rinsed.props);
   if (typeof result === 'object') {
     if (Array.isArray(result)) {
@@ -37,12 +37,10 @@ export function rinse(Component, attrs, ..._children) {
     children = _children[0];
   } else if (typeof _children[0] === 'function') {
     children = _children[0];
-  } else {
-    if (Array.isArray(_children)) {
+  } else if (Array.isArray(_children)) {
 
       children = [..._children]
     }
-  }
   const props = { ...Component.defaultProps, ...attrs, children };
   // const component = boundComponent.apply(props, [props]);
   return { component, props };
