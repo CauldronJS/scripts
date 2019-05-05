@@ -9,8 +9,9 @@ const colors = Object.create(null);
  * @returns
  */
 export function addColor(name, fn) {
-  colors[name] = str => [...str].reduce((acc, val, i) => acc + fn(val, i), '');
-  Object.defineProperties(colors[name], Object.getOwnPropertyDescriptors(colors));
+  const factory = str => !str ? factory.prefix : [...str].reduce((acc, val, i) => acc + fn(val, i), '');
+  factory.prefix = fn('', 0);
+  Object.defineProperties(factory, Object.getOwnPropertyDescriptors(colors));
   return colors[name];
 }
 

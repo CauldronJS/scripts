@@ -18,9 +18,8 @@ const JsCommand = () => (
     permission="cauldron.js"
     execute={executeJs}
     description="Executes a JS snippet"
-    usage="/<command> [snippet]">
-    <Command name="debug" permission="debug" />
-  </Command>
+    usage="/<command> [snippet]"
+  />
 );
 
 const app = Rinse.mount(<JsCommand />);

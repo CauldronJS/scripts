@@ -2,7 +2,8 @@ export const mount = rinsed => {
   if (!rinsed) {
     return;
   }
-  const result = rinsed.component(rinsed.props);
+  const { component, props } = rinsed;
+  const result = component.apply({}, [props]);
   if (typeof result === 'object') {
     if (Array.isArray(result)) {
       // it returned the children to be executed
