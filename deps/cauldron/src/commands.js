@@ -162,12 +162,14 @@ class CauldronCommand {
           }
         });
       });
+      const isServer = senderId === CONSOLE_SENDER_ID;
       const result = execute({
         sender,
         label,
         args: [...args].splice(command.depth),
         useState,
-        nextInput
+        nextInput,
+        isServer
       });
       if (result !== undefined) sender.sendMessage(result);
       return !!result;
