@@ -104,7 +104,6 @@
       "no-useless-concat": [1], // disallow unnecessary concatenation of literals or template literals
       "no-undefined": 1, // disallow use of undefined variable (off by default)
       "consistent-return": [1], // require return statements to either always or never specify values
-      "no-console": [2], // disallow use of console (off by default in the node environment)
       "dot-notation": [1], // encourages use of dot notation whenever possible
       "no-caller": [1], // disallow use of arguments.caller or arguments.callee
       "no-extra-bind": [1], // disallow unnecessary function binding
