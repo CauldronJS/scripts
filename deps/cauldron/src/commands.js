@@ -9,7 +9,7 @@ bcmField.setAccessible(true);
 const commandMap = bcmField.get(Bukkit.getServer());
 const BukkitCommand = Java.extend(require('@java/org.bukkit.command.defaults.BukkitCommand'));
 
-let commandState = Object.create(null);
+const commandState = Object.create(null);
 function getSenderId (sender) {
   if (sender instanceof Java.type('org.bukkit.entity.Player')) {
     return sender.getUniqueId().toString();
@@ -83,10 +83,11 @@ class CauldronCommand {
    */
   unregister() {
     if (!this.parent) {
-
+      this.$$bukkitCommand.unregister(commandMap);
+      console.log(`Unregistered command ${this.name}`);
+    } else {
+      delete this.parent.subcommands[this.name];
     }
-    this.$$bukkitCommand.unregister(commandMap);
-    console.log(`Unregistered command ${this.name}`);
   }
 
   /**
@@ -107,8 +108,10 @@ class CauldronCommand {
    * @param {String[]} args The command args
    */
   _findSubcommandWithArgs(args) {
-    for (let name in this.subcommands) {
-      if (!name || !args[this.depth]) return this;
+    for (const name in this.subcommands) {
+      if (!name || !args[this.depth]) {
+        return this;
+      }
       if (name.toLowerCase() === args[this.depth].toLowerCase()) {
         return this.subcommands[name]._findSubcommandWithArgs(args);
       }
@@ -142,15 +145,22 @@ class CauldronCommand {
       const permission = command._buildPermission();
       const { execute } = command;
       const senderId = getSenderId(sender);
+
+      // check if sender has permission
       if (senderId !== CONSOLE_SENDER_ID && !sender.hasPermission(permission)) {
         sender.sendMessage('\xA7cYou don\'t have permission to do that!');
         return true;
       }
-      let state = commandState[senderId];
+
+      // gets the current state of user
+      const state = commandState[senderId];
+      // sets the current state of the user
       const setState = partialState => commandState[senderId] = { ...state, ...partialState };
+      // clears the current state of the user
       const clearState = () => delete commandState[senderId];
       // you can use `useState` to persist data through commands
       const useState = [state, setState, clearState];
+
       // this will wait for the players next command input
       // I could use something like packet pausing, but icba
       const nextInput = () => new Promise((resolve) => {
@@ -162,14 +172,17 @@ class CauldronCommand {
           }
         });
       });
+
       const result = execute({
         sender,
         label,
-        args: [...args].splice(command.depth),
         useState,
-        nextInput
+        nextInput,
+        args: [...args].splice(command.depth)
       });
-      if (result !== undefined) sender.sendMessage(result);
+      if (result !== undefined) {
+        sender.sendMessage(result);
+      }
       return !!result;
     } catch (err) {
       sender.sendMessage(`\xA7c${err.toString()}`);
@@ -184,8 +197,11 @@ function getCommandByPath(path) {
   for (let i = 1; i < segments.length; ++i) {
     const item = segments[i];
     const sub = command.subcommands[item];
-    if (sub) command = sub;
-    else return command;
+    if (sub) {
+      command = sub;
+    } else {
+      return command;
+    }
   }
   return command;
 }
@@ -197,9 +213,12 @@ export const Command = props => {
     __parent
   } = props;
   const cauldronCommand = new CauldronCommand(name, props);
+
+  // register a new command
   if (!__parent || !__parent.props.execute) {
     cauldronCommand.register();
   } else {
+    // 
     let nextParent = __parent;
     let path = '';
     // recursively iterate through until we find the topmost parent
