@@ -1,5 +1,5 @@
 import { events, useStore } from 'cauldron';
 
-function environment () {
+function environment() {
   const [store, setStore] = useStore('qame');
 }

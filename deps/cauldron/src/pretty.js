@@ -1,11 +1,13 @@
 // prettifier util
 
-function pretty (content, color = true) {
+function pretty(content, color = true) {
   switch (typeof content) {
     case 'boolean':
       return `\xA7${content ? 'atrue' : 'cfalse'}`;
     case 'string':
-      return content.startsWith('"') ? content.substr(1, content.length - 2) : content;
+      return content.startsWith('"')
+        ? content.substr(1, content.length - 2)
+        : content;
     case 'bigint':
     case 'number':
       return `\xA79${content}`;
@@ -28,4 +30,4 @@ function pretty (content, color = true) {
   }
 }
 
-module.exports = pretty
+module.exports = pretty;

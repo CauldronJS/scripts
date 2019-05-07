@@ -19,7 +19,8 @@
       "debugMessages": "readonly",
       "evalScript": "readonly",
       "module": "readonly",
-      "exports": "readonly"
+      "exports": "readonly",
+      "require": "readonly"
     },
     "extends": [
       "eslint:recommended",

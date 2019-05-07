@@ -4,4 +4,4 @@ let current = null;
 
 export const getCurrent = () => current;
 
-export const setCurrent = dispatcher => current = dispatcher;
+export const setCurrent = dispatcher => (current = dispatcher);

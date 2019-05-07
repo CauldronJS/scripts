@@ -17,7 +17,7 @@ export const mount = rinsed => {
   } else {
     mount(result);
   }
-}
+};
 
 export function rinse(Component, attrs, ..._children) {
   if (!Component) {
@@ -34,14 +34,14 @@ export function rinse(Component, attrs, ..._children) {
   if (
     typeof _children[0] === 'string' ||
     !isNaN(_children[0]) ||
-    typeof _children[0] === 'boolean') {
+    typeof _children[0] === 'boolean'
+  ) {
     children = _children[0];
   } else if (typeof _children[0] === 'function') {
     children = _children[0];
   } else if (Array.isArray(_children)) {
-
-      children = [..._children]
-    }
+    children = [..._children];
+  }
   const props = { ...Component.defaultProps, ...attrs, children };
   // const component = boundComponent.apply(props, [props]);
   return { component, props };

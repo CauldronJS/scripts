@@ -50,4 +50,4 @@ export default {
   events,
   useStore,
   pretty
-}
+};
