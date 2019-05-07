@@ -1,9 +1,9 @@
-import cauldron from 'cauldron';
+import cauldron, { Command } from 'cauldron';
 import Rinse from '@cauldron/rinse';
+import Qa from './qame';
 
-const { Command } = cauldron;
 
-cauldron.initialize();
+cauldron();
 cauldron.events.server.on('listping', ({ setMotd }) => setMotd('Testing'));
 
 const executeJs = ({ args }) => {
