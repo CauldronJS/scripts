@@ -1,0 +1,7 @@
+{
+  "main": "./dist/index.js",
+  "name": "@cauldron/captcha",
+  "scripts": {
+    "prestart": "babel src --out-dir dist"
+  }
+}
