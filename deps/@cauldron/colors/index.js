@@ -9,13 +9,17 @@ const colors = Object.create(null);
  * @returns
  */
 export function addColor(name, fn) {
-  const factory = str => !str ? factory.prefix : [...str].reduce((acc, val, i) => acc + fn(val, i), '');
+  const factory = str =>
+    !str
+      ? factory.prefix
+      : [...str].reduce((acc, val, i) => acc + fn(val, i), '');
   factory.prefix = fn('', 0);
   Object.defineProperties(factory, Object.getOwnPropertyDescriptors(colors));
   return colors[name];
 }
 
-export const c = (name, pre) => addColor(name, (char, i) => i === 0 ? `\xA7${pre}${char}` : char);
+export const c = (name, pre) =>
+  addColor(name, (char, i) => (i === 0 ? `\xA7${pre}${char}` : char));
 
 export const black = c('black', '0');
 export const darkblue = c('darkblue', '1');

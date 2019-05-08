@@ -8,4 +8,4 @@ export default {
   activate: rinsed => rinsed.activate,
   Component,
   Fragment
-}
+};

@@ -19,7 +19,8 @@
       "debugMessages": "readonly",
       "evalScript": "readonly",
       "module": "readonly",
-      "exports": "readonly"
+      "exports": "readonly",
+      "require": "readonly"
     },
     "extends": [
       "eslint:recommended",
@@ -147,14 +148,6 @@
       "arrow-body-style": [0, "as-needed"],
       /* Import */
       // analysis/correctness
-      "import/no-unresolved": [
-        2,
-        {
-          "ignore": [
-            "@java/"
-          ]
-        }
-      ], // missing modules won't compile, and ignore externals completely
       "import/named": [2], // prevents having your import be undefined
       "import/namespace": [2], // prevents accessing named members which do not appear in the export
       "import/no-namespace": [2], // prevent namespace imports; explicitly import!

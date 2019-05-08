@@ -1,4 +1,3 @@
-
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -6,7 +5,7 @@ dotenv.config();
 const { TRELLO_APIKEY } = process.env;
 
 class Ticket {
-  constructor (id) {
+  constructor(id) {
     this.id = id;
     this.completionStatus = Ticket.CompletionStatus.WAITING;
   }

@@ -10,7 +10,7 @@ import fs from 'fs';
  * @returns {[store, setStore: (updatedProps:Object)]} An array of
  * the stored object and a function that updates the store.
  */
-export function useStore (name, defaultStore = Object.create(null)) {
+export function useStore(name, defaultStore = Object.create(null)) {
   let store = defaultStore;
   if (!fs.existsSync('.store')) {
     fs.mkdirSync('.store');
@@ -23,7 +23,7 @@ export function useStore (name, defaultStore = Object.create(null)) {
     }
   }
 
-  function setStore (updatedProps) {
+  function setStore(updatedProps) {
     for (let prop in updatedProps) {
       store[prop] = updatedProps[prop];
     }
