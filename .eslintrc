@@ -20,7 +20,9 @@
       "evalScript": "readonly",
       "module": "readonly",
       "exports": "readonly",
-      "require": "readonly"
+      "require": "readonly",
+      "process": "readonly",
+      "console": "readonly"
     },
     "extends": [
       "eslint:recommended",
@@ -178,9 +180,12 @@
       "react/jsx-space-before-closing": "off",
       "react/jsx-tag-spacing": "off",
       "react/jsx-wrap-multilines": "off",
+      "react/react-in-jsx-scope": "off",
       "flowtype/generic-spacing": "off",
       "flowtype/space-after-type-colon": "off",
+      "import/no-unresolved": "off",
       "max-len": 0,
+      "no-console": "off",
       "no-confusing-arrow": 0,
       "no-mixed-operators": 0,
       "no-tabs": 0,
