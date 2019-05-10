@@ -1,7 +1,7 @@
 {
   "main": "./dist/index.js",
   "scripts": {
-    "prestart": "npm scripts build",
+    "prestart": "babel src --out-dir dist",
     "start": "",
     "poststart": "",
     "stop": "",
