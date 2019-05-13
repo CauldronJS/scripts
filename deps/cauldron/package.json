@@ -1,4 +1,7 @@
 {
   "name": "cauldron",
-  "main": "dist/loader.js"
+  "main": "dist/loader.js",
+  "scripts": {
+    "prestart": "babel src --out-dir dist"
+  }
 }

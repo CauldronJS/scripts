@@ -183,14 +183,13 @@ class CauldronCommand {
         });
       const isServer = senderId === CONSOLE_SENDER_ID;
 
-      const result = execute({
+      const hookArgs = createHookArgs(useState, nextInput, isServer);
+      const vanillaArgs = createVanillaArgs(
         sender,
         label,
-        useState,
-        nextInput,
-        isServer,
-        args: [...args].splice(command.depth)
-      });
+        args.slice(command.depth)
+      );
+      const result = execute({ ...hookArgs, ...vanillaArgs });
       if (result !== undefined) {
         sender.sendMessage(result);
       }
@@ -200,6 +199,14 @@ class CauldronCommand {
       return true;
     }
   }
+}
+
+function createVanillaArgs(sender, label, args) {
+  return { sender, label, args };
+}
+
+function createHookArgs(useState, nextInput, isServer) {
+  return { useState, nextInput, isServer };
 }
 
 function getCommandByPath(path) {
