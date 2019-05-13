@@ -3,11 +3,11 @@
 
 ## Warning!
 
-None of these scripts will work with Rhino/Nashorn simply due to the fact that this project is somewhat ES6 compliant (of which neither of those two engines are). These are all developed on the GraalVM. Currently these are also not usable on Windows _until_ Oracle comes out with a version of the Windows GraalVM that is ES6 compatible. If you'd like to get around that, check out [this documentation](/docs/running-on-windows.md).
+None of these scripts will work with Rhino/Nashorn simply due to the fact that this project is somewhat ES6 compliant (of which neither of those two engines are). These are all developed on the GraalVM and as of GraalVM r19, it's Windows compatible!
 
 ## Getting Started
 
-As mentioned above, you need [GraalVM](https://www.graalvm.org/) in order to run Cauldron. Installing it does seem daunting at first, but I can break it down relatively easy. Keep in mind as well this will all have to be done in a Unix/Debian environment.
+As mentioned above, you need [GraalVM](https://www.graalvm.org/) in order to run Cauldron. Installing it does seem daunting at first, but I can break it down relatively easy.
 
 1. [Download the latest version of GraalVM](https://github.com/oracle/graal/releases)
 2. Extract to a directory _that you remember_. We're going to be running GraalVM instead of Java for Bukkit/Spigot/Paper/etc. As far as I've tested, Graal works fine as a replacement. Their statement is that GraalVM is a drop-in-replacement. If there are things that break, then it's most likely a compatibilty issue with Java 8 since that's what Graal implements.
