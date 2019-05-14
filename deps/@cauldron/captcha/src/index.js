@@ -1,3 +1,5 @@
 import http from 'http';
+import { useStore, events } from 'cauldron';
+import { generateChallenge, validateChallenge } from './challenge';
 
-console.log('Eat my ass - ES2020');
+const validatedIps = useStore('captcha', Object.create(null));
