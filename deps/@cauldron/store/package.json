@@ -1,0 +1,4 @@
+{
+  "name": "@cauldron/store",
+  "main": "./dist/index.js"
+}

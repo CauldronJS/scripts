@@ -224,7 +224,7 @@ function getCommandByPath(path) {
   return command;
 }
 
-export const Command = props => {
+const Command = props => {
   const { name, children, __parent } = props;
   const cauldronCommand = new CauldronCommand(name, props);
 
@@ -252,6 +252,8 @@ Command.defaultProps = {
   aliases: []
 };
 
+export default Command;
+
 /**
  * Creates a Bukkit command
  *
@@ -259,7 +261,7 @@ Command.defaultProps = {
  * @param {{description: String, usage: String, aliases: String[], execute: ({sender, label: String, args: String[], useState: [], nextInput: Promise<String>}) => any}} config
  * @returns
  */
-export function createCommand(name, args) {
+export function registerCommand(name, args) {
   const command = new CauldronCommand(name, args);
   command.register();
   return command;
