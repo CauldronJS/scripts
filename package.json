@@ -22,6 +22,7 @@
     "@babel/preset-env": "^7.4.3",
     "babel-eslint": "^10.0.1",
     "dotenv": "^7.0.0",
+    "jest": "^24.8.0",
     "mongodb": "^3.2.3",
     "yarn": "^1.15.2"
   },
