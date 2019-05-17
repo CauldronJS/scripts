@@ -7,15 +7,7 @@ import Command, { registerCommand, unregisterCommand } from './command';
 import { getPlugin } from './utils';
 import * as events from './events';
 
-import impl from `@cauldron/${process.env}-impl`;
-
-function Cauldron() {
-  if (!impl) {
-    console.error(`Unable to find abstract implementation for environment "${process.env}"`);
-    return;
-  }
-
-}
+function Cauldron() {}
 
 Cauldron.Command = Command;
 Cauldron.registerCommand = registerCommand;
@@ -23,8 +15,4 @@ Cauldron.unregisterCommand = unregisterCommand;
 Cauldron.getPlugin = getPlugin;
 Cauldron.events = events;
 
-module.exports = {
-  Command,
-  getPlugin,
-  events
-};
+module.exports = Cauldron;

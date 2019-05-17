@@ -1,7 +1,5 @@
-import cauldron, { Command } from 'cauldron';
+import cauldron, { Command } from '@cauldron/core';
 import Rinse from '@cauldron/rinse';
-import Qa from './qame';
-import captcha from '@cauldron/captcha';
 
 cauldron();
 cauldron.events.server.on('listping', ({ setMotd }) => setMotd('Testing'));
