@@ -21,6 +21,7 @@ export const mount = rinsed => {
   const { component, props } = rinsed;
   let result;
   if (component.__rinseComponent) {
+    component.componentDidMount();
     result = component.run();
   } else {
     result = component.apply({}, [props]);
@@ -62,9 +63,10 @@ export function rinse(Component, attrs, ..._children) {
   // this function does not create the component. It will create
   // a special object that is used to compile and run on mount.
   const props = { ...Component.defaultProps, ...attrs, children };
-  const component = Component.prototype.run
-    ? new Component(props)
-    : Component.bind({});
+  const component =
+    Component.prototype && Component.prototype.run
+      ? new Component(props)
+      : Component.bind({});
   // const component = boundComponent.apply(props, [props]);
   return { component, props };
 }

@@ -1,4 +1,5 @@
 import { playerListener } from './events';
+import { Component } from '@cauldron/rinse';
 
 // this file makes me suicidal
 const CONSOLE_SENDER_ID = 'console';
@@ -224,33 +225,64 @@ function getCommandByPath(path) {
   return command;
 }
 
-const Command = props => {
-  const { name, children, __parent } = props;
-  const cauldronCommand = new CauldronCommand(name, props);
+// const Command = props => {
+//   const { name, children, __parent } = props;
+//   const cauldronCommand = new CauldronCommand(name, props);
 
-  // register a new command
-  if (!__parent || !__parent.props.execute) {
-    cauldronCommand.register();
-  } else {
-    //
-    let nextParent = __parent;
-    let path = '';
-    // recursively iterate through until we find the topmost parent
-    while (nextParent) {
-      path = `${nextParent.props.name}.${path}`;
-      nextParent = nextParent.props.__parent;
+//   // register a new command
+//   if (!__parent || !__parent.props.execute) {
+//     cauldronCommand.register();
+//   } else {
+//     //
+//     let nextParent = __parent;
+//     let path = '';
+//     // recursively iterate through until we find the topmost parent
+//     while (nextParent) {
+//       path = `${nextParent.props.name}.${path}`;
+//       nextParent = nextParent.props.__parent;
+//     }
+//     const parentCommand = getCommandByPath(path);
+//     parentCommand.addSubcommand(cauldronCommand).register();
+//   }
+//   return children;
+// };
+
+class Command extends Component {
+  static defaultProps = {
+    description: 'A Cauldron command',
+    usage: '/<command>',
+    aliases: []
+  };
+
+  cauldronCommand = null;
+
+  componentDidMount() {
+    const { name, __parent } = this.props;
+    cauldronCommand = new CauldronCommand(name, this.props);
+
+    if (!__parent || !__parent.props.execute) {
+      cauldronCommand.register();
+    } else {
+      let nextParent = __parent;
+      let path = '';
+      // recursively iterate through until we find the topmost parent
+      while (nextParent) {
+        path = `${nextParent.props.name}.${path}`;
+        nextParent = nextParent.props.__parent;
+      }
+      const parentCommand = getCommandByPath(path);
+      parentCommand.addSubcommand(cauldronCommand).register();
     }
-    const parentCommand = getCommandByPath(path);
-    parentCommand.addSubcommand(cauldronCommand).register();
   }
-  return children;
-};
 
-Command.defaultProps = {
-  description: 'A Cauldron command',
-  usage: '/<command>',
-  aliases: []
-};
+  componentWillUnmount() {
+    this.cauldronCommand.unregister();
+  }
+
+  run() {
+    return this.props.children;
+  }
+}
 
 export default Command;
 

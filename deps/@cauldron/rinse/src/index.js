@@ -1,7 +1,7 @@
 import Fragment from './fragment';
 import { mount, rinse, Component } from './pipe';
 
-export default {
+module.exports = {
   mount,
   createComponent: rinse,
   activate: rinsed => rinsed.activate,
