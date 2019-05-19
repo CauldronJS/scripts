@@ -1,6 +1,5 @@
-import Component from './component';
 import Fragment from './fragment';
-import { mount, rinse } from './pipe';
+import { mount, rinse, Component } from './pipe';
 
 export default {
   mount,

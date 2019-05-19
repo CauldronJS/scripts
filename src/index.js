@@ -1,13 +1,16 @@
 import cauldron, { Command } from '@cauldron/core';
+import pretty from '@cauldron/pretty';
 import Rinse from '@cauldron/rinse';
+import captcha from '@cauldron/captcha';
 
 cauldron();
 cauldron.events.server.on('listping', ({ setMotd }) => setMotd('Testing'));
 
 const executeJs = ({ args }) => {
-  const patched = args.join('\n');
+  const patched = args.join(' ');
+  console.log(patched);
   const result = __cauldron__.evalScript(patched, 'repl');
-  return `\xA77=> ${cauldron.pretty(result)}`;
+  return `\xA77=> ${pretty(result)}`;
 };
 
 const JsCommand = () => (

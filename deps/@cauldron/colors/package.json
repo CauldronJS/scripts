@@ -1,5 +1,5 @@
 {
-  "name": "@cauldron/pretty",
+  "name": "@cauldron/colors",
   "main": "./dist/index.js",
   "scripts": {
     "prestart": "babel src --out-dir dist"

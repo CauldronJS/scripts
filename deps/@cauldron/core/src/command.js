@@ -154,7 +154,7 @@ class CauldronCommand {
       const senderId = getSenderId(sender);
 
       // check if sender has permission
-      if (senderId !== CONSOLE_SENDER_ID && !sender.hasPermission(permission)) {
+      if (!sender.hasPermission(permission)) {
         sender.sendMessage("\xA7cYou don't have permission to do that!");
         return true;
       }
@@ -187,7 +187,7 @@ class CauldronCommand {
       const vanillaArgs = createVanillaArgs(
         sender,
         label,
-        args.slice(command.depth)
+        [...args].slice(command.depth)
       );
       const result = execute({ ...hookArgs, ...vanillaArgs });
       if (result !== undefined) {
