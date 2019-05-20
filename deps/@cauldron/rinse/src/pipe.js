@@ -1,3 +1,6 @@
+// I'd like to figure out a way to allow functional components to do
+// logic unhooking/destruction. Perhaps a hook?
+
 export class Component {
   constructor(props) {
     this.props = props;
@@ -9,6 +12,10 @@ export class Component {
   componentWillUpdate() {}
   componentWillUnmount() {}
 
+  setState(newValues) {
+    this.state = { ...this.state, ...newValues };
+  }
+
   run() {
     throw new Error('Component must have a `run` method');
   }
@@ -16,7 +23,7 @@ export class Component {
 
 export const mount = rinsed => {
   if (!rinsed) {
-    return;
+    return null;
   }
   const { component, props } = rinsed;
   let result;
@@ -31,13 +38,23 @@ export const mount = rinsed => {
       // it returned the children to be executed
       result.forEach(child => {
         child.props.__parent = rinsed;
-        mount(child);
+        child.__manuallyMount();
       });
     } else {
       mount(result);
     }
   } else {
     mount(result);
+  }
+  return component;
+};
+
+export const unmount = component => {
+  if (!component || !component.__rinseComponent) return;
+  component.componentWillUnmount();
+  const { children } = component.props;
+  if (children) {
+    children.forEach(unmount);
   }
 };
 
@@ -66,7 +83,11 @@ export function rinse(Component, attrs, ..._children) {
   const component =
     Component.prototype && Component.prototype.run
       ? new Component(props)
-      : Component.bind({});
-  // const component = boundComponent.apply(props, [props]);
-  return { component, props };
+      : Component.bind(Component);
+  const mount = () => mount(component);
+  // mount is a shortcut to allow components to manually mount the
+  // children, allowing any logic to be ran at the top instead of
+  // top down. This can be useful if there is a specific state
+  // inaccessible to the current component.
+  return { component, props, mount };
 }

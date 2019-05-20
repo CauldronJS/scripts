@@ -31,7 +31,7 @@
     "plugin:import/warnings",
     "plugin:flowtype/recommended"
   ],
-  "plugins": ["react", "jsx-a11y", "flowtype"],
+  "plugins": ["react", "flowtype"],
   "settings": {
     "flowtype": {
       "onlyFilesWithFlowAnnotation": true
@@ -52,7 +52,6 @@
     "spaced-comment": [1, "always"], // require or disallow a space immediately following the // or /* in a comment
     "no-lonely-if": [1], // disallow if as the only statement in an else block
     "no-new-object": [1], // disallow the use of the Object constructor
-    "curly": [2],
     "global-require": [2],
     "no-buffer-constructor": [2],
     "no-mixed-requires": [2],
@@ -233,6 +232,7 @@
     "operator-linebreak": "off",
     "padded-blocks": "off",
     "quote-props": "off",
+    "react/prop-types": "off",
     "rest-spread-spacing": "off",
     "semi": "off",
     "semi-spacing": "off",

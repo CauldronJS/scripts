@@ -258,10 +258,10 @@ class Command extends Component {
 
   componentDidMount() {
     const { name, __parent } = this.props;
-    cauldronCommand = new CauldronCommand(name, this.props);
+    this.cauldronCommand = new CauldronCommand(name, this.props);
 
     if (!__parent || !__parent.props.execute) {
-      cauldronCommand.register();
+      this.cauldronCommand.register();
     } else {
       let nextParent = __parent;
       let path = '';
@@ -271,7 +271,7 @@ class Command extends Component {
         nextParent = nextParent.props.__parent;
       }
       const parentCommand = getCommandByPath(path);
-      parentCommand.addSubcommand(cauldronCommand).register();
+      parentCommand.addSubcommand(this.cauldronCommand).register();
     }
   }
 

@@ -1,15 +1,27 @@
-import { INVENTORY_ACTION, CLICK_TYPE } from './click-type';
-import { events } from '@cauldron/core';
-import Rinse, { Component } from '@cauldron/rinse';
+import { Component } from '@cauldron/rinse';
+import { createWindow, deleteWindow } from './event-service';
 
-let activeWindows = Object.create(null);
+export default class Window extends Component {
+  constructor(props) {
+    super(props);
+    const { name, height } = props;
+    this.$$base = Bukkit.createInventory(null, height * 9, name);
+    this.id = -1;
+  }
 
-export default class Window {
-  constructor(title) {
-    this.id = Object.keys(activeWindows).length;
-    this._inventory = [];
-    this._boundActions = [];
-    this._watchers = [];
-    this._title = title || 'Menu';
+  componentDidMount() {
+    this.id = createWindow(this);
+  }
+
+  componentWillUnmount() {
+    deleteWindow(this.id);
+  }
+
+  pages = null;
+  currentPageByUser = Object.create(null);
+
+  run() {
+    const { children } = this.props.children;
+    this.pages = children.map(child => child.mount());
   }
 }
