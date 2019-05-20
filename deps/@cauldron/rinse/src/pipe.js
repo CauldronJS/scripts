@@ -22,17 +22,19 @@ export class Component {
 }
 
 export const mount = rinsed => {
-  if (!rinsed) {
-    return null;
-  }
+  if (!rinsed) return null;
   const { component, props } = rinsed;
+  if (!component.__canRemount) return null;
+
   let result;
   if (component.__rinseComponent) {
     component.componentDidMount();
+    component.__canRemount = false;
     result = component.run();
   } else {
     result = component.apply({}, [props]);
   }
+
   if (typeof result === 'object') {
     if (Array.isArray(result)) {
       // it returned the children to be executed
@@ -84,6 +86,7 @@ export function rinse(Component, attrs, ..._children) {
     Component.prototype && Component.prototype.run
       ? new Component(props)
       : Component.bind(Component);
+  component.__canRemount = true;
   const mount = () => mount(component);
   // mount is a shortcut to allow components to manually mount the
   // children, allowing any logic to be ran at the top instead of

@@ -1,4 +1,4 @@
-import { Component } from '@cauldron/rinse';
+import { Component, mount } from '@cauldron/rinse';
 
 const noop = () => false;
 
@@ -53,6 +53,6 @@ export default class Page extends Component {
   }
 
   run() {
-    console.log(this.props.children);
+    const items = this.props.children(mount);
   }
 }
