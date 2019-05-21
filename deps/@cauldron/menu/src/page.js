@@ -1,24 +1,15 @@
-import { Component } from '@cauldron/rinse';
-
-const noop = () => false;
+import Rinse, { Component } from '@cauldron/rinse';
+import { map } from './utils';
+import { Click } from './event-service';
 
 export default class Page extends Component {
   constructor(props) {
     super(props);
-    const { __parent } = props;
-    this.window = __parent;
+    this.window = props.__parent;
     this._inventory = [];
-    this._boundActions = [];
   }
 
-  // eslint-disable-next-line max-params
-  addItem(
-    item,
-    options = null,
-    leftClick = noop,
-    rightClick = noop,
-    index = this._inventory.length
-  ) {
+  addItem(item, options = null, index = this._inventory.length) {
     if (options) {
       const oldMeta = item.itemMeta;
       oldMeta.displayName = options.name;
@@ -31,28 +22,15 @@ export default class Page extends Component {
     }
 
     this._inventory[index] = item;
-    this._boundActions[index] = {
-      leftClick,
-      rightClick
-    };
-    this.emit('itemadded', item, index);
-  }
-
-  remove(index) {
-    delete this._boundActions[index];
-    delete this._inventory[index];
-    this.emit('itemremoved', index);
-  }
-
-  getItems() {
-    return this._inventory;
-  }
-
-  getItem(index) {
-    return { ...this._inventory[index], ...this._boundActions[index] };
   }
 
   run() {
-    console.log(this.props.children);
+    return (
+      <>
+        {map(this.props.children, (child, i) => (
+          <Click index={i}>{child}</Click>
+        ))}
+      </>
+    );
   }
 }

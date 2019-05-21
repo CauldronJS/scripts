@@ -1,13 +1,16 @@
-import ItemStack from '@java/org.bukkit.inventory.ItemStack';
+import Rinse from '@caulron/rinse';
+import { ItemStack } from '@cauldron/thread';
+import { Click } from './event-service';
 
 const noop = () => false;
 
 const Item = props => {
-  const { id, name, lore, onLeftClick, onRightClick } = props;
-  const itemStack = new ItemStack(id, 1);
-  const clonedMeta = itemStack.itemMeta;
-  clonedMeta.displayName = name;
-  clonedMeta.setLore(Array.isArray(lore) ? lore : [lore]);
+  const { index, onLeftClick, onRightClick } = props;
+  return (
+    <Click index={index} onLeftClick={onLeftClick} onRightClick={onRightClick}>
+      <ItemStack {...props} />
+    </Click>
+  );
 };
 
 Item.defaultProps = {

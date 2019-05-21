@@ -1,5 +1,6 @@
 import Fragment from './fragment';
-import { mount, unmount, rinse, Component } from './pipe';
+import Component from './component';
+import { mount, unmount, rinse } from './pipe';
 
 module.exports = {
   mount,

@@ -1,3 +1,12 @@
-const Fragment = ({ children }) => children;
+import Component from './component';
 
-export default Fragment;
+export default class Fragment extends Component {
+  constructor(props) {
+    super(props);
+    this.__isFrag = true;
+  }
+
+  run() {
+    return this.props.children;
+  }
+}
