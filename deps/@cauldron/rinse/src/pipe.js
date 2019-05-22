@@ -1,26 +1,5 @@
 // I'd like to figure out a way to allow functional components to do
 // logic unhooking/destruction. Perhaps a hook?
-
-export class Component {
-  constructor(props) {
-    this.props = props;
-    this.state = Object.create(null);
-    this.__rinseComponent = true;
-  }
-
-  componentDidMount() {}
-  componentWillUpdate() {}
-  componentWillUnmount() {}
-
-  setState(newValues) {
-    this.state = { ...this.state, ...newValues };
-  }
-
-  run() {
-    throw new Error('Component must have a `run` method');
-  }
-}
-
 export const mount = rinsed => {
   if (!rinsed) return null;
   const { component, props } = rinsed;
@@ -37,9 +16,14 @@ export const mount = rinsed => {
 
   if (typeof result === 'object') {
     if (Array.isArray(result)) {
+      // find the next non-frag parent
+      let parent = rinsed;
+      while (parent.__isFrag && parent.props.__parent) {
+        parent = parent.props.__parent;
+      }
       // it returned the children to be executed
       result.forEach(child => {
-        child.props.__parent = rinsed;
+        child.props.__parent = parent;
         child.__manuallyMount();
       });
     } else {

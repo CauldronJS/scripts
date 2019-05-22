@@ -1,0 +1,7 @@
+{
+  "name": "@cauldron/inventory",
+  "main": "./dist/index.js",
+  "scripts": {
+    "prestart": "babel src --out-dir dist"
+  }
+}
