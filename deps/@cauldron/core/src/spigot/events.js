@@ -238,7 +238,7 @@ class CancelToken {
   unregister() {
     const callbacks = this.listener.callbacks[this.eventName];
     for (let i = 0; i < callbacks.length; ++i) {
-      let callback = callbacks[i];
+      const callback = callbacks[i];
       if (this.equals(callback.cancelToken)) {
         callbacks.splice(i, 1);
         return;
@@ -288,7 +288,7 @@ class SpigotEmitter {
     const levent = event.toLowerCase();
     if (!this.callbacks[levent]) {
       this.callbacks[levent] = [];
-      registerEvent(eventType, event => this.invoke(lname, event));
+      registerEvent(levent, event => this.invoke(levent, event));
     }
     const cancelToken = new CancelToken(this, levent);
     const onceCallback = (...args) => {
@@ -336,6 +336,7 @@ export function registerNewListener(name, eventTypes) {
 
   const listener = new SpigotEmitter(name);
   if (eventTypes) {
+    // eslint-disable-next-line prefer-const
     for (let prop in eventTypes) {
       if (!eventTypes.hasOwnProperty(prop)) continue;
       const value = eventTypes[prop];
@@ -347,7 +348,7 @@ export function registerNewListener(name, eventTypes) {
 }
 
 export function eventHandler(listenerName, event, callback) {
-  if (!registeredListeners[listenerName]) return;
+  if (!registeredListeners[listenerName]) return null;
   const listener = registeredListeners[listenerName];
   return listener.on(event, callback);
 }

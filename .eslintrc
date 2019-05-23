@@ -14,6 +14,7 @@
     "Bukkit": "readonly",
     "load": "readonly",
     "Java": "readonly",
+    "java": "readonly",
     "BigInt": "readonly",
     "log": "readonly",
     "debugMessages": "readonly",
@@ -149,7 +150,6 @@
     // analysis/correctness
     "import/named": [2], // prevents having your import be undefined
     "import/namespace": [2], // prevents accessing named members which do not appear in the export
-    "import/no-namespace": [2], // prevent namespace imports; explicitly import!
     "import/default": [2], // ensure a default export exists when default importing
     "import/export": [2], // "Reports funny business with exports, like repeated exports of names or defaults."
     "import/first": [2], // group imports before all other code

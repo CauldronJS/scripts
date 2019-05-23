@@ -6,7 +6,7 @@ import fs from 'fs';
  *
  * @export
  * @param {*} name
- * @param {*} [defaultStore=Object.create(null)]
+ * @param {*} [defaultStore=null]
  * @returns {[store, setStore: (updatedProps:Object)]} An array of
  * the stored object and a function that updates the store.
  */
@@ -24,10 +24,12 @@ export function useStore(name, defaultStore = Object.create(null)) {
   }
 
   function setStore(updatedProps) {
-    for (let prop in updatedProps) {
-      store[prop] = updatedProps[prop];
+    const updatedStore = { ...store, ...updatedProps };
+    // eslint-disable-next-line eqeqeq
+    if (updatedStore != store) {
+      store = updatedStore;
+      fs.writeFileSync(`.store/${name}.json`, JSON.stringify(store));
     }
-    fs.writeFileSync(`.store/${name}.json`, JSON.stringify(store));
   }
 
   return [store, setStore];

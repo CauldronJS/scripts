@@ -1,5 +1,5 @@
-import { playerListener } from './events';
 import { Component } from '@cauldron/rinse';
+import { player } from './events';
 
 // this file makes me suicidal
 const CONSOLE_SENDER_ID = 'console';
@@ -21,6 +21,14 @@ function getSenderId(sender) {
   } else {
     return CONSOLE_SENDER_ID;
   }
+}
+
+function createVanillaArgs(sender, label, args) {
+  return { sender, label, args };
+}
+
+function createHookArgs(useState, nextInput, isServer) {
+  return { useState, nextInput, isServer };
 }
 
 const registeredCommands = Object.create(null);
@@ -174,7 +182,7 @@ class CauldronCommand {
       // I could use something like packet pausing, but icba
       const nextInput = () =>
         new Promise(resolve => {
-          playerListener.once('chat', event => {
+          player.once('chat', event => {
             const playerId = getSenderId(event.getPlayer());
             if (playerId === senderId) {
               const message = event.getMessage();
@@ -202,14 +210,6 @@ class CauldronCommand {
   }
 }
 
-function createVanillaArgs(sender, label, args) {
-  return { sender, label, args };
-}
-
-function createHookArgs(useState, nextInput, isServer) {
-  return { useState, nextInput, isServer };
-}
-
 function getCommandByPath(path) {
   const segments = path.split('.');
   let command = registeredCommands[segments[0]];
@@ -224,28 +224,6 @@ function getCommandByPath(path) {
   }
   return command;
 }
-
-// const Command = props => {
-//   const { name, children, __parent } = props;
-//   const cauldronCommand = new CauldronCommand(name, props);
-
-//   // register a new command
-//   if (!__parent || !__parent.props.execute) {
-//     cauldronCommand.register();
-//   } else {
-//     //
-//     let nextParent = __parent;
-//     let path = '';
-//     // recursively iterate through until we find the topmost parent
-//     while (nextParent) {
-//       path = `${nextParent.props.name}.${path}`;
-//       nextParent = nextParent.props.__parent;
-//     }
-//     const parentCommand = getCommandByPath(path);
-//     parentCommand.addSubcommand(cauldronCommand).register();
-//   }
-//   return children;
-// };
 
 class Command extends Component {
   static defaultProps = {
