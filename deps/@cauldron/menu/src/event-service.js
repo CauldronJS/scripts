@@ -31,13 +31,6 @@ export const setPage = (player, pageId) => {
   const window = currentOpenWindows;
 };
 
-export const Click = props => {
-  const { index, children, __parent } = props;
-  if (__parent) {
-  }
-  return children;
-};
-
 events.inventory.on('click', event => {
   const uuid = event.getPlayer().getUniqueId();
   const id = currentOpenWindows[uuid];
