@@ -28,7 +28,7 @@ export const closeWindowFor = player => {
 };
 
 export const setPage = (player, pageId) => {
-  const window = currentOpenWindows;
+  const window = currentOpenWindows[player.getUniqueId()];
 };
 
 events.inventory.on('click', event => {

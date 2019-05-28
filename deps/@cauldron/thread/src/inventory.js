@@ -1,32 +1,15 @@
-import Rinse, { Component } from '@cauldron/rinse';
-
-const map = (collection, handler) => {
-  const result = [];
-  for (let i = 0; i < collection.length; ++i) {
-    const item = collection[i];
-    result.push(handler(item, i));
-  }
-
-  return result;
+const Inventory = props => {
+  const { height, name, children } = props;
+  const window = Bukkit.createInventory(null, height * 9, name);
+  children.forEach(child => {
+    const item = child.mount();
+    if (child.props.x || child.props.y) {
+      const { x = 0, y = 0 } = child.props;
+      const position = x * y;
+      window.setItem(position, item);
+    }
+  });
+  return window;
 };
 
-const Click = props => {
-  const { index, children, __parent } = props;
-  if (__parent) {
-  }
-  return children;
-};
-
-export default class Inventory extends Component {
-  inventory = [];
-
-  run() {
-    return (
-      <>
-        {map(this.props.children, (child, i) => (
-          <Click index={i}>{child}</Click>
-        ))}
-      </>
-    );
-  }
-}
+export default Inventory;

@@ -1,3 +1,3 @@
 const { env } = process;
 
-module.exports = require(`./${env}`);
+module.exports = require('./spigot');
