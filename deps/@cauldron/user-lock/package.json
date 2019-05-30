@@ -1,5 +1,5 @@
 {
-  "name": "@cauldron/core",
+  "name": "@cauldron/user-lock",
   "main": "./dist/index.js",
   "scripts": {
     "prestart": "babel src --out-dir dist"

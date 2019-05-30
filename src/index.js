@@ -1,4 +1,4 @@
-import cauldron, { Command } from '@cauldron/core';
+import cauldron, { Command } from '@cauldron';
 import pretty from '@cauldron/pretty';
 import Rinse from '@cauldron/rinse';
 import '@cauldron/captcha';

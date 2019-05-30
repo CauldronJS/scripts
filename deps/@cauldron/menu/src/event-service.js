@@ -1,4 +1,4 @@
-import { events } from '@cauldron/core';
+import { events } from '@cauldron';
 
 const windows = [];
 const currentOpenWindows = Object.create(null);

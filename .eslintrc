@@ -23,7 +23,8 @@
     "exports": "readonly",
     "require": "readonly",
     "process": "readonly",
-    "console": "readonly"
+    "console": "readonly",
+    "global": "readonly"
   },
   "extends": [
     "eslint:recommended",

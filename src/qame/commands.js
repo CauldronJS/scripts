@@ -1,4 +1,4 @@
-import { Command } from '@cauldron/core';
+import { Command } from '@cauldron';
 import Rinse from '@cauldron/rinse';
 
 const getInfo = ({ isServer }) => {
