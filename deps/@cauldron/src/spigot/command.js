@@ -1,5 +1,6 @@
 import { Component } from '@cauldron/rinse';
 import { player } from './events';
+import colors from '@cauldron/colors';
 
 // this file makes me suicidal
 const CONSOLE_SENDER_ID = 'console';
@@ -33,6 +34,12 @@ function createHookArgs(useState, nextInput, isServer) {
 
 const registeredCommands = Object.create(null);
 
+const CommandRestriction = {
+  NONE: 0,
+  CONSOLE_ONLY: 1,
+  PLAYER_ONLY: 1
+};
+
 /**
  * The wrapper class for all commands registered in Cauldron. These
  * act differently from regular commands and can contain subcommands.
@@ -57,7 +64,10 @@ const registeredCommands = Object.create(null);
  * What will execute in the parent command: /time world my_world
  */
 class CauldronCommand {
-  constructor(name, { description, usage, aliases, permission, execute }) {
+  constructor(
+    name,
+    { description, usage, aliases, permission, execute, restriction }
+  ) {
     this.name = name;
     this.execute = execute;
     this.executor = (sender, label, args) =>
@@ -66,6 +76,7 @@ class CauldronCommand {
     this.usage = usage;
     this.aliases = aliases;
     this.permission = permission;
+    this.restriction = restriction || CommandRestriction.NONE;
     this.subcommands = Object.create(null);
     this.depth = 0;
     this.parent = null;
@@ -161,10 +172,25 @@ class CauldronCommand {
       const permission = command._buildPermission();
       const { execute } = command;
       const senderId = getSenderId(sender);
+      const isServer = senderId === CONSOLE_SENDER_ID;
+      if (isServer && this.restriction === CommandRestriction.PLAYER_ONLY) {
+        sender.sendMessage(
+          colors.red('This command can only be ran by console')
+        );
+        return true;
+      } else if (
+        !isServer &&
+        this.restriction === CommandRestriction.CONSOLE_ONLY
+      ) {
+        sender.sendMessage(
+          colors.red('This command can only be ran by a player')
+        );
+        return true;
+      }
 
       // check if sender has permission
       if (!sender.hasPermission(permission)) {
-        sender.sendMessage("\xA7cYou don't have permission to do that!");
+        sender.sendMessage(colors.red("You don't have permission to do that!"));
         return true;
       }
 
@@ -190,7 +216,6 @@ class CauldronCommand {
             }
           });
         });
-      const isServer = senderId === CONSOLE_SENDER_ID;
 
       const hookArgs = createHookArgs(useState, nextInput, isServer);
       const vanillaArgs = createVanillaArgs(
@@ -233,10 +258,25 @@ class Command extends Component {
   };
 
   cauldronCommand = null;
+  restriction = null;
 
   componentDidMount() {
-    const { name, __parent } = this.props;
-    this.cauldronCommand = new CauldronCommand(name, this.props);
+    const { name, isForConsole, isForPlayer, __parent } = this.props;
+    let restriction = this.restriction;
+    if (isForConsole && isForPlayer) {
+      restriction = CommandRestriction.NONE;
+    } else if (isForConsole && !isForPlayer) {
+      restriction = CommandRestriction.CONSOLE_ONLY;
+    } else if (!isForConsole && isForPlayer) {
+      restriction = CommandRestriction.PLAYER_ONLY;
+    } else {
+      restriction = __parent.restriction || CommandRestriction.NONE;
+    }
+    this.restriction = restriction;
+    this.cauldronCommand = new CauldronCommand(name, {
+      ...this.props,
+      restriction
+    });
 
     if (!__parent || !__parent.props.execute) {
       this.cauldronCommand.register();

@@ -22,7 +22,7 @@ const endSession = ({ args, sender, useState }) => {};
 const getSession = ({ args, sender, useState }) => {};
 
 const QaCommand = () => (
-  <Command name="qa" permission="qa" usage="/<command>" execute={getInfo}>
+  <Command name="qa" permission="nn.qa" usage="/<command>" execute={getInfo}>
     <Command name="status" permission="status" execute={getStatus} />
     <Command name="session" permission="session" execute={getSession}>
       <Command name="start" permission="start" execute={startSession} />
