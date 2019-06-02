@@ -219,7 +219,13 @@ const registerEvent = (type, handler) => {
     console.error(`Invalid type ${type}`);
     return;
   }
-  __cauldron__.registerNewEventHandler(type.class.getName(), handler);
+  __cauldron__.registerNewEventHandler(type.class.getName(), (...args) => {
+    try {
+      return handler(...args);
+    } catch (err) {
+      // fail gracefully
+    }
+  });
 };
 
 class CancelToken {
