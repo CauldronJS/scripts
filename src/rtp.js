@@ -19,6 +19,10 @@ const executeRtp = ({ sender, args }) => {
   sender.sendMessage('\xA7eFinding an appropriate location...');
   const world =
     args.length === 0 ? sender.getWorld() : Bukkit.getWorld(args[0]);
+  if (!world) {
+    sender.sendMessage('\xA7cCannot find a world with that name!');
+    return false;
+  }
   const currentLocation = sender.getLocation();
   let newLocation = {
     x: currentLocation.getBlockX() + getLargeRandom(),
@@ -46,7 +50,7 @@ const executeRtp = ({ sender, args }) => {
   sender.teleport(
     new Location(world, newLocation.x, newLocation.y, newLocation.z)
   );
-  return '\xA7aSuccessfully teleport you!';
+  return '\xA7aSuccessfully teleported you!';
 };
 
 const RtpCommand = () => (
