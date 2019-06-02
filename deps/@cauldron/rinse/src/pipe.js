@@ -24,7 +24,7 @@ export const mount = rinsed => {
       // it returned the children to be executed
       result.forEach(child => {
         child.props.__parent = parent;
-        child.__manuallyMount();
+        mount(child);
       });
     } else {
       mount(result);

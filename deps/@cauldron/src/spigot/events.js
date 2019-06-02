@@ -115,8 +115,6 @@ import {
   PrepareItemCraftEvent
 } from '@java/org.bukkit.event.inventory';
 import {
-  AsyncPlayerChatEvent,
-  AsyncPlayerPreLoginEvent,
   PlayerAchievementAwardedEvent,
   PlayerAdvancementDoneEvent,
   PlayerAnimationEvent,
@@ -474,8 +472,6 @@ export const inventory = registerNewListener('inventory', {
 });
 
 export const player = registerNewListener('player', {
-  asyncchat: AsyncPlayerChatEvent,
-  asyncprelogin: AsyncPlayerPreLoginEvent,
   achievementawarded: PlayerAchievementAwardedEvent,
   advancementdone: PlayerAdvancementDoneEvent,
   animation: PlayerAnimationEvent,
