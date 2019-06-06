@@ -11,8 +11,10 @@ const BAD_BLOCKS = [
 ];
 
 const getLargeRandom = () =>
-  Math.floor(
-    Math.random() * Math.floor(Math.random() * 2) === 0 ? 10000 : -10000
+  parseInt(
+    `${Math.floor(Math.random() * 2) === 1 ? '' : '-'}${Math.sqrt(
+      Math.floor(Math.random() * Date.now())
+    ) / 3}`
   );
 
 const executeRtp = ({ sender, args }) => {

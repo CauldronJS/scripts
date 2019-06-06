@@ -224,6 +224,7 @@ const registerEvent = (type, handler) => {
       return handler(...args);
     } catch (err) {
       // fail gracefully
+      return true;
     }
   });
 };
