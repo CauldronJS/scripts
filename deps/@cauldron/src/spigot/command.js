@@ -261,21 +261,29 @@ class Command extends Component {
   restriction = null;
 
   componentDidMount() {
-    const { name, isForConsole, isForPlayer, __parent } = this.props;
-    // let restriction = this.restriction;
-    // if (isForConsole && isForPlayer) {
-    //   restriction = CommandRestriction.NONE;
-    // } else if (isForConsole && !isForPlayer) {
-    //   restriction = CommandRestriction.CONSOLE_ONLY;
-    // } else if (!isForConsole && isForPlayer) {
-    //   restriction = CommandRestriction.PLAYER_ONLY;
-    // } else {
-    //   restriction = __parent.restriction || CommandRestriction.NONE;
-    // }
-    // this.restriction = restriction;
+    const {
+      name,
+      isForConsole,
+      isForPlayer,
+      __parent,
+      permission
+    } = this.props;
+    let restriction = this.restriction;
+    if (isForConsole && isForPlayer) {
+      restriction = CommandRestriction.NONE;
+    } else if (isForConsole && !isForPlayer) {
+      restriction = CommandRestriction.CONSOLE_ONLY;
+    } else if (!isForConsole && isForPlayer) {
+      restriction = CommandRestriction.PLAYER_ONLY;
+    } else {
+      restriction = __parent
+        ? __parent.restriction || CommandRestriction.NONE
+        : CommandRestriction.NONE;
+    }
+    this.restriction = restriction;
     this.cauldronCommand = new CauldronCommand(name, {
-      ...this.props
-      // restriction
+      ...this.props,
+      restriction
     });
 
     if (!__parent || !__parent.props.execute) {
