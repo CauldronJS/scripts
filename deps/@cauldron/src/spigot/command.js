@@ -229,7 +229,7 @@ class CauldronCommand {
       }
       return !!result;
     } catch (err) {
-      sender.sendMessage(`\xA7c${err.toString()}`);
+      sender.sendMessage(colors.red(err.toString()));
       return true;
     }
   }

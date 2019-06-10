@@ -4,7 +4,7 @@
 // those two will be pulled out and put in the @cauldron/core package.
 
 import Command, { registerCommand, unregisterCommand } from './command';
-import { getPlugin } from './utils';
+import { getPlugin, NAMESPACE_KEY } from './utils';
 import * as events from './events';
 
 function Cauldron() {}
@@ -13,6 +13,7 @@ Cauldron.Command = Command;
 Cauldron.registerCommand = registerCommand;
 Cauldron.unregisterCommand = unregisterCommand;
 Cauldron.getPlugin = getPlugin;
+Cauldron.NAMESPACE_KEY = NAMESPACE_KEY;
 Cauldron.events = events;
 
 module.exports = Cauldron;

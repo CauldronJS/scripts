@@ -10,9 +10,11 @@ cauldron.events.server.on('listping', ({ setMotd }) =>
   setMotd(colors.red('Testing'))
 );
 
-Rinse.mount(
+const App = () => (
   <>
     <RtpCommand />
     <JsCommand />
   </>
 );
+
+Rinse.mount(<App />);

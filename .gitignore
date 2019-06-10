@@ -6,3 +6,5 @@ yarn-error.log
 .vscode/
 .env
 **/dist/
+.realsync
+realsync.exe.lnk
