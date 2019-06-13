@@ -9,18 +9,12 @@ import {
   StonecuttingRecipe,
   RecipeChoice
 } from '@java/org.bukkit.inventory';
-import BUkkitItemStack from '@java/org.bukkit.inventory.ItemStack';
+import BukkitItemStack from '@java/org.bukkit.inventory.ItemStack';
 import { Material } from '@java/org.bukkit';
 import { NAMESPACE_KEY } from '@cauldron';
 
 export class ItemStack {
-  constructor(
-    material,
-    {
-      amount = 1,
-      enchantments: []
-    }
-  ) {
+  constructor(material, { amount = 1, enchantments = [] }) {
     this.$$baseItemStack = getItemStack(material);
     this.$$baseItemStack.setAmount(amount);
   }
@@ -72,4 +66,11 @@ export const blastingRecipe = ({
   input,
   experience = 0,
   cookingTime = 20
-}) => new BlastingRecipe(NAMESPACE_KEY, getItemStack(result));
+}) =>
+  new BlastingRecipe(
+    NAMESPACE_KEY,
+    getItemStack(result),
+    RecipeChoice.MaterialChoice(input),
+    experience,
+    cookingTime
+  );

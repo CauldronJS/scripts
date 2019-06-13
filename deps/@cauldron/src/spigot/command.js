@@ -32,7 +32,7 @@ function createHookArgs(useState, nextInput, isServer) {
   return { useState, nextInput, isServer };
 }
 
-const registeredCommands = Object.create(null);
+export const registeredCommands = Object.create(null);
 
 const CommandRestriction = {
   NONE: 0,
@@ -112,6 +112,9 @@ class CauldronCommand {
     if (!this.parent) {
       this.$$bukkitCommand.unregister(commandMap);
       console.log(`Unregistered command ${this.name}`);
+      for (let label in this.subcommands) {
+        this.subcommands[label].unregister();
+      }
     } else {
       delete this.parent.subcommands[this.name];
     }
@@ -282,8 +285,7 @@ class Command extends Component {
     }
     this.restriction = restriction;
     this.cauldronCommand = new CauldronCommand(name, {
-      ...this.props,
-      restriction
+      ...this.props
     });
 
     if (!__parent || !__parent.props.execute) {
@@ -327,4 +329,12 @@ export function registerCommand(name, args) {
 
 export function unregisterCommand(command) {
   command.unregister();
+}
+
+export function clearCommands() {
+  for (let label in registeredCommands) {
+    const command = registeredCommands[label];
+    command.unregister();
+    delete registeredCommands[label];
+  }
 }

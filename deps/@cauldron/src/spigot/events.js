@@ -352,6 +352,10 @@ export function registerNewListener(name, eventTypes) {
   return listener;
 }
 
+export function clearListener(name) {}
+
+export function clearListeners() {}
+
 export function eventHandler(listenerName, event, callback) {
   if (!registeredListeners[listenerName]) return null;
   const listener = registeredListeners[listenerName];
