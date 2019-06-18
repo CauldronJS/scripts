@@ -1,0 +1,7 @@
+{
+  "name": "@cauldron/menu",
+  "main": "./dist/index.js",
+  "scripts": {
+    "prestart": "babel src --out-dir dist"
+  }
+}
