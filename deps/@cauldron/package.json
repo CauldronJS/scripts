@@ -2,6 +2,6 @@
   "name": "@cauldron",
   "main": "./dist/index.js",
   "scripts": {
-    "prestart": "babel src --out-dir dist"
+    "compile": "babel src --out-dir dist"
   }
 }

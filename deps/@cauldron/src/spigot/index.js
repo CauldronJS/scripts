@@ -3,6 +3,7 @@
 // Spigot/Minecraft. Therefore anything that pertains to either of
 // those two will be pulled out and put in the @cauldron/core package.
 
+import { Module } from 'module';
 import Command, {
   registerCommand,
   unregisterCommand,
@@ -16,9 +17,17 @@ function Cauldron() {}
 Cauldron.Command = Command;
 Cauldron.registerCommand = registerCommand;
 Cauldron.unregisterCommand = unregisterCommand;
-Cauldron.clearCommands = clearCommands;
 Cauldron.getPlugin = getPlugin;
 Cauldron.NAMESPACE_KEY = NAMESPACE_KEY;
 Cauldron.events = events;
+
+registerCommand('reloadjs', {
+  description: 'Reloads the Cauldron instance',
+  aliases: ['rjs', 'jsreload'],
+  execute() {
+    clearCommands();
+    Module.$$resetContext(true);
+  }
+});
 
 module.exports = Cauldron;

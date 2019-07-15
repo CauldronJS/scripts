@@ -37,7 +37,7 @@ export const registeredCommands = Object.create(null);
 const CommandRestriction = {
   NONE: 0,
   CONSOLE_ONLY: 1,
-  PLAYER_ONLY: 1
+  PLAYER_ONLY: 2
 };
 
 /**
@@ -178,7 +178,7 @@ class CauldronCommand {
       const isServer = senderId === CONSOLE_SENDER_ID;
       if (isServer && this.restriction === CommandRestriction.PLAYER_ONLY) {
         sender.sendMessage(
-          colors.red('This command can only be ran by console')
+          colors.red('This command can only be ran by a player')
         );
         return true;
       } else if (
@@ -186,7 +186,7 @@ class CauldronCommand {
         this.restriction === CommandRestriction.CONSOLE_ONLY
       ) {
         sender.sendMessage(
-          colors.red('This command can only be ran by a player')
+          colors.red('This command can only be ran by the console')
         );
         return true;
       }
@@ -285,7 +285,8 @@ class Command extends Component {
     }
     this.restriction = restriction;
     this.cauldronCommand = new CauldronCommand(name, {
-      ...this.props
+      ...this.props,
+      restriction
     });
 
     if (!__parent || !__parent.props.execute) {
@@ -318,7 +319,7 @@ export default Command;
  * Creates a Bukkit command
  *
  * @param {String} name The name of the command
- * @param {{description: String, usage: String, aliases: String[], execute: ({sender, label: String, args: String[], useState: [], nextInput: Promise<String>}) => any}} config
+ * @param {{description: String, usage: String, aliases: String[], execute: ({sender, label: String, args: String[], useState: [], nextInput: Promise<String>}) => any}} args
  * @returns
  */
 export function registerCommand(name, args) {
