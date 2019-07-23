@@ -4,6 +4,7 @@ node_modules/
 yarn.lock
 yarn-error.log
 .vscode/
+.store
 .env
 **/dist/
 .realsync

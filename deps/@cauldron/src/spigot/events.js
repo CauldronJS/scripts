@@ -224,6 +224,9 @@ const registerEvent = (type, handler) => {
       return handler(...args);
     } catch (err) {
       // fail gracefully
+      console.debug(
+        `An error occured when calling event of type ${type}: ${err}`
+      );
       return true;
     }
   });

@@ -28,27 +28,28 @@ THE SOFTWARE.
 
 */
 
-var colors = {};
-module['exports'] = colors;
+const colors = {};
+module.exports = colors;
 
 colors.themes = {};
 
-var util = require('util');
-var ansiStyles = (colors.styles = require('./styles'));
-var defineProps = Object.defineProperties;
-var newLineRegex = new RegExp(/[\r\n]+/g);
+const util = require('util');
+const ansiStyles = (colors.styles = require('./styles'));
+
+const defineProps = Object.defineProperties;
+const newLineRegex = new RegExp(/[\r\n]+/g);
 
 colors.stripColors = colors.strip = function(str) {
-  return ('' + str).replace(/\x1B\[\d+m/g, '');
+  return ('' + str).replace(/\xA7/g, '');
 };
 
 // eslint-disable-next-line no-unused-vars
-var stylize = (colors.stylize = function stylize(str, style) {
+const stylize = (colors.stylize = function stylize(str, style) {
   return ansiStyles[style].open + str + ansiStyles[style].close;
 });
 
-var matchOperatorsRe = /[|\\{}()[\]^$+*?.]/g;
-var escapeStringRegexp = function(str) {
+const matchOperatorsRe = /[|\\{}()[\]^$+*?.]/g;
+const escapeStringRegexp = function(str) {
   if (typeof str !== 'string') {
     throw new TypeError('Expected a string');
   }
@@ -56,26 +57,26 @@ var escapeStringRegexp = function(str) {
 };
 
 function build(_styles) {
-  var builder = function builder() {
+  const builder = function builder() {
     return applyStyle.apply(builder, arguments);
   };
   builder._styles = _styles;
   // __proto__ is used because we must return a function, but there is
   // no way to create a function with a different prototype.
-  builder.__proto__ = proto;
+  builder.prototype = proto;
   return builder;
 }
 
-var styles = (function() {
-  var ret = {};
+const styles = (function() {
+  const ret = {};
   ansiStyles.grey = ansiStyles.gray;
-  Object.keys(ansiStyles).forEach(function(key) {
+  Object.keys(ansiStyles).forEach(key => {
     ansiStyles[key].closeRe = new RegExp(
       escapeStringRegexp(ansiStyles[key].close),
       'g'
     );
     ret[key] = {
-      get: function() {
+      get() {
         return build(this._styles.concat(key));
       }
     };
@@ -83,13 +84,11 @@ var styles = (function() {
   return ret;
 })();
 
-var proto = defineProps(function colors() {}, styles);
+const proto = defineProps(() => {}, styles);
 
-function applyStyle() {
-  var args = Array.prototype.slice.call(arguments);
-
-  var str = args
-    .map(function(arg) {
+function applyStyle(...args) {
+  let str = args
+    .map(arg => {
       if (arg !== undefined && arg.constructor === String) {
         return arg;
       } else {
@@ -102,16 +101,16 @@ function applyStyle() {
     return str;
   }
 
-  var newLinesPresent = str.indexOf('\n') != -1;
+  const newLinesPresent = str.indexOf('\n') !== -1;
 
-  var nestedStyles = this._styles;
+  const nestedStyles = this._styles;
 
-  var i = nestedStyles.length;
+  let i = nestedStyles.length;
   while (i--) {
-    var code = ansiStyles[nestedStyles[i]];
+    const code = ansiStyles[nestedStyles[i]];
     str = code.open + str.replace(code.closeRe, code.open) + code.close;
     if (newLinesPresent) {
-      str = str.replace(newLineRegex, function(match) {
+      str = str.replace(newLineRegex, match => {
         return code.close + match + code.open;
       });
     }
@@ -133,12 +132,12 @@ colors.setTheme = function(theme) {
     );
     return;
   }
-  for (var style in theme) {
+  for (const style in theme) {
     (function(style) {
       colors[style] = function(str) {
         if (typeof theme[style] === 'object') {
-          var out = str;
-          for (var i in theme[style]) {
+          let out = str;
+          for (const i in theme[style]) {
             out = colors[theme[style][i]](out);
           }
           return out;
@@ -150,10 +149,10 @@ colors.setTheme = function(theme) {
 };
 
 function init() {
-  var ret = {};
-  Object.keys(styles).forEach(function(name) {
+  const ret = {};
+  Object.keys(styles).forEach(name => {
     ret[name] = {
-      get: function() {
+      get() {
         return build([name]);
       }
     };
@@ -161,8 +160,8 @@ function init() {
   return ret;
 }
 
-var sequencer = function sequencer(map, str) {
-  var exploded = str.split('');
+const sequencer = function sequencer(map, str) {
+  let exploded = str.split('');
   exploded = exploded.map(map);
   return exploded.join('');
 };
@@ -178,7 +177,7 @@ colors.maps.zebra = require('./maps/zebra')(colors);
 colors.maps.rainbow = require('./maps/rainbow')(colors);
 colors.maps.random = require('./maps/random')(colors);
 
-for (var map in colors.maps) {
+for (const map in colors.maps) {
   (function(map) {
     colors[map] = function(str) {
       return sequencer(colors.maps[map], str);

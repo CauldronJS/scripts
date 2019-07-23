@@ -1,1 +1,1 @@
-module.exports = require(`./${process.impl}`);
+module.exports = require(`./spigot`);
