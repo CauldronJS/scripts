@@ -1,8 +1,0 @@
-{
-  "sourceMaps": true,
-  "plugins": [
-    "@babel/plugin-syntax-jsx",
-    ["@babel/plugin-transform-react-jsx", { "pragma": "Rinse.createComponent", "pragmaFrag": "Rinse.Fragment"}],
-    "@babel/plugin-transform-modules-commonjs"
-  ]
-}

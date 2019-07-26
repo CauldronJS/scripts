@@ -1,5 +1,5 @@
 {
-  "main": "./dist/index.js",
+  "main": "./src/index.js",
   "scripts": {
     "compile": "babel src --out-dir dist",
     "start": "",
@@ -38,7 +38,8 @@
     "eslint-plugin-standard": "^4.0.0",
     "husky": "^2.2.0",
     "lint-staged": "^8.1.6",
-    "prettier": "^1.17.0"
+    "prettier": "^1.17.0",
+    "recursive-readdir": "^2.2.2"
   },
   "debugMessages": true,
   "watchRecompile": true

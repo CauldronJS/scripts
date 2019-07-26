@@ -1,7 +1,4 @@
 {
-  "main": "./dist/index.js",
-  "name": "@cauldron/captcha",
-  "scripts": {
-    "compile": "babel src --out-dir dist"
-  }
+  "main": "./src/index.js",
+  "name": "@cauldron/captcha"
 }

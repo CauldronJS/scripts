@@ -1,7 +1,4 @@
 {
   "name": "@cauldron/pretty",
-  "main": "./dist/index.js",
-  "scripts": {
-    "compile": "babel src --out-dir dist"
-  }
+  "main": "./src/index.js"
 }
