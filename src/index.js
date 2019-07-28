@@ -7,7 +7,13 @@ import '@cauldron/captcha';
 
 cauldron();
 cauldron.events.server.on('listping', ({ setMotd }) =>
-  setMotd(colors.yellow('NamelessNoobs ').green('Survival'))
+  setMotd(
+    colors
+      .bold()
+      .yellow('NamelessNoobs ')
+      .reset()
+      .green('Survival')
+  )
 );
 
 const App = () => (
