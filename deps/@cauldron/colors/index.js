@@ -46,33 +46,15 @@ const codes = {
   white: new Style('f', StyleType.COLOR)
 };
 
-function buildStyleString(style = codes.reset, input = '') {
-  return `\xA7${style.code}${input}`;
-}
-
-function applyStyleFns(target) {
-  // never do this in the wild. This functionallity is not
-  // guaranteed to work in the future and tbh is a concept
-  // left over from like 2011. Just don't. Please.
-
-  // first create an object wrapper for target using String
-  // then add the styles as functions to the modifiedTarget
-
+function applyStyleFns(target = '') {
   // eslint-disable-next-line no-new-wrappers
-  const modifiedTarget = new String(target || buildStyleString());
+  const styled = new String(target);
   for (const styleName in codes) {
-    const style = codes[styleName];
-
-    Object.defineProperty(modifiedTarget, styleName, {
-      get() {
-        return input => {
-          const addToEnd = buildStyleString(style, input);
-          return applyStyleFns(modifiedTarget + addToEnd);
-        };
-      }
-    });
+    const style = (codes[styleName] || { code: null }).code;
+    styled[styleName] = input =>
+      applyStyleFns(`${target}${style ? `\xA7${style}` : ''}${input}`);
   }
-  return modifiedTarget;
+  return styled;
 }
 
 Object.defineProperty(module, 'exports', {

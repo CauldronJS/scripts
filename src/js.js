@@ -1,3 +1,4 @@
+import { Module } from 'module';
 import Rinse from '@cauldron/rinse';
 import { Command, clearCommands } from '@cauldron';
 import pretty from '@cauldron/pretty';
@@ -14,6 +15,7 @@ const reloadJs = ({ sender }) => {
   clearCommands();
   // this shit ain't workin so lets reset all the events handlers & commands
   // then re-run this file. If hard restart, call bootstrap instead. Idk.
+  __cauldron__.loadContext();
   sender.sendMessage(colors.green('Finished reloading.'));
 };
 

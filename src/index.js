@@ -6,15 +6,12 @@ import colors from '@cauldron/colors';
 import '@cauldron/captcha';
 
 cauldron();
-cauldron.events.server.on('listping', ({ setMotd }) =>
-  setMotd(
-    colors
-      .bold()
-      .yellow('NamelessNoobs ')
-      .reset()
-      .green('Survival')
-  )
-);
+
+function setMotd({ setMotd }) {
+  setMotd(colors.gold(colors.bold('NamelessNoobs')).green('Survival'));
+}
+
+cauldron.events.server.on('listping', setMotd);
 
 const App = () => (
   <>

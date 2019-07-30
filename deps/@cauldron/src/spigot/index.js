@@ -17,6 +17,7 @@ function Cauldron() {}
 Cauldron.Command = Command;
 Cauldron.registerCommand = registerCommand;
 Cauldron.unregisterCommand = unregisterCommand;
+Cauldron.clearCommands = clearCommands;
 Cauldron.getPlugin = getPlugin;
 Cauldron.NAMESPACE_KEY = NAMESPACE_KEY;
 Cauldron.events = events;
@@ -24,9 +25,11 @@ Cauldron.events = events;
 registerCommand('reloadjs', {
   description: 'Reloads the Cauldron instance',
   aliases: ['rjs', 'jsreload'],
+  permission: 'cauldron.js.reload',
   execute() {
     clearCommands();
     Module.$$resetContext(true);
+    Module.runMain();
   }
 });
 

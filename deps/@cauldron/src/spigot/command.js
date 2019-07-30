@@ -112,7 +112,7 @@ class CauldronCommand {
     if (!this.parent) {
       this.$$bukkitCommand.unregister(commandMap);
       console.log(`Unregistered command ${this.name}`);
-      for (let label in this.subcommands) {
+      for (const label in this.subcommands) {
         this.subcommands[label].unregister();
       }
     } else {
@@ -264,13 +264,7 @@ class Command extends Component {
   restriction = null;
 
   componentDidMount() {
-    const {
-      name,
-      isForConsole,
-      isForPlayer,
-      __parent,
-      permission
-    } = this.props;
+    const { name, isForConsole, isForPlayer, __parent } = this.props;
     let restriction = this.restriction;
     if (isForConsole && isForPlayer) {
       restriction = CommandRestriction.NONE;
@@ -320,20 +314,32 @@ export default Command;
  *
  * @param {String} name The name of the command
  * @param {{description: String, usage: String, aliases: String[], execute: ({sender, label: String, args: String[], useState: [], nextInput: Promise<String>}) => any}} args
- * @returns
+ * @returns {CauldronCommand} The command registered
  */
 export function registerCommand(name, args) {
+  if (registeredCommands[name]) {
+    console.debug(`Prior command ${name} already existed. Overwriting.`);
+    delete registeredCommands[name];
+  }
   const command = new CauldronCommand(name, args);
   command.register();
   return command;
 }
 
+/**
+ * Unregisters a command from Cauldron
+ *
+ * @param {CauldronCommand} command
+ */
 export function unregisterCommand(command) {
   command.unregister();
 }
 
+/**
+ * Clears all registered Cauldron commands
+ */
 export function clearCommands() {
-  for (let label in registeredCommands) {
+  for (const label in registeredCommands) {
     const command = registeredCommands[label];
     command.unregister();
     delete registeredCommands[label];
