@@ -1,0 +1,4 @@
+{
+  "name": "@cauldron/config",
+  "main": "./src/index.js"
+}

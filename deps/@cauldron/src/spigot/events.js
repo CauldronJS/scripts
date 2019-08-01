@@ -501,6 +501,7 @@ export const player = registerNewListener('player', {
   chattabcomplete: PlayerChatTabCompleteEvent,
   commandpreprocess: PlayerCommandPreprocessEvent,
   commandsend: PlayerCommandSendEvent,
+  death: PlayerDeathEvent,
   dropitem: PlayerDropItemEvent,
   editbook: PlayerEditBookEvent,
   eggthrow: PlayerEggThrowEvent,
