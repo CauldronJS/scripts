@@ -4,7 +4,7 @@ const scheduler = Bukkit.getScheduler();
 
 const runnable = run => Java.extend(Runnable, { run });
 
-export const scheduleNow = fn =>
+export const scheduleNowSync = fn =>
   scheduler.runTask(
     __cauldron__,
     runnable(() => {
@@ -16,12 +16,12 @@ export const scheduleNow = fn =>
     })
   );
 
-export const scheduleNowAsync = fn =>
+export const scheduleNow = fn =>
   new Promise((resolve, reject) => {
     scheduler.runTaskAsynchronously(
       __cauldron__,
       runnable(() => {
-        let result, error;
+        let result;
         try {
           if (typeof fn === 'string') {
             result = __cauldron__.evalScript(fn);
@@ -30,13 +30,45 @@ export const scheduleNowAsync = fn =>
           }
           resolve(result);
         } catch (err) {
-          error = err;
-          reject(error);
+          reject(err);
         }
       })
     );
   });
 
-export const scheduleLater = fn => {};
+export const scheduleLaterSync = (fn, ticks) =>
+  scheduler.runTaskLater(
+    __cauldron__,
+    runnable(() => {
+      if (typeof fn === 'string') {
+        return __cauldron__.evalScript(fn, __filename);
+      } else {
+        return fn();
+      }
+    }),
+    ticks
+  );
 
-export const scheduleLaterAsync = fn => new Promise((resolve, reject) => {});
+export const scheduleLater = (fn, ticks) =>
+  new Promise((resolve, reject) =>
+    scheduler.runTaskLaterAsynchronously(
+      __cauldron__,
+      runnable(() => {
+        let result;
+        try {
+          if (typeof fn === 'string') {
+            result = __cauldron__.evalScript(fn);
+          } else {
+            result = fn();
+          }
+          resolve(result);
+        } catch (err) {
+          reject(err);
+        }
+      }),
+      ticks
+    )
+  );
+
+export const scheduleIntervalSync = (fn, ticks) =>
+  scheduler.scheduleInterval(__cauldron__, fn, ticks);
