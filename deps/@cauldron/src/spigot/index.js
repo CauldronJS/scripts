@@ -12,7 +12,18 @@ import Command, {
 import { getPlugin, NAMESPACE_KEY } from './utils';
 import * as events from './events';
 
-function Cauldron() {}
+function Cauldron() {
+  registerCommand('reloadjs', {
+    description: 'Reloads the Cauldron instance',
+    aliases: ['rjs', 'jsreload'],
+    permission: 'cauldron.js.reload',
+    execute() {
+      clearCommands();
+      Module.$$resetContext(true);
+      Module.runMain();
+    }
+  });
+}
 
 Cauldron.Command = Command;
 Cauldron.registerCommand = registerCommand;
@@ -21,16 +32,5 @@ Cauldron.clearCommands = clearCommands;
 Cauldron.getPlugin = getPlugin;
 Cauldron.NAMESPACE_KEY = NAMESPACE_KEY;
 Cauldron.events = events;
-
-registerCommand('reloadjs', {
-  description: 'Reloads the Cauldron instance',
-  aliases: ['rjs', 'jsreload'],
-  permission: 'cauldron.js.reload',
-  execute() {
-    clearCommands();
-    Module.$$resetContext(true);
-    Module.runMain();
-  }
-});
 
 module.exports = Cauldron;
