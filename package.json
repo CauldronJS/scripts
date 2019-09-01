@@ -41,9 +41,7 @@
     "prettier": "^1.17.0",
     "recursive-readdir": "^2.2.2"
   },
-  "pluginDependencies": [
-    "AdditionsAPI"
-  ],
+  "pluginDependencies": [],
   "debugMessages": true,
   "watchRecompile": true
 }

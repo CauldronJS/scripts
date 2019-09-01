@@ -1,5 +1,5 @@
 import { ClickType, InventoryAction } from './click-type';
-import BukkitItemStack from '@java/org.bukkit.inventory.ItemStack';
+import BukkitItemStack from 'org.bukkit.inventory.ItemStack';
 import { EventEmitter } from 'events';
 
 const registeredMenus = [];
