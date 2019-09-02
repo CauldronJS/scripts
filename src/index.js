@@ -4,6 +4,7 @@ import RtpCommand from './rtp';
 import JsCommand from './js';
 import colors from '@cauldron/colors';
 import '@cauldron/captcha';
+import Axios from 'axios';
 
 cauldron();
 
@@ -21,3 +22,6 @@ const App = () => (
 );
 
 Rinse.mount(<App />);
+Axios.get('https://google.com')
+  .then(console.log)
+  .catch(err => console.error(err.toString()));
