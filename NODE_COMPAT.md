@@ -11,20 +11,20 @@ These charts are for tracking how much compatibility Cauldron and Node have.
 | Assert                 |     |
 | ---------------------- | --- |
 | `assert()`             | 🔵  |
-| `deepEqual`            | ❌   |
-| `deepStrictEqual()`    | ⚪️  |
+| `deepEqual`            | ❌  |
+| `deepStrictEqual()`    | ⚪️ |
 | `doesNotReject()`      | 🔵  |
 | `doesNotThrow()`       | 🔵  |
 | `equal()`              | 🔵  |
 | `fail()`               | 🔵  |
 | `ifError()`            | 🔵  |
-| `notDeepEqual()`       | ❌   |
-| `notDeepStrictEqual()` | ⚪️  |
+| `notDeepEqual()`       | ❌  |
+| `notDeepStrictEqual()` | ⚪️ |
 | `notEqual()`           | 🔵  |
-| `notStrictEqual()`     | ⚪️  |
+| `notStrictEqual()`     | ⚪️ |
 | `ok()`                 | 🔵  |
 | `rejects()`            | 🔵  |
-| `strictEqual`          | ⚪️  |
+| `strictEqual`          | ⚪️ |
 | `throws`               | 🔵  |
 
 | Buffer          |     |
