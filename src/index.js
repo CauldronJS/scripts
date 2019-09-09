@@ -3,7 +3,6 @@ import Rinse from '@cauldron/rinse';
 import RtpCommand from './rtp';
 import JsCommand from './js';
 import colors from '@cauldron/colors';
-import '@cauldron/captcha';
 import Axios from 'axios';
 import express from 'express';
 
