@@ -1,0 +1,12 @@
+# TODO stuff that doesn't fit inside a specific line
+
+- Investigate the async iteration to speed it up during buffer reading
+- Compiling the deps directory only when need-be and not every time (this may be platform specific)
+- Create a Cauldron VM class that manages all injection and globals in Java
+  * can help with event registering
+  * async event timings
+  * globals
+  * native/internal libraries
+  * interaction with external JARs
+- figure out if I need to make FS and PATH modules relative to the file calling
+them. Not sure how I'd do that, but fuck it, anything is possible, right?
