@@ -236,7 +236,12 @@ declare module 'bukkit/block' {
   export class PistonMoveReaction extends Enum<PistonMoveReaction> {}
 }
 
-declare module 'bukkit/block/banner' {}
+declare module 'bukkit/block/banner' {
+  import { Enum } from 'java/lang';
+  export class Pattern {}
+
+  export class PatternType extends Enum<PatternType> {}
+}
 
 declare module 'bukkit/block/data' {
   import { Material } from 'bukkit';
@@ -247,6 +252,44 @@ declare module 'bukkit/block/data' {
     getMaterial(): Material;
     matches(data: BlockData): boolean;
     merge(data: BlockData): BlockData;
+  }
+
+  export interface Ageable {}
+
+  export interface AnaloguePowerable {}
+
+  export interface Attachable {}
+
+  export interface Bisected {}
+
+  export interface Directional {}
+
+  export interface Levelled {}
+
+  export interface Lightable {}
+
+  export interface MultipleFacing {}
+
+  export interface Openable {}
+
+  export interface Orientable {}
+
+  export interface Powerable {}
+
+  export interface Rail {}
+
+  export interface Rotatable {}
+
+  export interface Snowable {}
+
+  export interface Waterlogged {}
+
+  export module Bisected {
+    export class Half extends Enum<Half> {}
+  }
+
+  export module Rail {
+    export class Shape extends Enum<Shape> {}
   }
 }
 
