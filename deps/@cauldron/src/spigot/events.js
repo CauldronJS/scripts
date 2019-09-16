@@ -1,4 +1,3 @@
-/* eslint-disable standard/no-callback-literal */
 import {
   BlockBreakEvent,
   BlockPlaceEvent,
@@ -26,11 +25,11 @@ import {
   NotePlayEvent,
   SignChangeEvent,
   SpongeAbsorbEvent
-} from '@java/org.bukkit.event.block';
+} from 'bukkit/event/block';
 import {
   EnchantItemEvent,
   PrepareItemEnchantEvent
-} from '@java/org.bukkit.event.enchantment';
+} from 'bukkit/event/enchantment';
 import {
   AreaEffectCloudApplyEvent,
   BatToggleSleepEvent,
@@ -92,12 +91,12 @@ import {
   SpawnerSpawnEvent,
   VillagerAcquireTradeEvent,
   VillagerReplenishTradeEvent
-} from '@java/org.bukkit.event.entity';
+} from 'bukkit/event/entity';
 import {
   HangingBreakByEntityEvent,
   HangingBreakEvent,
   HangingPlaceEvent
-} from '@java/org.bukkit.event.hanging';
+} from 'bukkit/event/hanging';
 import {
   BrewingStandFuelEvent,
   CraftItemEvent,
@@ -113,7 +112,7 @@ import {
   InventoryPickupItemEvent,
   PrepareAnvilEvent,
   PrepareItemCraftEvent
-} from '@java/org.bukkit.event.inventory';
+} from 'bukkit/event/inventory';
 import {
   PlayerAchievementAwardedEvent,
   PlayerAdvancementDoneEvent,
@@ -169,7 +168,7 @@ import {
   PlayerUnleashEntityEvent,
   PlayerUnregisterChannelEvent,
   PlayerVelocityEvent
-} from '@java/org.bukkit.event.player';
+} from 'bukkit/event/player';
 import {
   BroadcastMessageEvent,
   MapInitializeEvent,
@@ -182,7 +181,7 @@ import {
   ServiceRegisterEvent,
   ServiceUnregisterEvent,
   TabCompleteEvent
-} from '@java/org.bukkit.event.server';
+} from 'bukkit/event/server';
 import {
   VehicleBlockCollisionEvent,
   VehicleCreateEvent,
@@ -193,12 +192,12 @@ import {
   VehicleExitEvent,
   VehicleMoveEvent,
   VehicleUpdateEvent
-} from '@java/org.bukkit.event.vehicle';
+} from 'bukkit/event/vehicle';
 import {
   LightningStrikeEvent,
   ThunderChangeEvent,
   WeatherChangeEvent
-} from '@java/org.bukkit.event.weather';
+} from 'bukkit/event/weather';
 import {
   ChunkLoadEvent,
   ChunkPopulateEvent,
@@ -210,7 +209,7 @@ import {
   WorldLoadEvent,
   WorldSaveEvent,
   WorldUnloadEvent
-} from '@java/org.bukkit.event.world';
+} from 'bukkit/event/world';
 import { codes as errors } from 'errors';
 
 const registeredListeners = Object.create(null);

@@ -1,9 +1,9 @@
 // resolves all jarDependencies in the main package.json, loading them if not already loaded
 import fs from 'fs';
 import path from 'path';
-import { File } from '@java/java.io';
-import { ZipFile } from '@java/java.util.zip';
-import YamlConfiguration from '@java/org.bukkit.configuration.file.YamlConfiguration';
+import { File } from 'java/io';
+import { ZipFile } from 'java/util.zip';
+import YamlConfiguration from 'bukkit/configuration.file.YamlConfiguration';
 import { getStringFromBuffer } from 'util';
 
 const dependencies = process.config.javaDependencies;

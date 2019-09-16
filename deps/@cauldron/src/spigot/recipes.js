@@ -8,8 +8,8 @@ import {
   SmokingRecipe,
   StonecuttingRecipe,
   RecipeChoice
-} from '@java/org.bukkit.inventory';
-import { Material } from '@java/org.bukkit';
+} from 'bukkit/inventory';
+import { Material } from 'bukkit';
 import { NAMESPACE_KEY } from '@cauldron';
 import ItemStack from './item-stack';
 
@@ -27,6 +27,4 @@ export const campfireRecipe = ({
   cookingTime = 20
 }) => new CampfireRecipe(NAMESPACE_KEY);
 
-export const furnaceRecipe = ({
-  result
-}) => new FurnaceRecipe(NAMESPACE_KEY);
+export const furnaceRecipe = ({ result }) => new FurnaceRecipe(NAMESPACE_KEY);

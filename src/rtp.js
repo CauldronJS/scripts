@@ -1,6 +1,6 @@
 import Rinse from '@cauldron/rinse';
 import { Command } from '@cauldron';
-import { Location, Material } from '@java/org.bukkit';
+import { Location, Material } from 'bukkit';
 import colors from '@cauldron/colors';
 
 const BAD_BLOCKS = [

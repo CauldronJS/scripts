@@ -1,4 +1,4 @@
-import { Material } from '@java/org.bukkit';
+import { Material } from 'bukkit';
 
 export const nullOrAir = itemStack =>
   itemStack && itemStack.getType() !== Material.AIR;

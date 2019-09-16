@@ -1,4 +1,4 @@
-import BukkitItemStack from '@java/org.bukkit.inventory.ItemStack';
+import BukkitItemStack from 'bukkit/inventory.ItemStack';
 
 const ItemStack = props => {
   const { id, name, lore, count } = props;

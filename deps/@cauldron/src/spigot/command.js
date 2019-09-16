@@ -12,7 +12,7 @@ const bcmField = Bukkit.getServer()
 bcmField.setAccessible(true);
 const commandMap = bcmField.get(Bukkit.getServer());
 const BukkitCommand = Java.extend(
-  require('@java/org.bukkit.command.defaults.BukkitCommand')
+  require('bukkit/command/defaults/BukkitCommand')
 );
 
 const commandState = Object.create(null);

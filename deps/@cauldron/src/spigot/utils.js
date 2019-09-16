@@ -1,4 +1,4 @@
-import NamespacedKey from '@java/org.bukkit.NamespacedKey';
+import NamespacedKey from 'bukkit/NamespacedKey';
 
 export const getPlugin = name =>
   Bukkit.getPluginManager().getPlugin(name || 'Cauldron');

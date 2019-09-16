@@ -8,9 +8,9 @@ import {
   SmokingRecipe,
   StonecuttingRecipe,
   RecipeChoice
-} from '@java/org.bukkit.inventory';
-import BukkitItemStack from '@java/org.bukkit.inventory.ItemStack';
-import { Material } from '@java/org.bukkit';
+} from 'bukkit/inventory';
+import BukkitItemStack from 'bukkit/inventory.ItemStack';
+import { Material } from 'bukkit';
 import { NAMESPACE_KEY } from '@cauldron';
 
 export class ItemStack {

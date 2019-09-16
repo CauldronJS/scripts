@@ -1,4 +1,4 @@
-import BukkitItemStack from '@java/org.bukkit.inventory.ItemStack';
+import BukkitItemStack from 'bukkit/inventory.ItemStack';
 
 function getItemStack(data) {
   // this will accept either a string of the material name,
@@ -10,13 +10,7 @@ function getItemStack(data) {
 function getEnchantments(data) {}
 
 export default class ItemStack {
-  constructor(
-    type,
-    {
-      amount = 1,
-      enchantments = []
-    }
-  ) {
+  constructor(type, { amount = 1, enchantments = [] }) {
     this.$$baseItemStack = getItemStack(type);
     this.$$baseItemStack.setAmount(amount);
   }
@@ -53,4 +47,3 @@ export default class ItemStack {
     return this.$$baseItemStack.isSimilar(getItemStack(itemStack));
   }
 }
-

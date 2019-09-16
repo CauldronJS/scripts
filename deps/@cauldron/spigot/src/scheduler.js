@@ -1,4 +1,4 @@
-import Runnable from '@java/java.lang.Runnable';
+import { Runnable } from 'java/lang';
 
 const scheduler = Bukkit.getScheduler();
 
