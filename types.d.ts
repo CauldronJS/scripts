@@ -293,15 +293,251 @@ declare module 'bukkit/block/data' {
   }
 }
 
-declare module 'bukkit/block/data/type' {}
+declare module 'bukkit/block/data/type' {
+  import { Enum } from 'java/lang';
+  export interface Bamboo {}
 
-declare module 'bukkit/block/structure' {}
+  export module Bamboo {
+    export class Leaves extends Enum<Leaves> {}
+  }
 
-declare module 'bukkit/boss' {}
+  export interface Bed {}
 
-declare module 'bukkit/command' {}
+  export module Bed {
+    export class Part extends Enum<Part> {}
+  }
 
-declare module 'bukkit/command/defaults' {}
+  export interface Bell {}
+
+  export module Bell {
+    export class Bell extends Enum<Bell> {}
+  }
+
+  export interface BrewingStand {}
+
+  export interface BubbleColumn {}
+
+  export interface Cake {}
+
+  export interface Campfire {}
+
+  export interface Chest {}
+
+  export module Chest {
+    export class Type extends Enum<Type> {}
+  }
+
+  export interface Cocoa {}
+
+  export interface CommandBlock {}
+
+  export interface Comparator {}
+
+  export module Comparator {
+    export class Mode extends Enum<Mode> {}
+  }
+
+  export interface CoralWallFan {}
+
+  export interface DaylightDetector {}
+
+  export interface Dispenser {}
+
+  export interface Door {}
+
+  export module Door {
+    export class Hinge extends Enum<Hinge> {}
+  }
+
+  export interface EnderChest {}
+
+  export interface EndPortalFrame {}
+
+  export interface Farmland {}
+
+  export interface Fence {}
+
+  export interface Fire {}
+
+  export interface Furnace {}
+
+  export interface Gate {}
+
+  export interface GlassPane {}
+
+  export interface Hopper {}
+
+  export interface Jukebox {}
+
+  export interface Ladder {}
+
+  export interface Lantern {}
+
+  export interface Leaves {}
+
+  export interface Lectern {}
+
+  export interface NoteBlock {}
+
+  export interface Observer {}
+
+  export interface Piston {}
+
+  export interface PistonHead {}
+
+  export interface RedstoneRail {}
+
+  export interface RedstoneWallTorch {}
+
+  export interface RedstoneWire {}
+
+  export module RedstoneWire {
+    export class Connection extends Enum<Connection> {}
+  }
+
+  export interface Repeater {}
+
+  export interface Sapling {}
+
+  export interface Scaffolding {}
+
+  export interface SeaPickle {}
+
+  export interface Sign {}
+
+  export interface Slab {}
+
+  export module Slab {
+    export class Type extends Enum<Type> {}
+  }
+
+  export interface Snow {}
+
+  export interface Stairs {}
+
+  export module Stairs {
+    export class Shape extends Enum<Shape> {}
+  }
+
+  export interface StructureBlock {}
+
+  export module StructureBlock {
+    export class Mode extends Enum<Mode> {}
+  }
+
+  export interface Switch {}
+
+  export module Switch {
+    export class Face extends Enum<Face> {}
+  }
+
+  export interface TechnicalPiston {}
+
+  export module TechnicalPiston {
+    export class Type extends Enum<Type> {}
+  }
+
+  export interface TNT {}
+
+  export interface TrapDoor {}
+
+  export interface Tripwire {}
+
+  export interface TripwireHook {}
+
+  export interface TurtleEgg {}
+
+  export interface WallSign {}
+}
+
+declare module 'bukkit/block/structure' {
+  import { Enum } from 'java/lang';
+
+  export class Mirror extends Enum<Mirror> {}
+
+  export class StructureRotation extends Enum<StructureRotation> {}
+
+  export class UsageMode extends Enum<UsageMode> {}
+}
+
+declare module 'bukkit/boss' {
+  import { Enum } from 'java/lang';
+
+  export interface BossBar {}
+
+  export interface KeyedBossBar {}
+
+  export class BarColor extends Enum<BarColor> {}
+
+  export class BarFlag extends Enum<BarFlag> {}
+
+  export class BarStyle extends Enum<BarStyle> {}
+}
+
+declare module 'bukkit/command' {
+  import { Enum } from 'java/lang';
+
+  export interface BlockCommandSender {}
+
+  export interface CommandExecutor {}
+
+  export interface CommandMap {}
+
+  export interface CommandSender {}
+
+  export interface ConsoleCommandSender {}
+
+  export interface PluginIdentifiableCommand {}
+
+  export interface ProxiedCommandSender {}
+
+  export interface RemoteConsoleCommandSender {}
+
+  export interface TabCompleter {}
+
+  export interface TabExecutor {}
+
+  export class CommandException extends Error {}
+
+  export class Command extends PluginCommand {}
+
+  export module CommandSender {
+    export class Spigot {}
+  }
+
+  export class FormattedCommandAlias {}
+
+  export class MultipleCommandAlias {}
+
+  export class PluginCommand {}
+
+  export class PluginCommandYamlParser {}
+
+  export class SimpleCommandMap implements CommandMap {}
+}
+
+declare module 'bukkit/command/defaults' {
+  import { Command } from 'bukkit/command';
+
+  export class BukkitCommand extends Command {
+    protected constructor(
+      name: string,
+      description?: string,
+      usageMessage?: string,
+      aliases: string[]
+    );
+  }
+
+  export class HelpCommand extends BukkitCommand {}
+
+  export class PluginsCommand extends BukkitCommand {}
+
+  export class ReloadCommand extends BukkitCommand {}
+
+  export class TimingsCommand extends BukkitCommand {}
+
+  export class VersionCommand extends BukkitCommand {}
+}
 
 declare module 'bukkit/configuration' {}
 
