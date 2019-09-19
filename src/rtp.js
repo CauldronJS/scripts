@@ -32,7 +32,7 @@ const executeRtp = ({ sender, args }) => {
     z: currentLocation.getBlockZ() + getLargeRandom()
   };
   // now we iterate down until we hit solid ground (well, non-air or non-lava)
-  while (newLocation.y > 35) {
+  while (newLocation.y > 64) {
     // do check
     const blockAt = world
       .getBlockAt(newLocation.x, newLocation.y, newLocation.z)
