@@ -673,3 +673,25 @@ declare module 'java/lang' {
     clone(): object;
   }
 }
+
+declare module 'java/nio' {
+  export class ByteBuffer {
+    static allocate(capacity: number): ByteBuffer;
+    static allocateDirect(capacity: number): ByteBuffer;
+    array(): number[];
+    arrayOffset(): number;
+    asCharBuffer();
+    asDoubleBuffer();
+    asFloatBuffer();
+    asIntBuffer();
+    asLongBuffer();
+    asReadOnlyBuffer();
+    asShortBUffer();
+    compareTo(other: ByteBuffer): number;
+    duplicate(): ByteBuffer;
+    get(): number;
+    get(dst: number[]): ByteBuffer;
+    get(dst: number[], offset: number, length: number): ByteBuffer;
+    static wrap(array: number[]): ByteBuffer;
+  }
+}
