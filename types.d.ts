@@ -539,13 +539,93 @@ declare module 'bukkit/command/defaults' {
   export class VersionCommand extends BukkitCommand {}
 }
 
-declare module 'bukkit/configuration' {}
+declare module 'bukkit/configuration' {
+  export interface Configuration {}
 
-declare module 'bukkit/configuration/file' {}
+  export interface ConfigurationSection {}
 
-declare module 'bukkit/configuration/serialization' {}
+  export class ConfigurationOptions {}
 
-declare module 'bukkit/conversation' {}
+  export class MemoryConfiguration {}
+
+  export class MemoryConfigurationOptions {}
+
+  export class MemorySection {}
+
+  export class InvalidConfigurationException extends Error {}
+}
+
+declare module 'bukkit/configuration/file' {
+  import { Configuration, ConfigurationOptions } from 'bukkit/configuration';
+  export class FileConfiguration implements Configuration {}
+
+  export class FileConfigurationOptions extends ConfigurationOptions {}
+
+  export class YamlConfiguration implements Configuration {}
+
+  export class YamlConfigurationOptions extends ConfigurationOptions {}
+
+  export class YamlConstructor {}
+
+  export class YamlRepresenter {}
+}
+
+declare module 'bukkit/configuration/serialization' {
+  export interface ConfigurationSerializable {}
+
+  export class ConfigurationSerialization {}
+}
+
+declare module 'bukkit/conversations' {
+  import { Enum } from 'java/lang';
+  export interface Conversable {}
+
+  export interface ConversationAbandondedListener {}
+
+  export interface ConversationCanceller {}
+
+  export interface ConversationPrefix {}
+
+  export interface Prompt {}
+
+  export class BooleanPrompt implements Prompt {}
+
+  export class Conversation {}
+
+  export class ConversationAbandonedEvent {}
+
+  export class ConversationContext {}
+
+  export class ConversationFactory {}
+
+  export class ExactMatchConversationCanceller {}
+
+  export class FixedSetPrompt implements Prompt {}
+
+  export class InactivityConversationCanceller {}
+
+  export class ManuallyAbandonedConversationCanceller {}
+
+  export class MessagePrompt implements Prompt {}
+
+  export class NullConversationPrefix {}
+
+  export class NumericPrompt implements Prompt {}
+
+  export class PlayerNamePrompt implements Prompt {}
+
+  export class PluginNameConversationPrefix {}
+
+  export class RegexPrompt implements Prompt {}
+
+  export class StringPrompt implements Prompt {}
+
+  export class ValidatingPrompt implements Prompt {}
+
+  export module Conversation {
+    export class ConversationState extends Enum<ConversationState> {}
+  }
+}
 
 declare module 'bukkit/enchantments' {}
 

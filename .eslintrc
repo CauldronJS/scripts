@@ -19,7 +19,12 @@
     "BigInt": "readonly",
     "log": "readonly",
     "debugMessages": "readonly",
-    "evalScript": "readonly"
+    "evalScript": "readonly",
+    "internalBinding": "readonly",
+    "DTRACE_HTTP_CLIENT_REQUEST": "readonly",
+    "COUNTER_HTTP_CLIENT_REQUEST": "readonly",
+    "DTRACE_HTTP_CLIENT_RESPONSE": "readonly",
+    "COUNTER_HTTP_CLIENT_RESPONSE": "readonly"
   },
   "extends": [
     "eslint:recommended",
