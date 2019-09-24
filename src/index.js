@@ -3,13 +3,13 @@ import Rinse from '@cauldron/rinse';
 import RtpCommand from './rtp';
 import JsCommand from './js';
 import colors from '@cauldron/colors';
-import Axios from 'axios';
-import express from 'express';
+// import Axios from 'axios';
+// import express from 'express';
 
 cauldron();
 
 function setMotd({ setMotd }) {
-  setMotd(colors.gold(colors.bold('NamelessNoobs')).green('Survival'));
+  setMotd(colors.green('Dev Server'));
 }
 
 cauldron.events.server.on('listping', setMotd);
@@ -23,13 +23,13 @@ const App = () => (
 
 Rinse.mount(<App />);
 
-const app = express();
-app.use(express.static('./site/public'));
-app.use('/css', express.static('./site/public/css'));
-app.use('/js', express.static('./site/public/js'));
-app.use('/images', express.static('./site/public/images'));
+// const app = express();
+// app.use(express.static('./site/public'));
+// app.use('/css', express.static('./site/public/css'));
+// app.use('/js', express.static('./site/public/js'));
+// app.use('/images', express.static('./site/public/images'));
 
-const server = app.listen(25566, () => {
-  const port = server.address().port;
-  console.log(`Web server started on http://localhost:${port}`);
-});
+// const server = app.listen(25566, () => {
+//   const port = server.address().port;
+//   console.log(`Web server started on http://localhost:${port}`);
+// });

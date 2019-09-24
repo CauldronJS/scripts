@@ -1,0 +1,4 @@
+{
+  "name": "spigot_hooks",
+  "main": "./index.js"
+}

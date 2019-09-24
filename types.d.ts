@@ -1,4 +1,8 @@
 declare module 'bukkit' {
+  import { ItemStack } from 'bukkit/inventory';
+  import { CommandSender, ConsoleCommandSender } from 'bukkit/command';
+  import { KeyedBossBar } from 'bukkit/boss';
+
   export class Bukkit {
     static addRecipe(recipe: Recipe): boolean;
     static banIP(address: string): void;
@@ -13,6 +17,43 @@ declare module 'bukkit' {
       style: BarStyle,
       ...flags: BarFlag
     ): BossBar;
+    static createChunkData(world: World): ChunkGenerator.ChunkData;
+    static createExplorerMap(
+      world: World,
+      location: Location,
+      structureType: StructureType,
+      radius?: number,
+      findUnexplored?: boolean
+    ): ItemStack;
+    static createInventory(
+      owner: InventoryHolder,
+      size: number,
+      title?: string
+    ): Inventory;
+    static createInventory(
+      owner: InventoryHolder,
+      type: InventoryType,
+      title?: string
+    ): Inventory;
+    static createMap(world: World): MapView;
+    static createMerchant(title: string): Merchant;
+    static createWorld(creator: WorldCreator): World;
+    static dispatchCommand(sender: CommandSender, commandLine: string): boolean;
+    static getAdvancement(key: NamespacedKey): Advancement;
+    static getAllowEnd(): boolean;
+    static getAllowFlight(): boolean;
+    static getAllowNether(): boolean;
+    static getAmbientSpawnLimit(): number;
+    static getAnimalSpawnLimit(): number;
+    static getBanList(type: BanList.Type): BanList;
+    static getBannedPlayers(): OfflinePlayer[];
+    static getBossBar(key: NamespacedKey): KeyedBossBar;
+    static getBossBars(): Iterator<KeyedBossBar>;
+    static getBukkitVersion(): string;
+    static getCommandAliases(): Map<string, string[]>;
+    static getConnectionThrottle(): number;
+    static getConsoleSender(): ConsoleCommandSender;
+    static getDefaultGameMode(): GameMode;
   }
 
   export class Color {}
@@ -63,23 +104,23 @@ declare module 'bukkit' {
 
   export interface WorldBorder {}
 
-  export enum Achievement {}
+  export class Achievement extends Enum<Achievement> {}
 
-  export enum Art {}
+  export class Art extends Enum<Art> {}
 
-  export enum Axis {}
+  export class Axis extends Enum<Axis> {}
 
-  export enum ChatColor {}
+  export class ChatColor extends Enum<ChatColor> {}
 
-  export enum CoalType {}
+  export class CoalType extends Enum<CoalType> {}
 
-  export enum CropState {}
+  export class CropState extends Enum<CropState> {}
 
-  export enum Difficulty {}
+  export class Difficulty extends Enum<Difficulty> {}
 
-  export enum DyeColor {}
+  export class DyeColor extends Enum<DyeColor> {}
 
-  export enum Effect {}
+  export class Effect extends Enum<Effect> {}
 
   export module Effect {
     export enum Type {}
@@ -517,7 +558,7 @@ declare module 'bukkit/command' {
 }
 
 declare module 'bukkit/command/defaults' {
-  import { Command } from 'bukkit/command';
+  import { Command, CommandSender, CommandSender } from 'bukkit/command';
 
   export class BukkitCommand extends Command {
     protected constructor(

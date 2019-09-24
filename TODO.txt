@@ -11,4 +11,4 @@ may be platform specific)
   * interaction with external JARs
 - figure out if I need to make FS and PATH modules relative to the file calling
 them. Not sure how I'd do that, but fuck it, anything is possible, right?
-- Consider switching to `buffer` class instead of built-in stream types in Java
+- Create internal async manager for hooking

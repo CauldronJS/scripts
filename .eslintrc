@@ -86,7 +86,6 @@
     "no-unused-expressions": [1, { "allowTernary": true }], // disallow usage of expressions in statement position
     "no-useless-call": [1], // disallow unnecessary .call() and .apply()
     "max-nested-callbacks": [1, 5], // specify the maximum depth callbacks can be nested
-    "no-param-reassign": [1, { "props": false }],
     "max-params": [1],
     "prefer-arrow-callback": [1],
 
