@@ -11,17 +11,19 @@ function baseHook(event, handlers) {
 function useWorld(name, handlers = Object.create(null)) {
   for (const eventName in handlers) {
     if (cauldron.events.world.registeredEventClasses[eventName]) {
-      if (!eventHooks[name]) {
-        eventHooks[name] = [];
+      if (!eventHooks[eventName]) {
+        eventHooks[eventName] = {
+          [name]: []
+        };
         cauldron.events.world.on(eventName, event => {
           if (event.getWorld && event.getWorld().getName() === name) {
-            baseHook(event, eventHooks[name]);
+            baseHook(event, eventHooks[eventName][name]);
           }
         });
       }
-      eventHooks[name].push(handlers[eventName]);
+      eventHooks[eventName][name].push(handlers[eventName]);
     }
   }
 }
 
-module.exports = useWorld;
+export default useWorld;

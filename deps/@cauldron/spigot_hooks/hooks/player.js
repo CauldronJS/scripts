@@ -8,20 +8,22 @@ function baseHook(event, handlers) {
   }
 }
 
-function usePlayer(name, handlers) {
+function usePlayer(name, handlers = Object.create(null)) {
   for (const eventName in handlers) {
     if (cauldron.events.player.registeredEventClasses[eventName]) {
-      if (!eventHooks[name]) {
-        eventHooks[name] = [];
+      if (!eventHooks[eventName]) {
+        eventHooks[eventName] = {
+          [name]: []
+        };
         cauldron.events.player.on(eventName, event => {
           if (event.getPlayer && event.getPlayer().getName() === name) {
-            baseHook(event, eventHooks[name]);
+            baseHook(event, eventHooks[eventName][name]);
           }
         });
       }
-      eventHooks[name].push(handlers[eventName]);
+      eventHooks[eventName][name].push(handlers[eventName]);
     }
   }
 }
 
-module.exports = usePlayer;
+export default usePlayer;
