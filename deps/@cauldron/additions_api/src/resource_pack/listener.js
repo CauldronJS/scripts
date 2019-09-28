@@ -1,6 +1,6 @@
 import { events } from '@cauldron';
-import { Status } from 'org.bukkit.event.player.PlayerResourcePackStatusEvent';
+import { Status } from 'bukkit/event/player/PlayerResourcePackStatusEvent';
 
-events.player.on('login', e => {});
+events.on('playerlogin', e => {});
 
-events.player.on('resourcepackstatus', e => {});
+events.on('playerresourcepackstatus', e => {});

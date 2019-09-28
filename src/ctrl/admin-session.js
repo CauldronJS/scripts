@@ -27,7 +27,7 @@ const isSessionValid = player => {
 
 const markCurrentSesssion = player => {};
 
-events.player.on('join', event => {
+events.on('playerjoin', event => {
   // check if player needs to login
   const player = event.getPlayer();
   const uuid = player.getUniqueId();

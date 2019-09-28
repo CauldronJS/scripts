@@ -31,7 +31,7 @@ export const setPage = (player, pageId) => {
   const window = currentOpenWindows[player.getUniqueId()];
 };
 
-events.inventory.on('click', event => {
+events.on('inventoryclick', event => {
   const uuid = event.getPlayer().getUniqueId();
   const id = currentOpenWindows[uuid];
   if (!id) return true;

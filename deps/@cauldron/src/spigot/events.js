@@ -2,11 +2,15 @@ import {
   BlockBreakEvent,
   BlockPlaceEvent,
   BlockCanBuildEvent,
+  BlockCookEvent,
   BlockDamageEvent,
+  BlockDispenseArmorEvent,
   BlockDispenseEvent,
+  BlockDropItemEvent,
   BlockExpEvent,
   BlockExplodeEvent,
   BlockFadeEvent,
+  BlockFertilizeEvent,
   BlockFormEvent,
   BlockFromToEvent,
   BlockGrowEvent,
@@ -16,6 +20,7 @@ import {
   BlockPistonExtendEvent,
   BlockPistonRetractEvent,
   BlockRedstoneEvent,
+  BlockShearEntityEvent,
   BlockSpreadEvent,
   CauldronLevelChangeEvent,
   EntityBlockFormEvent,
@@ -56,6 +61,7 @@ import {
   EntityPortalEnterEvent,
   EntityPortalEvent,
   EntityPortalExitEvent,
+  EntityPoseChangeEvent,
   EntityPotionEffectEvent,
   EntityRegainHealthEvent,
   EntityResurrectEvent,
@@ -90,6 +96,7 @@ import {
   SlimeSplitEvent,
   SpawnerSpawnEvent,
   VillagerAcquireTradeEvent,
+  VillagerCareerChangeEvent,
   VillagerReplenishTradeEvent
 } from 'bukkit/event/entity';
 import {
@@ -101,6 +108,7 @@ import {
   BrewingStandFuelEvent,
   CraftItemEvent,
   FurnaceBurnEvent,
+  FurnaceExtractEvent,
   FurnaceSmeltEvent,
   InventoryClickEvent,
   InventoryCloseEvent,
@@ -111,7 +119,8 @@ import {
   InventoryOpenEvent,
   InventoryPickupItemEvent,
   PrepareAnvilEvent,
-  PrepareItemCraftEvent
+  PrepareItemCraftEvent,
+  TradeSelectEvent
 } from 'bukkit/event/inventory';
 import {
   PlayerAchievementAwardedEvent,
@@ -162,6 +171,7 @@ import {
   PlayerShearEntityEvent,
   PlayerStatisticIncrementEvent,
   PlayerSwapHandItemsEvent,
+  PlayerTakeLecternBookEvent,
   PlayerTeleportEvent,
   PlayerToggleFlightEvent,
   PlayerToggleSprintEvent,
@@ -169,6 +179,12 @@ import {
   PlayerUnregisterChannelEvent,
   PlayerVelocityEvent
 } from 'bukkit/event/player';
+import {
+  RaidFinishEvent,
+  RaidSpawnWaveEvent,
+  RaidStopEvent,
+  RaidTriggerEvent
+} from 'bukkit/event/raid';
 import {
   BroadcastMessageEvent,
   MapInitializeEvent,
@@ -332,111 +348,96 @@ class SpigotEmitter {
   }
 }
 
-export function registerNewListener(name, eventTypes) {
-  if (!name || name.length === 0 || typeof name !== 'string') {
-    throw new errors.ERR_INVALID_ARG_VALUE(
-      'name',
-      name,
-      'listener name cannot be empty'
-    );
-  }
+const serverEmitter = new SpigotEmitter(Symbol('spigot'));
 
-  const listener = new SpigotEmitter(name);
-  if (eventTypes) {
-    // eslint-disable-next-line prefer-const
-    for (let prop in eventTypes) {
-      if (!eventTypes.hasOwnProperty(prop)) continue;
-      const value = eventTypes[prop];
-      listener.registerEvent(prop, value);
-    }
+function registerEventType(eventTypes) {
+  for (const name in eventTypes) {
+    serverEmitter.registerEvent(name, eventTypes[name]);
   }
-
-  return listener;
 }
-
-export function clearListener(name) {}
 
 export function clearListeners() {}
 
-export function eventHandler(listenerName, event, callback) {
-  if (!registeredListeners[listenerName]) return null;
-  const listener = registeredListeners[listenerName];
-  return listener.on(event, callback);
+export function eventHandler(event, callback) {
+  return serverEmitter.on(event, callback);
 }
 
-export const block = registerNewListener('block', {
-  break: BlockBreakEvent,
-  place: BlockPlaceEvent,
-  canbuild: BlockCanBuildEvent,
-  damage: BlockDamageEvent,
-  dispense: BlockDispenseEvent,
-  exp: BlockExpEvent,
-  explode: BlockExplodeEvent,
-  fade: BlockFadeEvent,
-  form: BlockFormEvent,
-  fromto: BlockFromToEvent,
-  grow: BlockGrowEvent,
-  ignite: BlockIgniteEvent,
-  multiplace: BlockMultiPlaceEvent,
-  physics: BlockPhysicsEvent,
-  pistonextend: BlockPistonExtendEvent,
-  pistonretract: BlockPistonRetractEvent,
-  redstone: BlockRedstoneEvent,
-  spread: BlockSpreadEvent,
-  cauldronlevelchange: CauldronLevelChangeEvent,
-  entityform: EntityBlockFormEvent,
+registerEventType({
+  // blocks
+  blockbreak: BlockBreakEvent,
+  blockplace: BlockPlaceEvent,
+  blockcanbuild: BlockCanBuildEvent,
+  blockcook: BlockCookEvent,
+  blockdamage: BlockDamageEvent,
+  blockdispensearmor: BlockDispenseArmorEvent,
+  blockdispense: BlockDispenseEvent,
+  blockdropitem: BlockDropItemEvent,
+  blockexp: BlockExpEvent,
+  blockexplode: BlockExplodeEvent,
+  blockfade: BlockFadeEvent,
+  blockfertilize: BlockFertilizeEvent,
+  blockform: BlockFormEvent,
+  blockfromto: BlockFromToEvent,
+  blockgrow: BlockGrowEvent,
+  blockignite: BlockIgniteEvent,
+  blockmultiplace: BlockMultiPlaceEvent,
+  blockphysics: BlockPhysicsEvent,
+  blockpistonextend: BlockPistonExtendEvent,
+  blockpistonretract: BlockPistonRetractEvent,
+  blockredstone: BlockRedstoneEvent,
+  blockshearentity: BlockShearEntityEvent,
+  blockspread: BlockSpreadEvent,
+  blockcauldronlevelchange: CauldronLevelChangeEvent,
+  blockentityform: EntityBlockFormEvent,
   fluidlevelchange: FluidLevelChangeEvent,
   leavesdecay: LeavesDecayEvent,
   moisturechange: MoistureChangeEvent,
   noteplay: NotePlayEvent,
   signchange: SignChangeEvent,
-  spongeabsorb: SpongeAbsorbEvent
-});
-
-export const enchantment = registerNewListener('enchantment', {
+  spongeabsorb: SpongeAbsorbEvent,
+  // enchantments
   enchant: EnchantItemEvent,
-  prepare: PrepareItemEnchantEvent
-});
-
-export const entity = registerNewListener('entity', {
+  prepare: PrepareItemEnchantEvent,
+  // entities
   areaeffectcloudapply: AreaEffectCloudApplyEvent,
   battogglesleep: BatToggleSleepEvent,
   creaturespawn: CreatureSpawnEvent,
   creeperpower: CreeperPowerEvent,
   enderdragonchangephase: EnderDragonChangePhaseEvent,
-  airchange: EntityAirChangeEvent,
-  breakdoor: EntityBreakDoorEvent,
-  breed: EntityBreedEvent,
-  changeblock: EntityChangeBlockEvent,
-  combustbyblock: EntityCombustByBlockEvent,
-  combustbyentity: EntityCombustByEntityEvent,
-  combust: EntityCombustEvent,
-  createportal: EntityCreatePortalEvent,
-  damagebyblock: EntityDamageByBlockEvent,
-  damagebyentity: EntityDamageByEntityEvent,
-  damage: EntityDamageEvent,
-  death: EntityDeathEvent,
-  dropitem: EntityDropItemEvent,
-  explode: EntityExplodeEvent,
-  interact: EntityInteractEvent,
-  pickupitem: EntityPickupItemEvent,
-  place: EntityPlaceEvent,
-  portalenter: EntityPortalEnterEvent,
-  portal: EntityPortalEvent,
-  portalexit: EntityPortalExitEvent,
-  potioneffect: EntityPotionEffectEvent,
-  regainhealth: EntityRegainHealthEvent,
-  resurrect: EntityResurrectEvent,
-  shootbow: EntityShootBowEvent,
-  spawn: EntitySpawnEvent,
-  tame: EntityTameEvent,
-  target: EntityTargetEvent,
-  targetlivingentity: EntityTargetLivingEntityEvent,
-  teleport: EntityTeleportEvent,
-  toggleglide: EntityToggleGlideEvent,
-  toggleswim: EntityToggleSwimEvent,
-  transform: EntityTransformEvent,
-  unleash: EntityUnleashEvent,
+  entityairchange: EntityAirChangeEvent,
+  entitybreakdoor: EntityBreakDoorEvent,
+  entitybreed: EntityBreedEvent,
+  entitychangeblock: EntityChangeBlockEvent,
+  entitycombustbyblock: EntityCombustByBlockEvent,
+  entitycombustbyentity: EntityCombustByEntityEvent,
+  entitycombust: EntityCombustEvent,
+  entitycreateportal: EntityCreatePortalEvent,
+  entitydamagebyblock: EntityDamageByBlockEvent,
+  entitydamagebyentity: EntityDamageByEntityEvent,
+  entitydamage: EntityDamageEvent,
+  entitydeath: EntityDeathEvent,
+  entitydropitem: EntityDropItemEvent,
+  entityexplode: EntityExplodeEvent,
+  entityinteract: EntityInteractEvent,
+  entitypickupitem: EntityPickupItemEvent,
+  entityplace: EntityPlaceEvent,
+  entityportalenter: EntityPortalEnterEvent,
+  entityportal: EntityPortalEvent,
+  entityportalexit: EntityPortalExitEvent,
+  entityposechange: EntityPoseChangeEvent,
+  entitypotioneffect: EntityPotionEffectEvent,
+  entityregainhealth: EntityRegainHealthEvent,
+  entityresurrect: EntityResurrectEvent,
+  entityshootbow: EntityShootBowEvent,
+  entityspawn: EntitySpawnEvent,
+  entitytame: EntityTameEvent,
+  entitytarget: EntityTargetEvent,
+  entitytargetlivingentity: EntityTargetLivingEntityEvent,
+  entityteleport: EntityTeleportEvent,
+  entitytoggleglide: EntityToggleGlideEvent,
+  entitytoggleswim: EntityToggleSwimEvent,
+  entitytransform: EntityTransformEvent,
+  entityunleash: EntityUnleashEvent,
   expbottle: ExpBottleEvent,
   explosionprime: ExplosionPrimeEvent,
   fireworkexplode: FireworkExplodeEvent,
@@ -458,131 +459,127 @@ export const entity = registerNewListener('entity', {
   slimesplit: SlimeSplitEvent,
   spawnerspawn: SpawnerSpawnEvent,
   villageraquiretrade: VillagerAcquireTradeEvent,
-  villagerreplenishtrade: VillagerReplenishTradeEvent
-});
-
-export const hanging = registerNewListener('hanging', {
-  breakbyentity: HangingBreakByEntityEvent,
-  break: HangingBreakEvent,
-  place: HangingPlaceEvent
-});
-
-export const inventory = registerNewListener('inventory', {
+  villagercareerchange: VillagerCareerChangeEvent,
+  villagerreplenishtrade: VillagerReplenishTradeEvent,
+  // hanging
+  hangingbreakbyentity: HangingBreakByEntityEvent,
+  hangingbreak: HangingBreakEvent,
+  hangingplace: HangingPlaceEvent,
+  // inventory
   brewingstandfuel: BrewingStandFuelEvent,
   craftitem: CraftItemEvent,
   furnaceburn: FurnaceBurnEvent,
+  furnaceextract: FurnaceExtractEvent,
   furnacesmelt: FurnaceSmeltEvent,
-  click: InventoryClickEvent,
-  close: InventoryCloseEvent,
-  creative: InventoryCreativeEvent,
-  drag: InventoryDragEvent,
-  interact: InventoryInteractEvent,
-  moveitem: InventoryMoveItemEvent,
-  open: InventoryOpenEvent,
-  pickupitem: InventoryPickupItemEvent,
+  inventoryclick: InventoryClickEvent,
+  inventoryclose: InventoryCloseEvent,
+  inventorycreative: InventoryCreativeEvent,
+  inventorydrag: InventoryDragEvent,
+  inventoryinteract: InventoryInteractEvent,
+  inventorymoveitem: InventoryMoveItemEvent,
+  inventoryopen: InventoryOpenEvent,
+  inventorypickupitem: InventoryPickupItemEvent,
   prepareanvil: PrepareAnvilEvent,
-  prepareitemcraft: PrepareItemCraftEvent
-});
-
-export const player = registerNewListener('player', {
-  achievementawarded: PlayerAchievementAwardedEvent,
-  advancementdone: PlayerAdvancementDoneEvent,
-  animation: PlayerAnimationEvent,
-  armorstandmanipulate: PlayerArmorStandManipulateEvent,
-  bedenter: PlayerBedEnterEvent,
-  bedleave: PlayerBedLeaveEvent,
-  bucketempty: PlayerBucketEmptyEvent,
-  bucketfill: PlayerBucketFillEvent,
-  changedmainhand: PlayerChangedMainHandEvent,
-  changedworld: PlayerChangedWorldEvent,
-  channel: PlayerChannelEvent,
-  chat: PlayerChatEvent,
-  chattabcomplete: PlayerChatTabCompleteEvent,
-  commandpreprocess: PlayerCommandPreprocessEvent,
-  commandsend: PlayerCommandSendEvent,
-  death: PlayerDeathEvent,
-  dropitem: PlayerDropItemEvent,
-  editbook: PlayerEditBookEvent,
-  eggthrow: PlayerEggThrowEvent,
-  expchange: PlayerExpChangeEvent,
-  fish: PlayerFishEvent,
-  gamemodechange: PlayerGameModeChangeEvent,
-  interactatentity: PlayerInteractAtEntityEvent,
-  interactentity: PlayerInteractEntityEvent,
-  interact: PlayerInteractEvent,
-  itembreak: PlayerItemBreakEvent,
-  itemconsume: PlayerItemConsumeEvent,
-  itemdamage: PlayerItemDamageEvent,
-  itemheld: PlayerItemHeldEvent,
-  itemmend: PlayerItemMendEvent,
-  join: PlayerJoinEvent,
-  kick: PlayerKickEvent,
-  levelchange: PlayerLevelChangeEvent,
-  localechange: PlayerLocaleChangeEvent,
-  login: PlayerLoginEvent,
-  move: PlayerMoveEvent,
-  pickuparrow: PlayerPickupArrowEvent,
-  pickupitem: PlayerPickupItemEvent,
-  portal: PlayerPortalEvent,
-  prelogin: PlayerPreLoginEvent,
-  quit: PlayerQuitEvent,
-  recipediscover: PlayerRecipeDiscoverEvent,
-  registerchannel: PlayerRegisterChannelEvent,
-  resourcepackstatus: PlayerResourcePackStatusEvent,
-  respawn: PlayerRespawnEvent,
-  riptide: PlayerRiptideEvent,
-  shearentity: PlayerShearEntityEvent,
-  statisticincrement: PlayerStatisticIncrementEvent,
-  swaphanditems: PlayerSwapHandItemsEvent,
-  teleport: PlayerTeleportEvent,
-  toggleflight: PlayerToggleFlightEvent,
-  togglesprint: PlayerToggleSprintEvent,
-  unleashentity: PlayerUnleashEntityEvent,
-  unregisterchannel: PlayerUnregisterChannelEvent,
-  velocity: PlayerVelocityEvent
-});
-
-export const server = registerNewListener('server', {
+  prepareitemcraft: PrepareItemCraftEvent,
+  tradeselect: TradeSelectEvent,
+  // player
+  playerachievementawarded: PlayerAchievementAwardedEvent,
+  playeradvancementdone: PlayerAdvancementDoneEvent,
+  playeranimation: PlayerAnimationEvent,
+  playerarmorstandmanipulate: PlayerArmorStandManipulateEvent,
+  playerbedenter: PlayerBedEnterEvent,
+  playerbedleave: PlayerBedLeaveEvent,
+  playerbucketempty: PlayerBucketEmptyEvent,
+  playerbucketfill: PlayerBucketFillEvent,
+  playerchangedmainhand: PlayerChangedMainHandEvent,
+  playerchangedworld: PlayerChangedWorldEvent,
+  playerchannel: PlayerChannelEvent,
+  playerchat: PlayerChatEvent,
+  playerchattabcomplete: PlayerChatTabCompleteEvent,
+  playercommandpreprocess: PlayerCommandPreprocessEvent,
+  playercommandsend: PlayerCommandSendEvent,
+  playerdropitem: PlayerDropItemEvent,
+  playereditbook: PlayerEditBookEvent,
+  playereggthrow: PlayerEggThrowEvent,
+  playerexpchange: PlayerExpChangeEvent,
+  playerfish: PlayerFishEvent,
+  playergamemodechange: PlayerGameModeChangeEvent,
+  playerinteractatentity: PlayerInteractAtEntityEvent,
+  playerinteractentity: PlayerInteractEntityEvent,
+  playerinteract: PlayerInteractEvent,
+  playeritembreak: PlayerItemBreakEvent,
+  playeritemconsume: PlayerItemConsumeEvent,
+  playeritemdamage: PlayerItemDamageEvent,
+  playeritemheld: PlayerItemHeldEvent,
+  playeritemmend: PlayerItemMendEvent,
+  playerjoin: PlayerJoinEvent,
+  playerkick: PlayerKickEvent,
+  playerlevelchange: PlayerLevelChangeEvent,
+  playerlocalechange: PlayerLocaleChangeEvent,
+  playerlogin: PlayerLoginEvent,
+  playermove: PlayerMoveEvent,
+  playerpickuparrow: PlayerPickupArrowEvent,
+  playerpickupitem: PlayerPickupItemEvent,
+  playerportal: PlayerPortalEvent,
+  playerprelogin: PlayerPreLoginEvent,
+  playerquit: PlayerQuitEvent,
+  playerrecipediscover: PlayerRecipeDiscoverEvent,
+  playerregisterchannel: PlayerRegisterChannelEvent,
+  playerresourcepackstatus: PlayerResourcePackStatusEvent,
+  playerrespawn: PlayerRespawnEvent,
+  playerriptide: PlayerRiptideEvent,
+  playershearentity: PlayerShearEntityEvent,
+  playerstatisticincrement: PlayerStatisticIncrementEvent,
+  playerswaphanditems: PlayerSwapHandItemsEvent,
+  playertakelecternbook: PlayerTakeLecternBookEvent,
+  playerteleport: PlayerTeleportEvent,
+  playertoggleflight: PlayerToggleFlightEvent,
+  playertogglesprint: PlayerToggleSprintEvent,
+  playerunleashentity: PlayerUnleashEntityEvent,
+  playerunregisterchannel: PlayerUnregisterChannelEvent,
+  playervelocity: PlayerVelocityEvent,
+  // raid
+  raidfinish: RaidFinishEvent,
+  raidspawnwave: RaidSpawnWaveEvent,
+  raidstop: RaidStopEvent,
+  raidtrigger: RaidTriggerEvent,
+  // server
   broadcastmessage: BroadcastMessageEvent,
   mapinitialize: MapInitializeEvent,
   plugindisable: PluginDisableEvent,
   pluginenable: PluginEnableEvent,
   remotecommand: RemoteServerCommandEvent,
-  command: ServerCommandEvent,
-  listping: ServerListPingEvent,
-  load: ServerLoadEvent,
+  servercommand: ServerCommandEvent,
+  serverlistping: ServerListPingEvent,
+  serverload: ServerLoadEvent,
   serviceregister: ServiceRegisterEvent,
   serviceunregister: ServiceUnregisterEvent,
-  tabcomplete: TabCompleteEvent
-});
-
-export const vehicle = registerNewListener('vehicle', {
-  blockcollision: VehicleBlockCollisionEvent,
-  create: VehicleCreateEvent,
-  damage: VehicleDamageEvent,
-  destroy: VehicleDestroyEvent,
-  enter: VehicleEnterEvent,
-  entitycollision: VehicleEntityCollisionEvent,
-  exit: VehicleExitEvent,
-  move: VehicleMoveEvent,
-  update: VehicleUpdateEvent
-});
-
-export const weather = registerNewListener('weather', {
+  tabcomplete: TabCompleteEvent,
+  // vehicle
+  vehicleblockcollision: VehicleBlockCollisionEvent,
+  vehiclecreate: VehicleCreateEvent,
+  vehicledamage: VehicleDamageEvent,
+  vehicledestroy: VehicleDestroyEvent,
+  vehicleenter: VehicleEnterEvent,
+  vehicleentitycollision: VehicleEntityCollisionEvent,
+  vehicleexit: VehicleExitEvent,
+  vehiclemove: VehicleMoveEvent,
+  vehicleupdate: VehicleUpdateEvent,
+  // weather
   lightningstrike: LightningStrikeEvent,
   thunderchange: ThunderChangeEvent,
-  change: WeatherChangeEvent
-});
-
-export const world = registerNewListener('world', {
+  weatherchange: WeatherChangeEvent,
+  // world
   chunkload: ChunkLoadEvent,
   chunkpopulate: ChunkPopulateEvent,
   chunkunload: ChunkUnloadEvent,
   portalcreate: PortalCreateEvent,
   spawnchange: SpawnChangeEvent,
   structuregrow: StructureGrowEvent,
-  init: WorldInitEvent,
-  load: WorldLoadEvent,
-  save: WorldSaveEvent,
-  unload: WorldUnloadEvent
+  worldinit: WorldInitEvent,
+  worldload: WorldLoadEvent,
+  worldsave: WorldSaveEvent,
+  worldunload: WorldUnloadEvent
 });
+
+export default serverEmitter;

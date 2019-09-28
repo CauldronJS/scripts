@@ -12,7 +12,7 @@ function setMotd({ setMotd }) {
   setMotd(colors.green('Dev Server'));
 }
 
-cauldron.events.server.on('listping', setMotd);
+cauldron.events.on('serverlistping', setMotd);
 
 const App = () => (
   <>

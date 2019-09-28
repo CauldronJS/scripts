@@ -1,6 +1,10 @@
 declare module 'bukkit' {
   import { ItemStack } from 'bukkit/inventory';
-  import { CommandSender, ConsoleCommandSender } from 'bukkit/command';
+  import {
+    CommandSender,
+    ConsoleCommandSender,
+    PluginCommand
+  } from 'bukkit/command';
   import { KeyedBossBar } from 'bukkit/boss';
 
   export class Bukkit {
@@ -54,6 +58,45 @@ declare module 'bukkit' {
     static getConnectionThrottle(): number;
     static getConsoleSender(): ConsoleCommandSender;
     static getDefaultGameMode(): GameMode;
+    static getEntity(uuid: UUID): Entity;
+    static getGenerateStructures(): boolean;
+    static getHelpMap(): HelpMap;
+    static getIdleTimeout(): number;
+    static getIp(): string;
+    static getIPBans(): string[];
+    static getItemFactory(): ItemFactory;
+    static getLogger(): Logger;
+    static getLootTable(key: NamespacedKey): LootTable;
+    static getMap(id: number): MapView;
+    static getMaxPlayers(): number;
+    static getMessenger(): Messenger;
+    static getMonsterSpawnLimit(): number;
+    static getMotd(): string;
+    static getName(): string;
+    static getOfflinePlayer(name: string): OfflinePlayer;
+    static getOfflinePlayer(id: UUID): OfflinePlayer;
+    static getOnlineMode(): boolean;
+    static getOperators(): string[];
+    static getPlayer(name: string): Player;
+    static getPlayer(id: UUID): Player;
+    static getPlayerExact(name: string): Player;
+    static getPluginCommand(name: string): PluginCommand;
+    static getPluginManager(): PluginManager;
+    static getPort(): number;
+    static getRecipesFor(result: ItemStack): Recipe[];
+    static getScheduler(): BukkitScheduler;
+    static getScoreboardManager(): ScoreboardManager;
+    static getServer(): Server;
+    static getServerIcon(): CachedServerIcon;
+    static getServicesManager(): ServicesManager;
+    static getShutdownMessage(): string;
+    static getSpawnRadius(): number;
+    static getTag<T extends Key>(
+      registry: string,
+      tag: NamespacedKey,
+      clazz: Class<T>
+    ): Tag<T>;
+    static getTags<T extends Key>(registry: string, clazz: Class<T>): Tag<T>;
   }
 
   export class Color {}
@@ -194,7 +237,7 @@ declare module 'bukkit/advancement' {}
 declare module 'bukkit/attribute' {}
 
 declare module 'bukkit/block' {
-  import { Enum } from 'java/lang';
+  import { Enum, Class } from 'java/lang';
 
   export interface Banner {}
 

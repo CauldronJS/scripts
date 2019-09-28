@@ -10,7 +10,7 @@ import Command, {
   clearCommands
 } from './command';
 import { getPlugin, NAMESPACE_KEY } from './utils';
-import * as events from './events';
+import events from './events';
 
 function Cauldron() {
   registerCommand('reloadjs', {

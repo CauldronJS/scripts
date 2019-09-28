@@ -1,4 +1,5 @@
 import { Bukkit, World } from 'bukkit';
+import { events } from '@cauldron';
 
 class FloorState {
   constructor(
@@ -20,6 +21,10 @@ class FloorState {
   }
 }
 
-function floor(world, config) {}
+function floor(world, config) {
+  if (typeof world === 'string') {
+    world = Bukkit.getWorld(world);
+  }
+}
 
 export default floor;

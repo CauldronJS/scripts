@@ -1,5 +1,5 @@
 import { Component } from '@cauldron/rinse';
-import { player } from './events';
+import events from './events';
 import colors from '@cauldron/colors';
 
 // this file makes me suicidal
@@ -211,7 +211,7 @@ class CauldronCommand {
       // I could use something like packet pausing, but icba
       const nextInput = () =>
         new Promise(resolve => {
-          player.once('chat', event => {
+          events.once('playerchat', event => {
             const playerId = getSenderId(event.getPlayer());
             if (playerId === senderId) {
               const message = event.getMessage();

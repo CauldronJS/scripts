@@ -1,67 +1,67 @@
 import { events } from '@cauldron';
 import http from 'http';
 
-events.player.on('achievementawarded', e => {
+events.on('playerachievementawarded', e => {
   const player = e.getPlayer();
   const uuid = player.getUniqueId();
   const time = Date.now();
 });
 
-events.player.on('chat', e => {
+events.on('playerchat', e => {
   const player = e.getPlayer();
   const uuid = player.getUniqueId();
   const time = Date.now();
 });
 
-events.player.on('commandsend', e => {
+events.on('playercommandsend', e => {
   const player = e.getPlayer();
   const uuid = player.getUniqueId();
   const time = Date.now();
 });
 
-events.player.on('join', e => {
+events.on('playerjoin', e => {
   const player = e.getPlayer();
   const uuid = player.getUniqueId();
   const time = Date.now();
 });
 
-events.player.on('kick', e => {
+events.on('playerkick', e => {
   const player = e.getPlayer();
   const uuid = player.getUniqueId();
   const time = Date.now();
 });
 
-events.player.on('levelchange', e => {
+events.on('playerlevelchange', e => {
   const player = e.getPlayer();
   const uuid = player.getUniqueId();
   const time = Date.now();
 });
 
-events.player.on('localechange', e => {
+events.on('playerlocalechange', e => {
   const player = e.getPlayer();
   const uuid = player.getUniqueId();
   const time = Date.now();
 });
 
-events.player.on('login', e => {
+events.on('playerlogin', e => {
   const player = e.getPlayer();
   const uuid = player.getUniqueId();
   const time = Date.now();
 });
 
-events.player.on('quit', e => {
+events.on('playerquit', e => {
   const player = e.getPlayer();
   const uuid = player.getUniqueId();
   const time = Date.now();
 });
 
-events.player.on('respawn', e => {
+events.on('playerrespawn', e => {
   const player = e.getPlayer();
   const uuid = player.getUniqueId();
   const time = Date.now();
 });
 
-events.player.on('statisticincrement', e => {
+events.on('playerstatisticincrement', e => {
   const player = e.getPlayer();
   const uuid = player.getUniqueId();
   const time = Date.now();

@@ -10,12 +10,12 @@ function baseHook(event, handlers) {
 
 function useWorld(name, handlers = Object.create(null)) {
   for (const eventName in handlers) {
-    if (cauldron.events.world.registeredEventClasses[eventName]) {
+    if (cauldron.events.registeredEventClasses[eventName]) {
       if (!eventHooks[eventName]) {
         eventHooks[eventName] = {
           [name]: []
         };
-        cauldron.events.world.on(eventName, event => {
+        cauldron.events.on(eventName, event => {
           if (event.getWorld && event.getWorld().getName() === name) {
             baseHook(event, eventHooks[eventName][name]);
           }
