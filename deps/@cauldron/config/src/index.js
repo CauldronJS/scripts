@@ -29,7 +29,7 @@ function createConfigHook(value, handler) {
  * @param {String} name The name of the config to use
  * @param {*} defaultConfig The configuration to be used if one doesn't exist
  *
- * @returns an array where the first index is the config value and the second is a function
+ * @returns {[config, (newConfigProperties) => void]}an array where the first index is the config value and the second is a function
  * that can be called to update config values.
  */
 function useConfig(name, defaultConfig = Object.create(null)) {

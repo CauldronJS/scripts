@@ -33,4 +33,4 @@ Cauldron.getPlugin = getPlugin;
 Cauldron.NAMESPACE_KEY = NAMESPACE_KEY;
 Cauldron.events = events;
 
-module.exports = Cauldron;
+export default Cauldron;

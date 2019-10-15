@@ -1,0 +1,5 @@
+{
+  "name": "@cauldron/nbt",
+  "main": "./index.js",
+  "description": "An NBT editing library for Cauldron"
+}

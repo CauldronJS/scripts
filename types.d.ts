@@ -5,7 +5,7 @@ declare module 'bukkit' {
     ConsoleCommandSender,
     PluginCommand
   } from 'bukkit/command';
-  import { KeyedBossBar } from 'bukkit/boss';
+  import { KeyedBossBar, BossBar } from 'bukkit/boss';
 
   export class Bukkit {
     static addRecipe(recipe: Recipe): boolean;
@@ -107,7 +107,19 @@ declare module 'bukkit' {
 
   export class Location {}
 
-  export class NamespacedKey {}
+  export class NamespacedKey {
+    static BUKKIT: string;
+    static MINECRAFT: string;
+
+    constructor(plugin, key: string);
+    getKey(): string;
+    getNamespace(): string;
+    static minecraft(key: string): NamespacedKey;
+    /**
+     * @deprecated Should never be used by plugins, for internal use only
+     */
+    static randomKey(): NamespacedKey;
+  }
 
   export class Note {}
 
@@ -159,7 +171,12 @@ declare module 'bukkit' {
 
   export class CropState extends Enum<CropState> {}
 
-  export class Difficulty extends Enum<Difficulty> {}
+  export class Difficulty extends Enum<Difficulty> {
+    static EASY: Difficulty;
+    static HARD: Difficulty;
+    static NORMAL: Difficulty;
+    static PEACEFUL: Difficulty;
+  }
 
   export class DyeColor extends Enum<DyeColor> {}
 
@@ -546,16 +563,55 @@ declare module 'bukkit/block/structure' {
 
 declare module 'bukkit/boss' {
   import { Enum } from 'java/lang';
+  import { Keyed } from 'bukkit';
 
-  export interface BossBar {}
+  export interface BossBar {
+    addFlag(flag: BarFlag): void;
+    addPlayer(player: Player): void;
+    getColor(): BarColor;
+    getPlayers(): Player[];
+    getProgress(): number;
+    getStyle(): BarStyle;
+    getTitle(): string;
+    hasFlag(flag: BarFlag): boolean;
+    hide(): void;
+    isVisible(): boolean;
+    removeAll(): void;
+    removeFlag(flag: BarFlag): void;
+    removePlayer(player: Player): void;
+    setColor(color: BarColor): void;
+    setProgress(progress: number): void;
+    setStyle(style: BarStyle): void;
+    setTitle(title: string): void;
+    setVisible(visible: boolean): void;
+    show(): void;
+  }
 
-  export interface KeyedBossBar {}
+  export class KeyedBossBar implements BossBar, Keyed {}
 
-  export class BarColor extends Enum<BarColor> {}
+  export class BarColor extends Enum<BarColor> {
+    static BLUE: BarColor;
+    static GREEN: BarColor;
+    static PINK: BarColor;
+    static PURPLE: BarColor;
+    static RED: BarColor;
+    static WHITE: BarColor;
+    static YELLOW: BarColor;
+  }
 
-  export class BarFlag extends Enum<BarFlag> {}
+  export class BarFlag extends Enum<BarFlag> {
+    static CREATE_FOG: BarFlag;
+    static DARKEN_SKY: BarFlag;
+    static PLAY_BOSS_MUSIC: BarFlag;
+  }
 
-  export class BarStyle extends Enum<BarStyle> {}
+  export class BarStyle extends Enum<BarStyle> {
+    static SEGMENTED_10: BarStyle;
+    static SEGMENTED_12: BarStyle;
+    static SEGMENTED_20: BarStyle;
+    static SEGMENTED_6: BarStyle;
+    static SOLID: BarStyle;
+  }
 }
 
 declare module 'bukkit/command' {
@@ -713,7 +769,66 @@ declare module 'bukkit/conversations' {
 
 declare module 'bukkit/enchantments' {}
 
-declare module 'bukkit/entity' {}
+declare module 'bukkit/entity' {
+  import { UUID } from 'java/util';
+  import { BlockFace, PistonMoveReaction } from 'bukkit/block';
+  import * as Bukkit from 'bukkit';
+
+  export interface Entity {
+    addPassenger(passenger: Entity): boolean;
+    addScoreboardTag(tag: string): boolean;
+    eject(): boolean;
+    getBoundingBox(): BoundingBox;
+    getEntityId(): number;
+    getFacing(): BlockFace;
+    getFallDistance(): number;
+    getFireTicks(): number;
+    getHeight(): number;
+    getLastDamageCause(): EntityDamageEvent;
+    getLocation(): Bukkit.Location;
+    getMaxFireTicks(): number;
+    getNearbyEntities(x: number, y: number, z: number): Entity[];
+    getPassenger(): Entity;
+    getPassengers(): Entity[];
+    getPistonMoveReaction(): PistonMoveReaction;
+    getPortalCooldown(): number;
+    getPose(): Pose;
+    getScoreboardTags(): string[];
+    getServer(): Bukkit.Server;
+    getTicksLived(): number;
+    getType(): EntityType;
+    getUniqueId(): UUID;
+    getVehicle(): Entity;
+    getVelocity(): Vector;
+    getWidth(): number;
+    getWorld(): Bukkit.World;
+    hasGravity(): boolean;
+    isCustomNameVisible(): boolean;
+    isDead(): boolean;
+    isEmpty(): boolean;
+    isGlowing(): boolean;
+    isInsideVehicle(): boolean;
+    isInvulnerable(): boolean;
+    isOnGround(): boolean;
+    /**
+     * @deprecated Draft API
+     */
+    isPersistent(): boolean;
+    isSilent(): boolean;
+    isValid(): boolean;
+    leaveVehicle(): boolean;
+    playEffect(type: Bukkit.EntityEffect): void;
+    remove(): void;
+    removePassenger(passenger: Entity): boolean;
+    removeScoreboardTag(tag: string): boolean;
+    setCustomNameVisible(flag: boolean): void;
+    setFallDistance(distance: number): void;
+    setFireTicks(ticks: number): void;
+    setGlowing(flag: boolean): void;
+    setGravity(flag: boolean): void;
+    setInvulnerable(flag: boolean): void;
+  }
+}
 
 declare module 'bukkit/entity/memory' {}
 
@@ -749,7 +864,13 @@ declare module 'bukkit/help' {}
 
 declare module 'bukkit/inventory' {}
 
-declare module 'bukkit/inventory/meta' {}
+declare module 'bukkit/inventory/meta' {
+  export interface Damageable {
+    getDamage(): number;
+    hasDamage(): number;
+    setDamage(): number;
+  }
+}
 
 declare module 'bukkit/inventory/meta/tags' {}
 
@@ -819,6 +940,7 @@ declare module 'java/lang' {
 
     protected clone(): Object;
     protected finalize(): void;
+    prototype: null;
     compareTo(o: E): number;
     equals(o: object): boolean;
     getDeclaringClass(): Class<E>;
@@ -857,5 +979,11 @@ declare module 'java/nio' {
     get(dst: number[]): ByteBuffer;
     get(dst: number[], offset: number, length: number): ByteBuffer;
     static wrap(array: number[]): ByteBuffer;
+  }
+}
+
+declare module 'java/util' {
+  export class UUID {
+    toString(): string;
   }
 }

@@ -1,5 +1,12 @@
+import { EventEmitter } from 'events';
 import { Bukkit, World } from 'bukkit';
 import { events } from '@cauldron';
+import useConfig from '@cauldron/config';
+
+const DEFAULT_CONFIG = new FloorState();
+const CONFIG_SYMBOL = Symbol('floorConfig');
+
+const [floorConfig, updateFloorConfig] = useConfig('floors');
 
 class FloorState {
   constructor(
@@ -21,10 +28,35 @@ class FloorState {
   }
 }
 
-function floor(world, config) {
-  if (typeof world === 'string') {
-    world = Bukkit.getWorld(world);
+class Floor extends EventEmitter {
+  constructor(world, config = DEFAULT_CONFIG) {
+    super();
+    if (typeof world === 'string') {
+      world = Bukkit.getWorld(world);
+    }
+    if (!(world instanceof World)) {
+      throw new Error(
+        'Invalid argument for world: must be a world name or world object'
+      );
+    }
+    this.world = world;
+    this[CONFIG_SYMBOL] = floorConfig[this.name] || config;
+    this.saveConfig();
+  }
+
+  get name() {
+    return this.world.getName();
+  }
+
+  get config() {
+    return this[CONFIG_SYMBOL];
+  }
+
+  saveConfig() {
+    updateFloorConfig({ ...floorConfig, [this.name]: this.config });
   }
 }
 
-export default floor;
+Floor.FloorState = FloorState;
+
+export default Floor;
