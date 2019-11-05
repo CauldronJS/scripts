@@ -11,6 +11,7 @@ import Command, {
 } from './command';
 import { getPlugin, NAMESPACE_KEY } from './utils';
 import events from './events';
+import globals from './globals';
 
 function Cauldron() {
   registerCommand('reloadjs', {
@@ -23,6 +24,8 @@ function Cauldron() {
       Module.runMain();
     }
   });
+  const globalPolyfills = Object.getOwnPropertyDescriptors(globals);
+  Object.defineProperties(global, globalPolyfills);
 }
 
 Cauldron.Command = Command;
