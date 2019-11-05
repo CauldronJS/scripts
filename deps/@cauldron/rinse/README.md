@@ -32,3 +32,20 @@ const UIMenu = ({player, children}) => {
 
 const UIApp = Rinse.mount(<UIMenu player={somePlayer} />);
 ```
+
+## VDOM In Minecraft
+
+The concept sounds far-fetched, but hear me out. When we're interacting with player lifecycles, there's only ever one view state for the user. They're either playing, in an inventory, typing, or paused. That's it. That means we can break the UX into 4 different groups of consumption:
+
+1. standard gameplay where UI updates aren't caused by the player
+2. inventories which are treated as a grid where UI will update reactively
+3. a text box where UI is treated as flow and will update reactively _with the right handling_
+4. no UI updates at all
+
+What this shows is that in 50% of the player's cases, they are simply **reading** from the state, not writing. While we aren't directly interacting with any DOM, we _are_ creating UI elements from basic button-like components in the UX. Since all inventory updates are batched, we can think of both the inventory and the chat box as a single DOM host. We could even take it one step further and implement both the menu and the chatbox as members of the same DOM even though they're static in nature (we don't have the possibility yet to change the position or shape of either elements).
+
+## TODO
+
+* Remove capability for class components. I'd like this to solely take on the methodology of "function components only"
+* Create a consumer for async methods and proper lifecycle handling
+* Proper VDOM management

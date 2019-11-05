@@ -9,7 +9,7 @@ import colors from '@cauldron/colors';
 cauldron();
 
 function setMotd({ setMotd }) {
-  setMotd(colors.green('Dev Server'));
+  setMotd(colors.green('Running Cauldron'));
 }
 
 cauldron.events.on('serverlistping', setMotd);
