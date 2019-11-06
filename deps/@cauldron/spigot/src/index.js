@@ -1,13 +1,39 @@
-import {
-  scheduleNow,
-  scheduleNowAsync,
-  scheduleLater,
-  scheduleLaterAsync
-} from './scheduler';
+// Before anyone gives me shit, I could put this in the core lib,
+// but I want that to be usable through any Graal project, not just
+// Spigot/Minecraft. Therefore anything that pertains to either of
+// those two will be pulled out and put in the @cauldron/core package.
 
-module.exports = {
-  scheduleNow,
-  scheduleNowAsync,
-  scheduleLater,
-  scheduleLaterAsync
-};
+import { Module } from 'module';
+import Command, {
+  registerCommand,
+  unregisterCommand,
+  clearCommands
+} from './command';
+import { getPlugin, NAMESPACE_KEY } from './utils';
+import events from './events';
+import globals from './globals';
+
+function Cauldron() {
+  registerCommand('reloadjs', {
+    description: 'Reloads the Cauldron instance',
+    aliases: ['rjs', 'jsreload'],
+    permission: 'cauldron.js.reload',
+    execute() {
+      clearCommands();
+      Module.$$resetContext(true);
+      Module.runMain();
+    }
+  });
+  const globalPolyfills = Object.getOwnPropertyDescriptors(globals);
+  Object.defineProperties(global, globalPolyfills);
+}
+
+Cauldron.Command = Command;
+Cauldron.registerCommand = registerCommand;
+Cauldron.unregisterCommand = unregisterCommand;
+Cauldron.clearCommands = clearCommands;
+Cauldron.getPlugin = getPlugin;
+Cauldron.NAMESPACE_KEY = NAMESPACE_KEY;
+Cauldron.events = events;
+
+export default Cauldron;

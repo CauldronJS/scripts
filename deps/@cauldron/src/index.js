@@ -1,1 +1,1 @@
-module.exports = require(`./spigot`);
+module.exports = require('@cauldron/spigot');

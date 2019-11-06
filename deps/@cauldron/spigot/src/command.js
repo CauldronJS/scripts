@@ -1,4 +1,3 @@
-import { Component } from '@cauldron/rinse';
 import events from './events';
 import colors from '@cauldron/colors';
 
@@ -238,76 +237,9 @@ class CauldronCommand {
   }
 }
 
-function getCommandByPath(path) {
-  const segments = path.split('.');
-  let command = registeredCommands[segments[0]];
-  for (let i = 1; i < segments.length; ++i) {
-    const item = segments[i];
-    const sub = command.subcommands[item];
-    if (sub) {
-      command = sub;
-    } else {
-      return command;
-    }
-  }
-  return command;
-}
+CauldronCommand.CommandRestriction = CommandRestriction;
 
-class Command extends Component {
-  static defaultProps = {
-    description: 'A Cauldron command',
-    usage: '/<command>',
-    aliases: []
-  };
-
-  cauldronCommand = null;
-  restriction = null;
-
-  componentDidMount() {
-    const { name, isForConsole, isForPlayer, __parent } = this.props;
-    let restriction = this.restriction;
-    if (isForConsole && isForPlayer) {
-      restriction = CommandRestriction.NONE;
-    } else if (isForConsole && !isForPlayer) {
-      restriction = CommandRestriction.CONSOLE_ONLY;
-    } else if (!isForConsole && isForPlayer) {
-      restriction = CommandRestriction.PLAYER_ONLY;
-    } else {
-      restriction = __parent
-        ? __parent.restriction || CommandRestriction.NONE
-        : CommandRestriction.NONE;
-    }
-    this.restriction = restriction;
-    this.cauldronCommand = new CauldronCommand(name, {
-      ...this.props,
-      restriction
-    });
-
-    if (!__parent || !__parent.props.execute) {
-      this.cauldronCommand.register();
-    } else {
-      let nextParent = __parent;
-      let path = '';
-      // recursively iterate through until we find the topmost parent
-      while (nextParent) {
-        path = `${nextParent.props.name}.${path}`;
-        nextParent = nextParent.props.__parent;
-      }
-      const parentCommand = getCommandByPath(path);
-      parentCommand.addSubcommand(this.cauldronCommand).register();
-    }
-  }
-
-  componentWillUnmount() {
-    this.cauldronCommand.unregister();
-  }
-
-  run() {
-    return this.props.children;
-  }
-}
-
-export default Command;
+export default CauldronCommand;
 
 /**
  * Creates a Bukkit command
