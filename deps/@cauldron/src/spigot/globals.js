@@ -10,6 +10,16 @@ function setTimeout(fn, ms) {
   );
 }
 
+function setInterval(fn, ms) {
+  //
+}
+
+function cancelInterval(id) {
+  //
+}
+
 export default {
-  setTimeout
+  setTimeout,
+  setInterval,
+  cancelInterval
 };
