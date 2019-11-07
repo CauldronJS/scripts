@@ -20,4 +20,23 @@ function Cauldron() {
   throw new codes.ERR_METHOD_NOT_IMPLEMENTED('Cauldron', 'constructor()');
 }
 
+Object.defineProperties(Cauldron, {
+  Command: {
+    get() {
+      throw new codes.ERR_METHOD_NOT_IMPLEMENTED(
+        'Cauldron.Command',
+        'constructor()'
+      );
+    }
+  },
+  events: {
+    get() {
+      throw new codes.ERR_METHOD_NOT_IMPLEMENTED(
+        'Cauldron.events',
+        'constructor()'
+      );
+    }
+  }
+});
+
 export default Cauldron;
