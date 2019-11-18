@@ -1,7 +1,11 @@
 import { ZipFile, ZipInputStream } from 'java/util/zip';
+import {
+  BufferedInputStream,
+  FileInputStream,
+  FileOutputStream
+} from 'java/io';
 import { codes as errors } from 'errors';
 import path from 'path';
-import Entry from './entry';
 
 function zip(...filenames) {
   throw new errors.ERR_METHOD_NOT_IMPLEMENTED('zip');
@@ -15,20 +19,20 @@ function unzip(filename, shouldWriteToDisk) {
   throw new errors.ERR_METHOD_NOT_IMPLEMENTED('unzip');
 }
 
+function unpackEntry(entry, location) {
+  // unpack the entry and save it to disk
+}
+
 // TODO: determine what we should return as
 
-function unzipSync(filename, shouldWriteToDisk) {
-  const dirName = path.dirname(filename);
+function unzipSync(filename) {
+  const dirname = path.dirname(filename);
   const zipFile = new ZipFile(filename);
   const entries = zipFile.entries();
   const iterable = function*() {
     while (entries.hasMoreElements()) {
       const zipEntry = entries.nextElement();
-      yield extract(
-        shouldWriteToDisk ? dirName : null,
-        zipEntry,
-        zipFile.getInputStream(zipEntry)
-      );
+      yield unpackEntry(dirname, zipEntry, zipFile.getInputStream(zipEntry));
     }
   };
   return {
@@ -39,10 +43,6 @@ function unzipSync(filename, shouldWriteToDisk) {
     close: zipFile.close,
     getFile: zipFile.getEntry
   };
-}
-
-function extract(outputDir, zipEntry, inputStream) {
-  return new Entry();
 }
 
 export default {
