@@ -11,6 +11,7 @@
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly",
+    "globalThis": "readonly",
     "__cauldron__": "readonly",
     "Bukkit": "readonly",
     "load": "readonly",

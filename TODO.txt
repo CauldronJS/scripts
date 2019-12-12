@@ -12,6 +12,7 @@ may be platform specific)
 - figure out if I need to make FS and PATH modules relative to the file calling
 them. Not sure how I'd do that, but fuck it, anything is possible, right?
 - Create internal async manager for hooking
+- fix FS library because it's unoptimized as fuck and doesn't do much right
 
 === Rinse ===
 - Consider moving Rinse components to platform specific
