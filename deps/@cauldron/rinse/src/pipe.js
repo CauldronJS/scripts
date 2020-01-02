@@ -1,29 +1,29 @@
+import { FRAG_SYMBOL } from './fragment';
+
 // I'd like to figure out a way to allow functional components to do
 // logic unhooking/destruction. Perhaps a hook?
+
+/**
+ *
+ * @param {{component: (props) => any, props: any}} rinsed
+ */
 export const mount = rinsed => {
   if (!rinsed) return null;
   const { component, props } = rinsed;
   if (!component.__canRemount) return null;
 
-  let result;
-  if (component.__rinseComponent) {
-    component.componentDidMount();
-    component.__canRemount = false;
-    result = component.run();
-  } else {
-    result = component.apply({}, [props]);
-  }
+  const result = component.apply(rinsed, [props]);
 
   if (typeof result === 'object') {
     if (Array.isArray(result)) {
       // find the next non-frag parent
       let parent = rinsed;
-      while (parent.__isFrag && parent.props.__parent) {
-        parent = parent.props.__parent;
+      while (parent[FRAG_SYMBOL] && parent.props.parent) {
+        parent = parent.props.parent;
       }
       // it returned the children to be executed
       result.forEach(child => {
-        child.props.__parent = parent;
+        child.props.parent = parent;
         mount(child);
       });
     } else {
@@ -35,41 +35,24 @@ export const mount = rinsed => {
   return component;
 };
 
-export const unmount = component => {
-  if (!component || !component.__rinseComponent) return;
-  component.componentWillUnmount();
-  const { children } = component.props;
-  if (children) {
-    children.forEach(unmount);
-  }
-};
+export const unmount = component => {};
 
-export function rinse(Component, attrs, ..._children) {
+export function rinse(Component, attrs, ...children) {
   if (!Component) {
     throw new Error('Component cannot be undefined or null');
   }
   if (typeof Component !== 'function') {
     throw new Error('Component must be a function');
   }
-  let children;
-  if (
-    typeof _children[0] === 'string' ||
-    !isNaN(_children[0]) ||
-    typeof _children[0] === 'boolean'
-  ) {
-    children = _children[0];
-  } else if (typeof _children[0] === 'function') {
-    children = _children[0];
-  } else if (Array.isArray(_children)) {
-    children = [..._children];
-  }
+  console.log('Rinsing', { Component, attrs, children });
   // this function does not create the component. It will create
   // a special object that is used to compile and run on mount.
-  const props = { ...Component.defaultProps, ...attrs, children };
-  const component =
-    Component.prototype && Component.prototype.run
-      ? new Component(props)
-      : Component.bind(Component);
+  const props = {
+    ...Component.defaultProps,
+    ...attrs,
+    children: Array.isArray(children) ? children : children[0]
+  };
+  const component = Component.bind(Component);
   component.__canRemount = true;
   const mount = () => mount(component);
   // mount is a shortcut to allow components to manually mount the

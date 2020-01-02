@@ -1,10 +1,10 @@
-import { Command } from '@cauldron';
+import { Command } from 'cauldron';
 import PropTypes from 'prop-types';
 
 const { CommandRestriction } = Command;
 
 const CommandComponent = props => {
-  const { name, isForConsole, isForPlayer, __parent, children } = props;
+  const { name, isForConsole, isForPlayer, parent, children } = props;
   let restriction;
   if (isForConsole && isForPlayer) {
     restriction = CommandRestriction.NONE;
@@ -13,19 +13,19 @@ const CommandComponent = props => {
   } else if (!isForConsole && isForPlayer) {
     restriction = CommandRestriction.PLAYER_ONLY;
   } else {
-    restriction = __parent
-      ? __parent.restriction || CommandRestriction.NONE
+    restriction = parent
+      ? parent.restriction || CommandRestriction.NONE
       : CommandRestriction.NONE;
   }
   const command = new Command(name, { ...props, restriction });
-  if (!__parent || !__parent.props.execute) {
+  if (!parent || !parent.props.execute) {
     command.register();
   } else {
-    let nextParent = __parent;
+    let nextParent = parent;
     let path = '';
     while (nextParent) {
       path = `${nextParent.props.name}.${path}`;
-      nextParent = nextParent.props.__parent;
+      nextParent = nextParent.props.parent;
     }
     const parentCommand = Command.fromPath(path);
     parentCommand.addSubcommand(this.cauldronCommand).register();

@@ -1,12 +1,7 @@
-import Component from './component';
-
-export default class Fragment extends Component {
-  constructor(props) {
-    super(props);
-    this.__isFrag = true;
-  }
-
-  run() {
-    return this.props.children;
-  }
+function Fragment(props) {
+  this[FRAG_SYMBOL] = true;
+  return props.children;
 }
+
+export default Fragment;
+export const FRAG_SYMBOL = Symbol('rinseFragment');
