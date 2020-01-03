@@ -28,7 +28,7 @@ const CommandComponent = props => {
       nextParent = nextParent.props.parent;
     }
     const parentCommand = Command.fromPath(path);
-    parentCommand.addSubcommand(this.cauldronCommand).register();
+    parentCommand.addSubcommand(command).register();
   }
   return children;
 };
