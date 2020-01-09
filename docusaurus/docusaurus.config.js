@@ -1,11 +1,11 @@
 module.exports = {
-  title: 'My Site',
-  tagline: 'The tagline of my site',
-  url: 'https://your-docusaurus-test-site.com',
+  title: 'CauldronJS',
+  tagline: 'Making plugin development easier.',
+  url: 'https://cauldronjs.com',
   baseUrl: '/',
   favicon: 'img/favicon.ico',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'CauldronJS', // Usually your GitHub org/user name.
+  projectName: '', // Usually your repo name.
   themeConfig: {
     navbar: {
       title: 'CauldronJS',
@@ -14,7 +14,7 @@ module.exports = {
         src: 'img/logo.svg'
       },
       links: [
-        { to: 'docs/doc1', label: 'Docs', position: 'left' },
+        { to: 'docs/introduction', label: 'Docs', position: 'left' },
         { to: 'blog', label: 'Blog', position: 'left' },
         {
           href: 'https://github.com/CauldronJS',
@@ -31,11 +31,11 @@ module.exports = {
           items: [
             {
               label: 'Style Guide',
-              to: 'docs/doc1'
+              to: 'docs/design-principles'
             },
             {
-              label: 'Second Doc',
-              to: 'docs/doc2'
+              label: 'Installation',
+              to: 'docs/installation'
             }
           ]
         },
