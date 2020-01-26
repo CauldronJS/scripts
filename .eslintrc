@@ -12,7 +12,7 @@
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly",
     "globalThis": "readonly",
-    "__cauldron__": "readonly",
+    "$$cauldron$$": "readonly",
     "Bukkit": "readonly",
     "load": "readonly",
     "Java": "readonly",

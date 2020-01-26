@@ -4,7 +4,7 @@ import { BarColor, BarStyle } from 'bukkit/boss';
 import { Damageable } from 'bukkit/inventory/meta';
 
 const DURABILITY_KEY = new NamespacedKey(
-  __cauldron__,
+  $$cauldron$$,
   'custom_items_durability'
 );
 
