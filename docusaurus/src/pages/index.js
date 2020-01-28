@@ -12,8 +12,8 @@ const features = [
     imageUrl: 'img/undraw_docusaurus_mountain.svg',
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Cauldron was built with the goal of getting your new plugin off the
+        ground quicker.
       </>
     )
   },
@@ -22,18 +22,19 @@ const features = [
     imageUrl: 'img/undraw_docusaurus_tree.svg',
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Instead of worrying about build procceses and deployments, use that time
+        to make the best plugins you can make.
       </>
     )
   },
   {
-    title: <>Powered by React</>,
+    title: <>Powered by GraalVM</>,
     imageUrl: 'img/undraw_docusaurus_react.svg',
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Being able to use non-Java toolchains in the JVM is the backbone of
+        Cauldron. If you&apos;re familiar with NodeJS, you&apos;re familiar with
+        Cauldron.
       </>
     )
   }

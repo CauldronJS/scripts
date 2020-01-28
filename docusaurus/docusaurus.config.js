@@ -5,7 +5,7 @@ module.exports = {
   baseUrl: '/',
   favicon: 'img/favicon.ico',
   organizationName: 'CauldronJS', // Usually your GitHub org/user name.
-  projectName: '', // Usually your repo name.
+  projectName: 'docs', // Usually your repo name.
   themeConfig: {
     navbar: {
       title: 'CauldronJS',
