@@ -987,3 +987,20 @@ declare module 'java/util' {
     toString(): string;
   }
 }
+
+declare module 'me/conji/cauldron' {
+  export class Cauldron {
+    static isolate(): Cauldron;
+    setIsDebugging(value: boolean): void;
+    getIsDebugging(): boolean;
+    spawn(command: string, directory: string): string;
+  }
+}
+
+declare module 'me/conji/cauldron/utils' {
+  export class PathHelpers {
+    static join(path1: string, ...paths: string): string;
+    static exists(path1: string, ...paths: string): boolean;
+    static resolveLocalPath(path1: string, ...paths): Path;
+  }
+}
