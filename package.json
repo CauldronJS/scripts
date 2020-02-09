@@ -3,8 +3,8 @@
   "scripts": {
     "compile-src": "babel src --out-dir dist --copy-files",
     "compile-deps": "babel deps --out-dir node_modules --copy-files",
-    "compile": "npm run compile-deps && npm run compile-src",
-    "start": "npm run compile-src && npm run compile-deps",
+    "compile": "yarn compile-deps && yarn compile-src",
+    "start": "yarn compile-src && yarn compile-deps",
     "poststart": "",
     "stop": ""
   },
