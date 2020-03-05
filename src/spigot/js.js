@@ -6,7 +6,7 @@ import colors from '@cauldron/colors';
 
 const executeJs = ({ args }) => {
   const patched = args.join(' ');
-  const result = $$cauldron$$.isolate().runScript(patched, 'repl');
+  const result = $$isolate$$.runScript(patched, 'repl');
   return `\xA77=> ${pretty(result)}`;
 };
 

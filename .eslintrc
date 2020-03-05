@@ -13,6 +13,7 @@
     "SharedArrayBuffer": "readonly",
     "globalThis": "readonly",
     "$$cauldron$$": "readonly",
+    "$$isolate$$": "readonly",
     "Polyglot": "readonly",
     "load": "readonly",
     "Java": "readonly",
