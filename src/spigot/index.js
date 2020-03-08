@@ -2,10 +2,7 @@ import Rinse from '@cauldron/rinse';
 import RtpCommand from './rtp';
 import JsCommand from './js';
 import colors from '@cauldron/colors';
-import async from 'async';
 import cauldron from 'cauldron';
-import { Bukkit } from 'bukkit';
-// import Axios from 'axios';
 // import express from 'express';
 
 function setMotd({ setMotd }) {
@@ -22,6 +19,11 @@ const App = () => (
 );
 
 Rinse.mount(<App />);
+
+(async function() {
+  await $$isolate$$.generateAsyncPromise(() => console.log(42));
+})();
+
 // const app = express();
 // app.use(express.static('./site/public'));
 // app.use('/css', express.static('./site/public/css'));
