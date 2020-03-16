@@ -4,6 +4,7 @@ import JsCommand from './js';
 import colors from '@cauldron/colors';
 import cauldron from 'cauldron';
 import axios from 'axios';
+import server from 'net2';
 // import express from 'express';
 
 function setMotd({ setMotd }) {
@@ -21,23 +22,12 @@ const App = () => (
 
 Rinse.mount(<App />);
 
-(async function() {
-  try {
-    $$isolate$$
-      .getAsyncFactory()
-      .wait(5000)
-      .then(() => console.log('This took 5 seconds to run'));
-    $$isolate$$
-      .getAsyncFactory()
-      .generateAsyncPromise(() =>
-        console.log('This ran as quickly as possible')
-      );
-    const result = await axios.get('https://google.com');
-    console.log(result.data);
-  } catch (err) {
-    console.error(err);
-  }
-})();
+const s = server.createServer();
+
+s.listen(8080, 'localhost', 1, connection => {
+  console.log('Connected');
+  connection.write('Hello world');
+});
 
 // const app = express();
 // app.use(express.static('./site/public'));
