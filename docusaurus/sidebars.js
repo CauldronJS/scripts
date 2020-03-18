@@ -8,6 +8,13 @@
 module.exports = {
   someSidebar: {
     CauldronJS: ['introduction', 'design-principles', 'contributing'],
-    'Getting Started': ['installation', 'configuration', 'integration']
+    'Getting Started': [
+      'installation',
+      'configuration',
+      'integration',
+      'making-our-first-plugin'
+    ],
+    'Advanced Tutorials': ['jsx'],
+    APIs: ['api-overview']
   }
 };
