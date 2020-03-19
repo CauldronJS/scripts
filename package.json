@@ -47,5 +47,6 @@
   },
   "pluginDependencies": {},
   "debugMessages": true,
-  "watchRecompile": true
+  "watchRecompile": true,
+  "validateLib": false
 }

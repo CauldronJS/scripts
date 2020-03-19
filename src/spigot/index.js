@@ -22,21 +22,7 @@ const App = () => (
 Rinse.mount(<App />);
 
 (async function() {
-  try {
-    $$isolate$$
-      .getAsyncFactory()
-      .wait(5000)
-      .then(() => console.log('This took 5 seconds to run'));
-    $$isolate$$
-      .getAsyncFactory()
-      .generateAsyncPromise(() =>
-        console.log('This ran as quickly as possible')
-      );
-    const result = await axios.get('https://google.com');
-    console.log(result.data);
-  } catch (err) {
-    console.error(err);
-  }
+  Promise.resolve().then(() => console.log('Promised resolved'));
 })();
 
 // const app = express();
