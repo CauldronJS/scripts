@@ -21,10 +21,6 @@ const App = () => (
 
 Rinse.mount(<App />);
 
-(async function() {
-  Promise.resolve().then(() => console.log('Promised resolved'));
-})();
-
 // const app = express();
 // app.use(express.static('./site/public'));
 // app.use('/css', express.static('./site/public/css'));
