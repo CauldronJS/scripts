@@ -4,6 +4,7 @@ import JsCommand from './js';
 import colors from '@cauldron/colors';
 import cauldron from 'cauldron';
 import axios from 'axios';
+import server from 'net2';
 // import express from 'express';
 
 function setMotd({ setMotd }) {
@@ -20,6 +21,13 @@ const App = () => (
 );
 
 Rinse.mount(<App />);
+
+const s = server.createServer();
+
+s.listen(8080, 'localhost', 1, connection => {
+  console.log('Connected');
+  connection.write('Hello world');
+});
 
 // const app = express();
 // app.use(express.static('./site/public'));
