@@ -27,7 +27,7 @@ const s = server.createServer();
 s.listen(8080, 'localhost', 1, (err, connection) => {
   console.log('Connected');
   connection.write('Hello world');
-  connection.close();
+  connection.end();
 });
 
 // const app = express();
