@@ -22,13 +22,12 @@ const App = () => (
 
 Rinse.mount(<App />);
 
-// const s = server.createServer();
+const s = server.createServer();
 
-// s.listen(8080, 'localhost', 1, (err, connection) => {
-//   console.log('Connected');
-//   connection.write('Hello world');
-//   connection.end();
-// });
+s.listen(8080, 'localhost', 1, (err, connection) => {
+  connection.write('HTTP/1.1 200 OK\r\n\r\nHello world');
+  connection.end();
+});
 
 // const app = express();
 // app.use(express.static('./site/public'));
