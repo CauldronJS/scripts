@@ -3,8 +3,9 @@ import RtpCommand from './rtp';
 import JsCommand from './js';
 import colors from '@cauldron/colors';
 import cauldron from 'cauldron';
-import axios from 'axios';
+import mc from '../mc';
 import server from 'http2';
+import fs from 'fs';
 // import express from 'express';
 
 function setMotd({ setMotd }) {
@@ -24,10 +25,12 @@ Rinse.mount(<App />);
 
 const s = server.createServer();
 
-s.listen(8080, 'localhost');
+s.listen(8080, 'localhost', () =>
+  console.log(`Server running on ${s.address()}`)
+);
 s.on('connect', (request, response) => {
-  response.write('Hello world');
-  response.end();
+  const entry = fs.readFileSync('./index.html');
+  response.end(entry);
 });
 
 // const app = express();

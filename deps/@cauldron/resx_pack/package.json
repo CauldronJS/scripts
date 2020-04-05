@@ -1,0 +1,5 @@
+{
+  "name": "resx_pack",
+  "main": "./dist/index.js",
+  "author": "Conji"
+}
