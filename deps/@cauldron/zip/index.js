@@ -19,8 +19,11 @@ function unzip(filename, shouldWriteToDisk) {
   throw new errors.ERR_METHOD_NOT_IMPLEMENTED('unzip');
 }
 
-function unpackEntry(entry, location) {
+function unpackEntry(entry, location, content) {
   // unpack the entry and save it to disk
+  if (typeof content !== 'string') {
+    // read string
+  }
 }
 
 // TODO: determine what we should return as
