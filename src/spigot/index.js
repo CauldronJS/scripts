@@ -6,6 +6,7 @@ import cauldron from 'cauldron';
 import mc from '../mc';
 import server from 'http2';
 import fs from 'fs';
+import landmine from './landmine';
 // import express from 'express';
 
 function setMotd({ setMotd }) {
@@ -13,7 +14,7 @@ function setMotd({ setMotd }) {
 }
 
 cauldron.events.on('serverlistping', setMotd);
-
+landmine();
 const App = () => (
   <>
     <RtpCommand />

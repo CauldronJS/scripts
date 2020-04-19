@@ -1,4 +1,4 @@
-import { events } from '@cauldron';
+import { events } from 'cauldron';
 import useStore from '@cauldron/store';
 import useConfig from '@cauldron/config';
 

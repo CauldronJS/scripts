@@ -1,4 +1,4 @@
-import { events } from '@cauldron';
+import { events } from 'cauldron';
 import http from 'http';
 
 events.on('playerachievementawarded', e => {
