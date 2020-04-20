@@ -1,7 +1,9 @@
-import { getClaimFor, CLAIM_OPTIONS } from './claim';
+import { getClaimFor } from './claim';
+import { getProfileFor, CLAIM_OPTIONS } from './profile';
 import { getChunkCoordsForEntity } from './utils';
 import cauldron from 'cauldron';
 import { EntityType } from 'bukkit/entity';
+import colors from '@cauldron/colors';
 
 const MOB_TYPES = [
   EntityType.CAVE_SPIDER,
@@ -59,19 +61,104 @@ const ANIMAL_TYPS = [
 
 export default function registerEvents() {
   cauldron.events.on('creaturespawn', event => {
-    console.log('Entity spawned');
     const entity = event.getEntity();
-    if (!entity.getLocation) return true;
     const entityType = event.getEntityType();
     const chunkCoords = getChunkCoordsForEntity(entity);
     const claim = getClaimFor(chunkCoords);
-    if (!claim) return true;
-
+    if (!claim) return;
+    const profile = getProfileFor(claim.owner);
     if (
-      claim.rules[CLAIM_OPTIONS.PVMOB] &&
+      !profile.rules[CLAIM_OPTIONS.PVMOB] &&
       MOB_TYPES.indexOf(entityType) > -1
     ) {
-      console.log('Cancelling spawn event');
+      event.setCancelled(true);
+    }
+  });
+
+  cauldron.events.on('entitycombust', event => {
+    const entity = event.getEntity();
+    const entityType = event.getEntityType();
+    const chunkCoords = getChunkCoordsForEntity(entity);
+    const claim = getClaimFor(chunkCoords);
+    if (!claim) return;
+    const profile = getProfileFor(claim.owner);
+    if (
+      !profile.rules[CLAIM_OPTIONS.PVMOB] &&
+      MOB_TYPES.indexOf(entityType) > -1
+    ) {
+      entity.remove();
+    }
+  });
+
+  cauldron.events.on('entitydamagebyentity', event => {
+    const entity = event.getEntity();
+    const entityType = event.getEntityType();
+    const damager = event.getDamager && event.getDamager();
+    const damagerType = damager && damager.getType();
+    if (entityType !== EntityType.PLAYER && damagerType !== EntityType.PLAYER)
+      return;
+    const mob = entityType !== EntityType.PLAYER ? entity : damager;
+    const chunkCoords = getChunkCoordsForEntity(mob);
+    const claim = getClaimFor(chunkCoords);
+    if (!claim) return;
+    const profile = getProfileFor(claim.owner);
+    if (
+      !profile.rules[CLAIM_OPTIONS.PVMOB] &&
+      MOB_TYPES.indexOf(mob.getType()) > -1
+    ) {
+      mob.remove();
+      event.setCancelled(true);
+    }
+  });
+
+  cauldron.events.on('entityexplode', event => {
+    const entity = event.getEntity();
+    if (entity.getType() !== EntityType.CREEPER) return;
+    const chunkCoords = getChunkCoordsForEntity(entity);
+    const claim = getClaimFor(chunkCoords);
+    if (!claim) return;
+    const profile = getProfileFor(claim.owner);
+    if (!profile.rules[CLAIM_OPTIONS.PVMOB]) {
+      entity.remove();
+      event.setCancelled(true);
+    }
+  });
+
+  cauldron.events.on('entityshootbow', event => {
+    const entity = event.getEntity();
+    if (entity.getType() !== EntityType.SKELETON) return;
+    const chunkCoords = getChunkCoordsForEntity(entity);
+    const claim = getClaimFor(chunkCoords);
+    if (!claim) return;
+    const profile = getProfileFor(claim.owner);
+    if (!profile.rules[CLAIM_OPTIONS.PVMOB]) {
+      entity.remove();
+      event.setCancelled(true);
+    }
+  });
+
+  cauldron.events.on('blockbreak', event => {
+    const player = event.getPlayer();
+    const chunkCoords = getChunkCoordsForEntity(player);
+    const profile = getProfileFor(player.getUniqueId().toString());
+    if (profile.claims[chunkCoords]) return;
+    const claim = getClaimFor(chunkCoords);
+    const owner = getProfileFor(claim.owner);
+    if (!owner.rules[CLAIM_OPTIONS.BLOCK_BREAK]) {
+      player.sendMessage(colors.red("You don't have permission to do that!"));
+      event.setCancelled(true);
+    }
+  });
+
+  cauldron.events.on('blockplace', event => {
+    const player = event.getPlayer();
+    const chunkCoords = getChunkCoordsForEntity(player);
+    const profile = getProfileFor(player.getUniqueId().toString());
+    if (profile.claims[chunkCoords]) return;
+    const claim = getClaimFor(chunkCoords);
+    const owner = getProfileFor(claim.owner);
+    if (!owner.rules[CLAIM_OPTIONS.BLOCK_BREAK]) {
+      player.sendMessage(colors.red("You don't have permission to do that!"));
       event.setCancelled(true);
     }
   });

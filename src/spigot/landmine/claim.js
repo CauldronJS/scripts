@@ -2,11 +2,11 @@ import store from '@cauldron/store';
 
 const [claimStore, setClaimStore] = store('landmine_claims', {});
 
-const coordsToKey = coords => `${coords.x},${coords.z}`;
+const coordsToKey = coords => `${coords.x},${coords.z},${coords.world}`;
 
 /**
  *
- * @param  {...{x: Number, z: Number}} coords
+ * @param  {...{x: Number, z: Number, world: string}} coords
  *
  * @returns {LandClaim[]}
  */
@@ -19,7 +19,7 @@ export function getClaimsFor(...coords) {
 
 /**
  *
- * @param {{x: Number, z: Number}} coords
+ * @param {{x: Number, z: Number, world: string}} coords
  *
  * @returns {LandClaim}
  */
@@ -29,20 +29,20 @@ export function getClaimFor(coords) {
 
 /**
  *
- * @param {{x: Number, z: Number}} coords
- * @param {*} rules
+ * @param {{x: Number, z: Number, world: string}} coords
+ * @param {string} owner
  *
  * @returns {LandClaim}
  */
-export function createClaim(coords, rules = CLAIM_DEFAULTS) {
-  const claim = new LandClaim(coords, rules);
-  setClaimStore({ ...claimStore, [coordsToKey(coords)]: claim });
+export function createClaim(coords, owner) {
+  const claim = new LandClaim(owner);
+  setClaimStore({ [coordsToKey(coords)]: claim });
   return claim;
 }
 
 /**
  *
- * @param {{x: Number, z: Number}} coords
+ * @param {{x: Number, z: Number, world: string}} coords
  *
  * @returns {boolean}
  */
@@ -52,36 +52,19 @@ export function isClaimable(coords) {
 
 /**
  *
- * @param {{x: Number, z: Number}[]} coords
+ * @param {{x: Number, z: Number, world: string}[]} coords
  */
 export function removeClaims(...coords) {
-  coords.forEach(coord => delete claimStore[coordsToKey(coord)]);
+  coords.forEach(coord => (claimStore[coordsToKey(coord)] = undefined));
   setClaimStore(claimStore);
 }
 
 export class LandClaim {
-  constructor(chunkCoords, rules = CLAIM_DEFAULTS) {
-    this.coords = chunkCoords;
-    this.rules = rules;
+  /**
+   *
+   * @param {string} owner
+   */
+  constructor(owner) {
+    this.owner = owner;
   }
 }
-
-export const CLAIM_OPTIONS = {
-  TNT: 'tnt',
-  BLOCK_BREAK: 'block_break',
-  BLOCK_PLACE: 'block_place',
-  USE: 'use',
-  PVP: 'pvp',
-  PVMOB: 'pvmob',
-  PVANIMAL: 'pvanimal'
-};
-
-export const CLAIM_DEFAULTS = {
-  [CLAIM_OPTIONS.TNT]: false,
-  [CLAIM_OPTIONS.BLOCK_BREAK]: false,
-  [CLAIM_OPTIONS.BLOCK_PLACE]: false,
-  [CLAIM_OPTIONS.USE]: false,
-  [CLAIM_OPTIONS.PVP]: false,
-  [CLAIM_OPTIONS.PVMOB]: false,
-  [CLAIM_OPTIONS.PVANIMAL]: true
-};

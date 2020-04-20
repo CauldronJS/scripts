@@ -1,19 +1,11 @@
 import Rinse from '@cauldron/rinse';
 import RtpCommand from './rtp';
 import JsCommand from './js';
-import colors from '@cauldron/colors';
-import cauldron from 'cauldron';
-import mc from '../mc';
 import server from 'http2';
 import fs from 'fs';
 import landmine from './landmine';
 // import express from 'express';
 
-function setMotd({ setMotd }) {
-  setMotd(colors.green('This server is running Cauldron'));
-}
-
-cauldron.events.on('serverlistping', setMotd);
 landmine();
 const App = () => (
   <>

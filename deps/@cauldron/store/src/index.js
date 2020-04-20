@@ -24,7 +24,10 @@ function useStore(name, defaultStore = Object.create(null)) {
   }
 
   function setStore(updatedProps) {
-    for (let field in updatedProps) {
+    for (const field in updatedProps) {
+      if (updatedProps[field] === undefined) {
+        delete store[field];
+      }
       store[field] = updatedProps[field];
     }
     fs.writeFileSync(`.store/${name}.json`, JSON.stringify(store));

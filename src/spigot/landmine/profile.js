@@ -19,64 +19,106 @@ export function getProfileFor(uuid) {
   }
 
   const profile = new Profile(uuid);
-  setProfileStore({ ...profileStore, [uuid]: profile });
+  setProfileStore({ [uuid]: profile });
   return profile;
 }
 
 /**
  *
  * @param {string} uuid
- * @param {{x: Number, z: Number}} coords
+ * @param {{x: Number, z: Number, world: string}} coords
  */
 export function canClaim(uuid, coords) {
   const profile = getProfileFor(uuid);
-  if (profile.claimsAllowed > profile.claims.length) return true;
+  if (profile.claims.length === 0) return true;
+  if (profile.claimsAllowed < profile.claims.length) return false;
   return (
-    profile.claims.filter(claim => distance(coords, claim.coords) <= 1).length >
-    0
+    profile.claims.filter(
+      claim => distance(coords, claim) <= 1 && claim.world === coords.world
+    ).length > 0
   );
 }
 
 /**
  *
  * @param {string} uuid
- * @param {LandClaim} claim
+ * @param {{x: Number, z: Number, world: string}} coords
  */
-export function claim(uuid, claim) {
+export function doesOwn(uuid, coords) {
   const profile = getProfileFor(uuid);
-  profile.claims.push(claim.coords);
-  setProfileStore({ ...profileStore, [uuid]: profile });
+  return profile.claims.indexOf(coords) > -1;
+}
+
+/**
+ *
+ * @param {string} uuid
+ * @param {{x: Number, z: Number, world: string}} coords
+ */
+export function claim(uuid, coords) {
+  const profile = getProfileFor(uuid);
+  profile.claims.push(coords);
+  setProfileStore({ [uuid]: profile });
 }
 
 export function unclaim(uuid, coords) {
   const profile = getProfileFor(uuid);
   profile.claims = profile.claims.filter(
-    c => c.x !== coords.x && c.z !== coords.z
+    c => c.x !== coords.x && c.z !== coords.z && c.world !== coords.world
   );
-  setProfileStore({ ...profileStore, [uuid]: profile });
+  setProfileStore({ [uuid]: profile });
 }
 
 /**
  *
  * @param {string} uuid
  *
- * @returns {{x: Number, z: Number}[]}
+ * @returns {{x: Number, z: Number, world: string}[]}
  */
 export function unclaimAll(uuid) {
   const profile = getProfileFor(uuid);
   const unclaimed = profile.claims.slice(0);
   profile.claims = [];
-  setProfileStore({ ...profileStore, [uuid]: profile });
+  setProfileStore({ [uuid]: profile });
   return unclaimed;
 }
 
+export function commitProfiles() {
+  setProfileStore(profileStore);
+}
+
 const distance = (coord1, coord2) =>
-  Math.sqrt(Math.pow(coord1.x - coord2.x, 2) + Math.pow(coord1.z - coord2.z));
+  Math.sqrt(
+    Math.pow(coord1.x - coord2.x, 2) + Math.pow(coord1.z - coord2.z, 2)
+  );
 
 class Profile {
-  constructor(uuid) {
-    this.owner = uuid;
+  get claimsAllowed() {
+    return (this.members.length + 1) * 10;
+  }
+
+  constructor() {
     this.claims = [];
-    this.claimsAllowed = 10;
+    this.members = [];
+    this.rules = CLAIM_DEFAULTS;
   }
 }
+
+export const CLAIM_OPTIONS = {
+  TNT: 'tnt',
+  BLOCK_BREAK: 'block_break',
+  BLOCK_PLACE: 'block_place',
+  USE: 'use',
+  PVP: 'pvp',
+  PVMOB: 'pvmob',
+  PVANIMAL: 'pvanimal'
+};
+
+export const CLAIM_DEFAULTS = {
+  [CLAIM_OPTIONS.TNT]: false,
+  [CLAIM_OPTIONS.BLOCK_BREAK]: false,
+  [CLAIM_OPTIONS.BLOCK_PLACE]: false,
+  [CLAIM_OPTIONS.USE]: false,
+  [CLAIM_OPTIONS.PVP]: false,
+  [CLAIM_OPTIONS.PVMOB]: false,
+  [CLAIM_OPTIONS.PVANIMAL]: true
+};
