@@ -1,4 +1,5 @@
 import { FRAG_SYMBOL } from './fragment';
+import { setCurrentComponent, getCurrentComponent } from './reconciler';
 
 // I'd like to figure out a way to allow functional components to do
 // logic unhooking/destruction. Perhaps a hook?
@@ -12,7 +13,9 @@ export const mount = rinsed => {
   const { component, props } = rinsed;
   if (!component.__canRemount) return null;
 
-  const result = component.apply(rinsed, [props]);
+  const instanceWrapper = { __state: undefined };
+  setCurrentComponent({ instanceWrapper, component });
+  const result = component.apply(getCurrentComponent(), [props]);
 
   if (typeof result === 'object') {
     if (Array.isArray(result)) {
@@ -32,6 +35,9 @@ export const mount = rinsed => {
   } else {
     mount(result);
   }
+
+  if (component.onmount) component.onmount(props, instanceWrapper.__state);
+
   return component;
 };
 
@@ -52,6 +58,10 @@ export function rinse(Component, attrs, ...children) {
     children: Array.isArray(children) ? children : children[0]
   };
   const component = Component.bind(Component);
+  Object.defineProperties(
+    component,
+    Object.getOwnPropertyDescriptors(Component)
+  );
   component.__canRemount = true;
   const mount = () => mount(component);
   // mount is a shortcut to allow components to manually mount the

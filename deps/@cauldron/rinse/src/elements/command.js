@@ -1,5 +1,6 @@
 import { Command } from 'cauldron';
 import PropTypes from 'prop-types';
+import useState from '../hooks/useState';
 
 const { CommandRestriction } = Command;
 
@@ -30,6 +31,7 @@ const CommandComponent = props => {
     const parentCommand = Command.fromPath(path);
     parentCommand.addSubcommand(command).register();
   }
+  useState(command);
   return children;
 };
 
@@ -42,7 +44,8 @@ CommandComponent.propTypes = {
   permission: PropTypes.string,
   children: PropTypes.arrayOf(PropTypes.func),
   isForConsole: PropTypes.bool,
-  isForPlayer: PropTypes.bool
+  isForPlayer: PropTypes.bool,
+  tabComplete: PropTypes.any
 };
 
 CommandComponent.defaultProps = {
@@ -53,7 +56,8 @@ CommandComponent.defaultProps = {
   permission: null,
   children: [],
   isForConsole: true,
-  isForPlayer: true
+  isForPlayer: true,
+  tabComplete() {}
 };
 
 export default CommandComponent;

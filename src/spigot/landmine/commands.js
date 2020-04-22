@@ -18,18 +18,20 @@ function executeClaim({ sender }) {
   const coords = getChunkCoordsForEntity(sender);
   const profile = getProfileFor(uuid);
   if (profile.claimsAllowed <= profile.claims.length) {
-    return colors.red("You don't have any claims left");
+    return colors.red("[LandMine] You don't have any claims left");
   }
   if (!canClaim(uuid, coords)) {
-    return colors.red("This claim isn't connected to any previous claims");
+    return colors.red(
+      "[LandMine] This claim isn't connected to any previous claims"
+    );
   }
   if (!isClaimable(coords)) {
-    return colors.red('This chunk has already been claimed');
+    return colors.red('[LandMine] This chunk has already been claimed');
   }
   createClaim(coords, uuid);
   claim(uuid, coords);
 
-  return colors.green(`Claimed ${coords.x},${coords.z}`);
+  return colors.green(`[LandMine] Claimed ${coords.x},${coords.z}`);
 }
 
 function executeUnclaim({ sender }) {
@@ -37,13 +39,13 @@ function executeUnclaim({ sender }) {
   const coords = getChunkCoordsForEntity(sender);
   try {
     if (getClaimFor(coords).owner !== uuid) {
-      return colors.red("You don't own this chunk!");
+      return colors.red("[LandMine] You don't own this chunk!");
     }
     unclaim(uuid, coords);
     removeClaims(coords);
-    return colors.green(`Unclaimed ${coords.x},${coords.z}`);
+    return colors.green(`[LandMine] Unclaimed ${coords.x},${coords.z}`);
   } catch (err) {
-    return colors.red(`Failed to unclaim: ${err}`);
+    return colors.red(`[LandMine] Failed to unclaim: ${err}`);
   }
 }
 
@@ -52,9 +54,9 @@ function executeUnclaimAll({ sender }) {
   try {
     const unclaimed = unclaimAll(uuid);
     removeClaims(unclaimed);
-    return colors.green(`Unclaimed ${unclaimed.length} chunks`);
+    return colors.green(`[LandMine] Unclaimed ${unclaimed.length} chunks`);
   } catch (err) {
-    return colors.red(`Failed to unclaim all: ${err}`);
+    return colors.red(`[LandMine] Failed to unclaim all: ${err}`);
   }
 }
 
@@ -67,9 +69,9 @@ function executeInfo({ sender }) {
   const coords = getChunkCoordsForEntity(sender);
   const claim = getClaimFor(coords);
   if (claim) {
-    return colors.yellow('This chunk has already been claimed');
+    return colors.yellow('[LandMine] This chunk has already been claimed');
   } else {
-    return colors.green('This chunk has not been claimed');
+    return colors.green('[LandMine] This chunk has not been claimed');
   }
 }
 
@@ -90,14 +92,14 @@ function executeModify({ sender, args }) {
       profile.rules[name] = false;
     } else {
       return colors.red(
-        `Unknown value "${value}". Must be allow/deny/true/false`
+        `[LandMine] Unknown value "${value}". Must be allow/deny/true/false`
       );
     }
   }
 
   commitProfiles();
 
-  return colors.green('Successfully updated rules for all claims');
+  return colors.green('[LandMine] Successfully updated rules for all claims');
 }
 
 function executeMembersInfo({ sender }) {
@@ -115,6 +117,20 @@ function executeMembersRemove({ sender }) {
   const profile = getProfileFor(uuid);
 }
 
+function getWorldNames() {
+  return [...Bukkit.getWorlds()].map(w => w.getName());
+}
+
+function getPlayerList(sender) {
+  return [...Bukkit.getOfflinePlayers()]
+    .map(p => p.getName())
+    .filter(n => n === sender.getName());
+}
+
+function getMembersList(sender) {
+  //
+}
+
 export const LandmineCommands = () => (
   <Command name="landmine" aliases={['lm']}>
     <Command name="claim" aliases={['c']} execute={executeClaim} />
@@ -123,13 +139,21 @@ export const LandmineCommands = () => (
       aliases={['delete', 'remove', 'r', 'u']}
       execute={executeUnclaim}
     >
-      <Command name="all" execute={executeUnclaimAll} />
+      <Command
+        name="all"
+        execute={executeUnclaimAll}
+        tabComplete={getWorldNames}
+      />
     </Command>
     <Command name="map" aliases={['m']} execute={executeMap} />
     <Command name="info" aliases={['i']} execute={executeInfo} />
     <Command name="modify" execute={executeModify} />
     <Command name="members" execute={executeMembersInfo}>
-      <Command name="add" execute={executeMembersAdd} />
+      <Command
+        name="add"
+        execute={executeMembersAdd}
+        tabComplete={getPlayerList}
+      />
       <Command name="remove" execute={executeMembersRemove} />
     </Command>
   </Command>

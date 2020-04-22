@@ -93,13 +93,14 @@ const distance = (coord1, coord2) =>
 
 class Profile {
   get claimsAllowed() {
-    return (this.members.length + 1) * 10;
+    return (this.members.length + 1) * 10 + this.bonusClaims;
   }
 
   constructor() {
     this.claims = [];
     this.members = [];
     this.rules = CLAIM_DEFAULTS;
+    this.bonusClaims = 0;
   }
 }
 

@@ -59,6 +59,11 @@ export function removeClaims(...coords) {
   setClaimStore(claimStore);
 }
 
+export function isResident(coords, uuid) {
+  const claim = getClaimFor(coords);
+  return claim.residents.indexOf(uuid) > -1;
+}
+
 export class LandClaim {
   /**
    *
@@ -66,5 +71,6 @@ export class LandClaim {
    */
   constructor(owner) {
     this.owner = owner;
+    this.residents = [];
   }
 }
