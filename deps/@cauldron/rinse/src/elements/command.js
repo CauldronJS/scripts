@@ -55,8 +55,6 @@ CommandComponent.defaultProps = {
   aliases: [],
   permission: null,
   children: [],
-  isForConsole: true,
-  isForPlayer: true,
   tabComplete() {}
 };
 

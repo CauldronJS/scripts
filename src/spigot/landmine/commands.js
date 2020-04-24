@@ -1,5 +1,6 @@
 import Rinse, { Command } from '@cauldron/rinse';
 import colors from '@cauldron/colors';
+import { getName, getUuid } from '@cauldron/players';
 import {
   canClaim,
   claim,
@@ -11,7 +12,13 @@ import {
   CLAIM_OPTIONS
 } from './profile';
 import { createClaim, isClaimable, removeClaims, getClaimFor } from './claim';
-import { getChunkCoordsForEntity } from './utils';
+import {
+  getChunkCoordsForEntity,
+  getPlayerList,
+  getPlayerByName,
+  getMembersList,
+  getWorldNames
+} from './utils';
 
 function executeClaim({ sender }) {
   const uuid = sender.getUniqueId().toString();
@@ -63,6 +70,35 @@ function executeUnclaimAll({ sender }) {
 function executeMap({ sender }) {
   const uuid = sender.getUniqueId().toString();
   const coords = getChunkCoordsForEntity(sender);
+  const mapWidth = 10;
+  const mapHeight = 3;
+  const result = [
+    `${colors.green('Owned')} ${colors.yellow('Resident')} ${colors.red(
+      'Claimed'
+    )} ${colors.white('Available')}`,
+    colors.yellow(`=====${coords.world}: ${coords.x},${coords.z}=====`)
+  ];
+  for (let x = -mapHeight; x <= mapHeight; ++x) {
+    let line = '';
+    for (let z = -mapWidth; z <= mapWidth; ++z) {
+      const char = x === 0 && z === 0 ? '-' : '+';
+      const claim = getClaimFor({
+        x: coords.x + x,
+        z: coords.z + z,
+        world: coords.world
+      });
+      if (claim) {
+        if (claim.owner === uuid) line += colors.green(char);
+        else if (claim.residents.indexOf(uuid) > -1)
+          line += colors.yellow(char);
+        else line += colors.red(char);
+      } else {
+        line += colors.white(char);
+      }
+    }
+    result.push(line);
+  }
+  sender.sendMessage(result);
 }
 
 function executeInfo({ sender }) {
@@ -86,9 +122,9 @@ function executeModify({ sender, args }) {
       continue;
     }
     const value = (rule.split('=')[1] || 'allow').toLowerCase();
-    if (value === 'allow' || value === 'true') {
+    if (value === 'allow' || value === true) {
       profile.rules[name] = true;
-    } else if (value === 'deny' || value === 'false') {
+    } else if (value === 'deny' || value === false) {
       profile.rules[name] = false;
     } else {
       return colors.red(
@@ -107,33 +143,43 @@ function executeMembersInfo({ sender }) {
   const profile = getProfileFor(uuid);
 }
 
-function executeMembersAdd({ sender }) {
+function executeMembersAdd({ sender, args }) {
   const uuid = sender.getUniqueId().toString();
   const profile = getProfileFor(uuid);
+  const coords = getChunkCoordsForEntity(sender);
 }
 
-function executeMembersRemove({ sender }) {
+function executeMembersRemove({ sender, args }) {
   const uuid = sender.getUniqueId().toString();
   const profile = getProfileFor(uuid);
+  const coords = getChunkCoordsForEntity(sender);
 }
 
-function getWorldNames() {
-  return [...Bukkit.getWorlds()].map(w => w.getName());
-}
-
-function getPlayerList(sender) {
-  return [...Bukkit.getOfflinePlayers()]
-    .map(p => p.getName())
-    .filter(n => n === sender.getName());
-}
-
-function getMembersList(sender) {
-  //
+function executeGiveBonus({ args }) {
+  const [playername, amount] = args;
+  if (!playername) {
+    return colors.red('[LandMine] You must provide a player name');
+  } else if (!amount) {
+    return colors.red('[LandMine] You must provide an amount');
+  } else if (isNaN(amount)) {
+    return colors.red('[LandMine] Invalid number');
+  }
+  const uuid = getUuid(playername);
+  if (!uuid) {
+    return colors.red(
+      `[LandMine] No player found with the name ${playername}. Ensure this is not a nickname`
+    );
+  }
+  const profile = getProfileFor(uuid);
+  profile.bonusClaims += parseInt(amount);
+  return colors.green(
+    `[LandMine] Granted ${playername} ${amount} bonus claims`
+  );
 }
 
 export const LandmineCommands = () => (
   <Command name="landmine" aliases={['lm']}>
-    <Command name="claim" aliases={['c']} execute={executeClaim} />
+    <Command name="claim" aliases={['c']} execute={executeClaim} isForPlayer />
     <Command
       name="unclaim"
       aliases={['delete', 'remove', 'r', 'u']}
@@ -154,7 +200,17 @@ export const LandmineCommands = () => (
         execute={executeMembersAdd}
         tabComplete={getPlayerList}
       />
-      <Command name="remove" execute={executeMembersRemove} />
+      <Command
+        name="remove"
+        execute={executeMembersRemove}
+        tabComplete={getMembersList}
+      />
     </Command>
+    <Command
+      name="givebonus"
+      permission="landmine.givebonus"
+      execute={executeGiveBonus}
+      tabComplete={getPlayerList}
+    />
   </Command>
 );

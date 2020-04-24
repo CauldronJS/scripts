@@ -50,6 +50,7 @@ export function rinse(Component, attrs, ...children) {
   if (typeof Component !== 'function') {
     throw new Error('Component must be a function');
   }
+
   // this function does not create the component. It will create
   // a special object that is used to compile and run on mount.
   const props = {
