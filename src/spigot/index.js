@@ -1,10 +1,8 @@
 import Rinse from '@cauldron/rinse';
 import RtpCommand from './rtp';
 import JsCommand from './js';
-import server from 'http2';
-import fs from 'fs';
 import landmine from './landmine';
-// import express from 'express';
+import express from 'express';
 
 landmine();
 const App = () => (
@@ -15,16 +13,6 @@ const App = () => (
 );
 
 Rinse.mount(<App />);
-
-const s = server.createServer();
-
-s.listen(8080, 'localhost', () =>
-  console.log(`Server running on ${s.address()}`)
-);
-s.on('connect', (request, response) => {
-  const entry = fs.readFileSync('./index.html');
-  response.end(entry);
-});
 
 // const app = express();
 // app.use(express.static('./site/public'));
