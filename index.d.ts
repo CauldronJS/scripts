@@ -1008,7 +1008,47 @@ declare module 'bukkit/entity/memory' {}
 declare module 'bukkit/entity/minecart' {}
 
 declare module 'bukkit/event' {
+  import { RegisteredListener, Plugin } from 'bukkit/plugin';
+
   export interface Listener {}
+  export interface Cancellable {
+    isCancelled(): boolean;
+    setCancelled(cancel: boolean): void;
+  }
+  export interface Event {
+    getEventName(): string;
+    getHandlers(): HandlerList;
+    isAsynchronous(): boolean;
+  }
+  declare module Event {
+    export enum Result {
+      ALLOW,
+      DEFAULT,
+      DENY
+    }
+  }
+  export enum EventPriority {
+    HIGH,
+    HIGHEST,
+    LOW,
+    LOWEST,
+    MONITOR,
+    NORMAL
+  }
+  export interface HandlerList {
+    bake(): void;
+    static bakeAll(): void;
+    getHandlerLists(): HandlerList[];
+    getRegisteredListeners(): RegisteredListener[];
+    static getRegisteredListeners(plugin: Plugin): RegisteredListener[];
+    register(listener: RegisteredListener): void;
+    registerAll(listeners: RegisteredListener[]): void;
+    unregister(listener: Listener): void;
+    unregister(plugin: Plugin): void;
+    unregister(listener: RegisteredListener): void;
+    static unregisterAll(): void;
+    static unregisterAll(listener: Listener): void;
+  }
 }
 
 declare module 'bukkit/event/block' {
@@ -1033,6 +1073,8 @@ declare module 'bukkit/event/block' {
   export interface BlockPistonExtendEvent {}
   export interface BlockPistonRetractEvent {}
   export interface BlockRedstoneEvent {}
+  export interface BlockShearEntityEvent {}
+  export interface BlockSpreadEvent {}
   export interface CauldronLevelChangeEvent {}
   export interface EntityBlockFormEvent {}
   export interface FluidLevelChangeEvent {}
@@ -1342,7 +1384,19 @@ declare module 'bukkit/permissions' {}
 
 declare module 'bukkit/persistence' {}
 
-declare module 'bukkit/plugin' {}
+declare module 'bukkit/plugin' {
+  import { Event, Listener, EventPriority } from 'bukkit/event';
+  export interface Plugin {
+
+  }
+  export interface RegisteredListener {
+    callEvent(event: Event): void;
+    getListener(): Listener;
+    getPlugin(): Plugin;
+    getPriority(): EventPriority;
+    isIgnoringCancelled(): boolean;
+  }
+}
 
 declare module 'bukkit/plugin/java' {}
 
@@ -1455,7 +1509,74 @@ declare module 'me/conji/cauldron/utils' {
   export class PathHelpers {
     static join(path1: string, ...paths: string): string;
     static exists(path1: string, ...paths: string): boolean;
-    static resolveLocalPath(path1: string, ...paths): Path;
+    static resolveLocalPath(path1: string, ...paths: string): Path;
   }
 }
 
+
+declare module 'cauldron' {
+  import { BlockBreakEvent, BlockPlaceEvent, BlockCanBuildEvent, BlockCookEvent, BlockDispenseArmorEvent, BlockDispenseEvent, BlockDropItemEvent, BlockExpEvent, BlockExplodeEvent, BlockFadeEvent, BlockFertilizeEvent, BlockFormEvent, BlockFromToEvent, BlockGrowEvent, BlockIgniteEvent, BlockMultiPlaceEvent, BlockPhysicsEvent, BlockPistonExtendEvent, BlockPistonRetractEvent, BlockShearEntityEvent, BlockSpreadEvent, CauldronLevelChangeEvent, EntityBlockFormEvent, FluidLevelChangeEvent, LeavesDecayEvent, MoistureChangeEvent, NotePlayEvent, SignChangeEvent, SpongeAbsorbEvent } from 'bukkit/event/block';
+  import { EnchantItemEvent } from 'bukkit/event/enchantment';
+  import { BukkitPlugin } from 'bukkit/plugin/java';
+  import { NamespacedKey } from 'bukkit';
+  import { EventEmitter } from 'events';
+  export interface Command {
+    registerCommand(name: string): void;
+  }
+
+  interface CancelToken {
+    equals(compare: object): boolean;
+    unregister(): void;
+    cancel(): void;
+  }
+
+  interface CauldronEvents extends EventEmitter {
+    // block
+    on(name: 'blockbreak', handler: (event: BlockBreakEvent) => boolean?): CancelToken;
+    on(name: 'blockplace', handler: (event: BlockPlaceEvent) => boolean?): CancelToken;
+    on(name: 'blockcanbuild', handler: (event: BlockCanBuildEvent) => boolean?): CancelToken;
+    on(name: 'blockcook', handler: (event: BlockCookEvent) => boolean?): CancelToken;
+    on(name: 'blockdamage', handler: (event: BlockDamageEvent) => boolean?): CancelToken;
+    on(name: 'blockdispensearmor', handler: (event: BlockDispenseArmorEvent) => boolean?): CancelToken;
+    on(name: 'blockdispense', handler: (event: BlockDispenseEvent) => boolean?): CancelToken;
+    on(name: 'blockdropitem', handler: (event: BlockDropItemEvent) => boolean?): CancelToken;
+    on(name: 'blockexp', handler: (event: BlockExpEvent) => boolean?): CancelToken;
+    on(name: 'blockexplode', handler: (event: BlockExplodeEvent) => boolean?): CancelToken;
+    on(name: 'blockfade', handler: (event: BlockFadeEvent) => boolean?): CancelToken;
+    on(name: 'blockfertilize', handler: (event: BlockFertilizeEvent) => boolean?): CancelToken;
+    on(name: 'blockform', handler: (event: BlockFormEvent) => boolean?): CancelToken;
+    on(name: 'blockfromto', handler: (event: BlockFromToEvent) => boolean?): CancelToken;
+    on(name: 'blockgrow', handler: (event: BlockGrowEvent) => boolean?): CancelToken;
+    on(name: 'blockignite', handler: (event: BlockIgniteEvent) => boolean?): CancelToken;
+    on(name: 'blockmultiplace', handler: (event: BlockMultiPlaceEvent) => boolean?): CancelToken;
+    on(name: 'blockphysics', handler: (event: BlockPhysicsEvent) => boolean?): CancelToken;
+    on(name: 'blockpistonextend', handler: (event: BlockPistonExtendEvent) => boolean?): CancelToken;
+    on(name: 'blockpistonretract', handler: (event: BlockPistonRetractEvent) => boolean?): CancelToken;
+    on(name: 'blockredstone', handler: (event: BlockRedstoneEvent) => boolean?): CancelToken;
+    on(name: 'blockshearentity', handler: (event: BlockShearEntityEvent) => boolean?): CancelToken;
+    on(name: 'blockspread', handler: (event: BlockSpreadEvent) => boolean?): CancelToken;
+    on(name: 'cauldronlevelchange', handler: (event: CauldronLevelChangeEvent) => boolean?): CancelToken;
+    on(name: 'blockentityform', handler: (event: EntityBlockFormEvent) => boolean?): CancelToken;
+    on(name: 'fluidlevelchange', handler: (event: FluidLevelChangeEvent) => boolean?): CancelToken;
+    on(name: 'leavesdecay', handler: (event: LeavesDecayEvent) => boolean?): CancelToken;
+    on(name: 'moisturechange', handler: (event: MoistureChangeEvent) => boolean?): CancelToken;
+    on(name: 'noteplay', handler: (event: NotePlayEvent) => boolean?): CancelToken;
+    on(name: 'signchange', handler: (event: SignChangeEvent) => boolean?): CancelToken;
+    on(name: 'spongeabsorb', handler: (event: SpongeAbsorbEvent) => boolean?): CancelToken;
+    // enchant
+    on(name: 'enchant', handler: (event: EnchantItemEvent) => boolean?): CancelToken;
+    on(name: 'prepareenchant', handler: (event: PrepareItemEnchantEvent) => boolean?): CancelToken;
+    on(name: 'playerjoin', handler: (event: Event) => boolean?): CancelToken;
+  }
+
+  export const NAMESPACE_KEY: NamespacedKey;
+  export const events: CauldronEvents;
+  export function getPlugin(name: string): BukkitPlugin;
+
+  export default {
+    Command,
+    NAMESPACE_KEY,
+    events,
+    getPlugin
+  };
+}
