@@ -9,4 +9,8 @@ events.on('playerdeath', event => {
   if (!deathboxConfig.isActivated) return;
   const player = event.getEntity();
   const drops = event.getDrops();
+  if (deathboxConfig[player.getUniqueId()]?.disabled) {
+    return;
+  }
+  // create the chest and move drops to the chest
 });

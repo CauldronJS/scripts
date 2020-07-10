@@ -318,6 +318,7 @@ declare module 'bukkit/attribute' {}
 
 declare module 'bukkit/block' {
   import { Enum, Class } from 'java/lang';
+  import { InventoryHolder, BlockInventoryHolder } from 'bukkit/inventory';
 
   export interface Banner {}
 
@@ -339,7 +340,9 @@ declare module 'bukkit/block' {
 
   export interface Campfire {}
 
-  export interface Chest {}
+  export interface Chest extends BlockInventoryHolder {
+
+  }
 
   export interface CommandBlock {}
 
@@ -1004,35 +1007,316 @@ declare module 'bukkit/entity/memory' {}
 
 declare module 'bukkit/entity/minecart' {}
 
-declare module 'bukkit/event' {}
+declare module 'bukkit/event' {
+  export interface Listener {}
+}
 
-declare module 'bukkit/event/block' {}
+declare module 'bukkit/event/block' {
+  export interface BlockBreakEvent {}
+  export interface BlockPlaceEvent {}
+  export interface BlockCanBuildEvent {}
+  export interface BlockCookEvent {}
+  export interface BlockDamageEvent {}
+  export interface BlockDispenseArmorEvent {}
+  export interface BlockDispenseEvent {}
+  export interface BlockDropItemEvent {}
+  export interface BlockExpEvent {}
+  export interface BlockExplodeEvent {}
+  export interface BlockFadeEvent {}
+  export interface BlockFertilizeEvent {}
+  export interface BlockFormEvent {}
+  export interface BlockFromToEvent {}
+  export interface BlockGrowEvent {}
+  export interface BlockIgniteEvent {}
+  export interface BlockMultiPlaceEvent {}
+  export interface BlockPhysicsEvent {}
+  export interface BlockPistonExtendEvent {}
+  export interface BlockPistonRetractEvent {}
+  export interface BlockRedstoneEvent {}
+  export interface CauldronLevelChangeEvent {}
+  export interface EntityBlockFormEvent {}
+  export interface FluidLevelChangeEvent {}
+  export interface LeavesDecayEvent {}
+  export interface MoistureChangeEvent {}
+  export interface NotePlayEvent {}
+  export interface SignChangeEvent {}
+  export interface SpongeAbsorbEvent {}
+}
 
-declare module 'bukkit/event/enchantment' {}
+declare module 'bukkit/event/enchantment' {
+  export interface EnchantItemEvent {}
+  export interface PrepareItemEnchantEvent {}
+}
 
-declare module 'bukkit/event/entity' {}
+declare module 'bukkit/event/entity' {
+  export interface AreaEffectCloudApplyEvent {}
+  export interface BatToggleSleepEvent {}
+  export interface CreatureSpawnEvent {}
+  export interface CreeperPowerEvent {}
+  export interface EnderDragonChangePhaseEvent {}
+  export interface EntityAirChangeEvent {}
+  export interface EntityBreakDoorEvent {}
+  export interface EntityBreedEvent {}
+  export interface EntityChangeBlockEvent {}
+  export interface EntityCombustByBlockEvent {}
+  export interface EntityCombustByEntityEvent {}
+  export interface EntityCombustEvent {}
+  export interface EntityCreatePortalEvent {}
+  export interface EntityDamageByBlockEvent {}
+  export interface EntityDamageByEntityEvent {}
+  export interface EntityDamageEvent {}
+  export interface EntityDeathEvent {}
+  export interface EntityDropItemEvent {}
+  export interface EntityExplodeEvent {}
+  export interface EntityInteractEvent {}
+  export interface EntityPickupItemEvent {}
+  export interface EntityPlaceEvent {}
+  export interface EntityPortalEnterEvent {}
+  export interface EntityPortalEvent {}
+  export interface EntityPortalExitEvent {}
+  export interface EntityPoseChangeEvent {}
+  export interface EntityPotionEffectEvent {}
+  export interface EntityRegainHealthEvent {}
+  export interface EntityResurrectEvent {}
+  export interface EntityShootBowEvent {}
+  export interface EntitySpawnEvent {}
+  export interface EntityTameEvent {}
+  export interface EntityTargetEvent {}
+  export interface EntityTargetLivingEntityEvent {}
+  export interface EntityTeleportEvent {}
+  export interface EntityToggleGlideEvent {}
+  export interface EntityToggleSwimEvent {}
+  export interface EntityTransformEvent {}
+  export interface EntityUnleashEvent {}
+  export interface ExpBottleEvent {}
+  export interface ExplosionPrimeEvent {}
+  export interface FireworkExplodeEvent {}
+  export interface FoodLevelChangeEvent {}
+  export interface HorseJumpEvent {}
+  export interface ItemDespawnEvent {}
+  export interface ItemMergeEvent {}
+  export interface ItemSpawnEvent {}
+  export interface LingeringPotionSplashEvent {}
+  export interface PigZapEvent {}
+  export interface PigZombieAngerEvent {}
+  export interface PlayerDeathEvent {}
+  export interface PlayerLeashEntityEvent {}
+  export interface PotionSplashEvent {}
+  export interface ProjectileHitEvent {}
+  export interface SheepDyeWoolEvent {}
+  export interface SheepRegrowWoolEvent {}
+  export interface SlimeSplitEvent {}
+  export interface SpawnerSpawnEvent {}
+  export interface VillagerAcquireTradeEvent {}
+  export interface VillagerCareerChangeEvent {}
+  export interface VillagerReplenishTradeEvent {}
+}
 
-declare module 'bukkit/event/hanging' {}
+declare module 'bukkit/event/hanging' {
+  export interface HangingBreakByEntityEvent {}
+  export interface HangingBreakEvent {}
+  export interface HangingPlaceEvent {}
+}
 
-declare module 'bukkit/event/inventory' {}
+declare module 'bukkit/event/inventory' {
+  export interface BrewingStandFuelEvent {}
+  export interface CraftItemEvent {}
+  export interface FurnaceBurnEvent {}
+  export interface FurnaceExtractEvent {}
+  export interface FurnaceSmeltEvent {}
+  export interface InventoryClickEvent {}
+  export interface InventoryCloseEvent {}
+  export interface InventoryCreativeEvent {}
+  export interface InventoryDragEvent {}
+  export interface InventoryInteractEvent {}
+  export interface InventoryMoveItemEvent {}
+  export interface InventoryOpenEvent {}
+  export interface InventoryPickupItemEvent {}
+  export interface PrepareAnvilEvent {}
+  export interface PrepareItemCraftEvent {}
+  export interface TradeSelectEvent {}
+}
 
-declare module 'bukkit/event/player' {}
+declare module 'bukkit/event/player' {
+  export interface PlayerAdvancementDoneEvent {}
+  export interface PlayerAnimationEvent {}
+  export interface PlayerArmorStandManipulateEvent {}
+  export interface PlayerBedEnterEvent {}
+  export interface PlayerBedLeaveEvent {}
+  export interface PlayerBucketEmptyEvent {}
+  export interface PlayerBucketFillEvent {}
+  export interface PlayerChangedMainHandEvent {}
+  export interface PlayerChangedWorldEvent {}
+  export interface PlayerChannelEvent {}
+  export interface PlayerChatEvent {}
+  export interface PlayerChatTabCompleteEvent {}
+  export interface PlayerCommandPreprocessEvent {}
+  export interface PlayerCommandSendEvent {}
+  export interface PlayerDropItemEvent {}
+  export interface PlayerEditBookEvent {}
+  export interface PlayerEggThrowEvent {}
+  export interface PlayerExpChangeEvent {}
+  export interface PlayerFishEvent {}
+  export interface PlayerGameModeChangeEvent {}
+  export interface PlayerInteractAtEntityEvent {}
+  export interface PlayerINteractEntityEvent {}
+  export interface PlayerInteractEvent {}
+  export interface PlayerItemBreakEvent {}
+  export interface PlayerItemConsumeEvent {}
+  export interface PlayerItemDamageEvent {}
+  export interface PlayerItemHeldEvent {}
+  export interface PlayerItemMendEvent {}
+  export interface PlayerJoinEvent {}
+  export interface PlayerKickEvent {}
+  export interface PlayerLevelChangeEvent {}
+  export interface PlayerLocaleChangeEvent {}
+  export interface PlayerLoginEvent {}
+  export interface PlayerMoveEvent {}
+  export interface PlayerPickupArrowEvent {}
+  export interface PlayerPickupItemEvent {}
+  export interface PlayerPortalEVent {}
+  export interface PlayerPreLoginEvent {}
+  export interface PlayerQuitEvent {}
+  export interface PlayerRecipeDiscoverEvent {}
+  export interface PlayerRegisterChannelEvent {}
+  export interface PlayerResourcePackStatusEvent {}
+  export interface PlayerRespawnEvent {}
+  export interface PlayerRiptideEvent {}
+  export interface PlayerStatisticIncrementEvent {}
+  export interface PlayerShearEntityEvent {}
+  export interface PlayerSwapHandItemsEvent {}
+  export interface PlayerTakeLecternBookEvent {}
+  export interface PlayerTeleportEvent {}
+  export interface PlayerToggleFlightEvent {}
+  export interface PlayerToggleSprintEvent {}
+  export interface PlayerUnleashEntityEvent {}
+  export interface PlayerUnregisterChannelEvent {}
+  export interface PlayerVelocityEvent {}
+}
 
-declare module 'bukkit/event/raid' {}
+declare module 'bukkit/event/raid' {
+  export interface RaidFinishEvent {}
+  export interface RaidSpawnWaveEvent {}
+  export interface RaidStopEvent {}
+  export interface RaidTriggerEvent {}
+}
 
-declare module 'bukkit/event/server' {}
+declare module 'bukkit/event/server' {
+  export interface BroadcastMessageEvent {}
+  export interface MapInitializeEvent {}
+  export interface PluginDisableEvent {}
+  export interface PluginEnableEvent {}
+  export interface RemoteServerCommandEvent {}
+  export interface ServerCommandEvent {}
+  export interface ServerListPingEvent {}
+  export interface ServerLoadEvent {}
+  export interface ServiceRegisterEvent {}
+  export interface ServiceUnregisterEvent {}
+  export interface TabCompleteEvent {}
+}
 
-declare module 'bukkit/event/vehicle' {}
+declare module 'bukkit/event/vehicle' {
+  export interface VehicleBlockCollisionEvent {}
+  export interface VehicleCreateEvent {}
+  export interface VehicleDamageEvent {}
+  export interface VehicleDestroyEvent {}
+  export interface VehicleEnterEvent {}
+  export interface VehicleEntityCollisionEvent {}
+  export interface VehicleExitEvent {}
+  export interface VehicleMoveEvent {}
+  export interface VehicleUpdateEvent {}
+}
 
-declare module 'bukkit/event/weather' {}
+declare module 'bukkit/event/weather' {
+  export interface LightningStrikeEvent {}
+  export interface ThunderChangeEvent {}
+  export interface WeatherChangeEvent {}
+}
 
-declare module 'bukkit/event/world' {}
+declare module 'bukkit/event/world' {
+  export interface ChunkLoadEvent {}
+  export interface ChunkPopulateEvent {}
+  export interface ChunkUnloadEvent {}
+  export interface PortalCreateEvent {}
+  export interface SpawnChangeEvent {}
+  export interface StructureGrowEvent {}
+  export interface WorldInitEvent {}
+  export interface WorldLoadEvent {}
+  export interface WorldSaveEvent {}
+  export interface WorldUnloadEvent {}
+}
 
 declare module 'bukkit/generator' {}
 
 declare module 'bukkit/help' {}
 
-declare module 'bukkit/inventory' {}
+declare module 'bukkit/inventory' {
+  import { Material, Location } from 'bukkit';
+  import { Block } from 'bukkit/block';
+
+  export interface ItemStack {
+    addEnchantment(enchantment: Enchantment, level: number): void;
+    addEnchantments(enchantments: Map<Enchantment, number>): void;
+    addUnsafeEnchantment(enchantment: Enchantment, level: number): void;
+    addUnsafeEnchantments(enchantments: Map<Enchantment, number>): void;
+    clone(): ItemStack;
+    containsEnchantment(enchantment: Enchantment): boolean;
+    static deserialize(args: Map<string, object>): ItemStack;
+    equals(target: object): boolean;
+    getAmount(): number;
+    getData(): MaterialData;
+    getDurability(): number;
+    getEnchantmentLevel(enchantment: Enchantment): number;
+    getEnchantments(): Map<Enchantment, number>;
+    getItemMeta(): ItemMeta;
+    getMaxStackSize(): number;
+    getType(): Material;
+    hashCode(): number;
+    hasItemMeta(): boolean;
+    isSimilar(other: ItemStack): boolean;
+    removeEnchantment(enchantment: Enchantment): number;
+    serialize(): Map<Enchantment, number>;
+    setAmount(amount: number): void;
+    setData(data: MaterialData): void;
+    setDurability(durability: number): void;
+    setItemMeta(meta: ItemMeta): void;
+    setType(type: Material): void;
+    toString(): string;
+  }
+
+  export interface InventoryHolder {
+    getInventory(): Inventory;
+  }
+
+  export interface BlockInventoryHolder extends InventoryHolder {
+    getBlock(): Block;
+  }
+
+  export interface Inventory extends Iterable<ItemStack> {
+    addItem(...stack: ItemStack): HashMap<number, ItemStack>;
+    all(item: ItemStack|Material): HashMap<number, ItemStack>;
+    clear(): void;
+    clear(index: number): void;
+    contains(item: ItemStack|Material, amount: number?): boolean;
+    containsAtLeast(item: ItemStack, amount: number): boolean;
+    first(item: ItemStack|Material): number;
+    firstEmpty(): number;
+    getContents(): ItemStack[];
+    getHolder(): InventoryHolder;
+    getItem(index: number): ItemStack;
+    getLocation(): Location;
+    getMaxStackSize(): number;
+    getSize(): number;
+    getStorageContents(): ItemStack[];
+    getType(): InventoryType;
+    getViewers(): List<HumanEntity>;
+    iterator(index: number?): ListIterator<ItemStack>;
+    remove(item: ItemStack|Material): void;
+    removeItem(...stack: ItemStack): HashMap<number, ItemStack>;
+    setContents(items: ItemStack[]): void;
+    setStorageContents(items: ItemStack[]): void;
+  }
+}
 
 declare module 'bukkit/inventory/meta' {
   export interface Damageable {
@@ -1174,3 +1458,4 @@ declare module 'me/conji/cauldron/utils' {
     static resolveLocalPath(path1: string, ...paths): Path;
   }
 }
+
