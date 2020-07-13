@@ -159,28 +159,28 @@ declare module 'bukkit' {
 
   export interface WorldBorder {}
 
-  export class Achievement extends Enum<Achievement> {}
+  export enum Achievement {}
 
-  export class Art extends Enum<Art> {}
+  export enum Art {}
 
-  export class Axis extends Enum<Axis> {}
+  export enum Axis {}
 
-  export class ChatColor extends Enum<ChatColor> {}
+  export enum ChatColor {}
 
-  export class CoalType extends Enum<CoalType> {}
+  export enum CoalType {}
 
-  export class CropState extends Enum<CropState> {}
+  export enum CropState {}
 
-  export class Difficulty extends Enum<Difficulty> {
-    static EASY: Difficulty;
-    static HARD: Difficulty;
-    static NORMAL: Difficulty;
-    static PEACEFUL: Difficulty;
+  export enum Difficulty {
+    EASY,
+    HARD,
+    NORMAL,
+    PEACEFUL
   }
 
-  export class DyeColor extends Enum<DyeColor> {}
+  export enum DyeColor {}
 
-  export class Effect extends Enum<Effect> {}
+  export enum Effect {}
 
   export module Effect {
     export enum Type {}
@@ -312,13 +312,45 @@ declare module 'bukkit' {
   export enum WorldType {}
 }
 
-declare module 'bukkit/advancement' {}
+declare module 'bukkit/advancement' {
+  export interface Advancement {}
+  export interface AdvancementProgress {}
+}
 
-declare module 'bukkit/attribute' {}
+declare module 'bukkit/attribute' {
+  export interface Attributable {}
+  export interface AttributeInstance {}
+
+  export interface AttributeModifier {}
+  export enum Attribute {
+    GENERIC_ARMOR,
+    GENERIC_ARMOR_TOUGHNESS,
+    GENERIC_ATTACK_DAMAGE,
+    GENERIC_ATTACK_KNOCKBACK,
+    GENERIC_ATTACK_SPEED,
+    GENERIC_FLYING_SPEED,
+    GENERIC_FOLLOW_RANGE,
+    GENERIC_KNOCKBACK_RESISTANCE,
+    GENERIC_LUCK,
+    GENERIC_MAX_HEALTH,
+    GENERIC_MOVEMENT_SPEED,
+    HORSE_JUMP_STRENGTH,
+    ZOMBIE_SPAWN_REINFORCEMENTS
+  }
+  declare module AttributeModifier {
+    export enum Operation {
+      ADD_NUMBER,
+      ADD_SCALAR,
+      MULTIPLY_SCALAR_1
+    }
+  }
+}
 
 declare module 'bukkit/block' {
   import { Enum, Class } from 'java/lang';
-  import { InventoryHolder, BlockInventoryHolder } from 'bukkit/inventory';
+  import { Location, World } from 'bukkit';
+  import { InventoryHolder, BlockInventoryHolder, Inventory, DoubleChestInventory } from 'bukkit/inventory';
+  import { Entity } from 'bukkit/entity';
 
   export interface Banner {}
 
@@ -327,6 +359,8 @@ declare module 'bukkit/block' {
   export interface Beacon {}
 
   export interface Bed {}
+
+  export interface Beehive {}
 
   export interface Bell {}
 
@@ -366,7 +400,7 @@ declare module 'bukkit/block' {
 
   export interface EndGateway {}
 
-  export interface FlowerPot {}
+  export interface EntityBlockStorage<T extends Entity> {}
 
   export interface Furnace {}
 
@@ -380,8 +414,6 @@ declare module 'bukkit/block' {
 
   export interface Lockable {}
 
-  export interface NoteBlock {}
-
   export interface ShulkerBox {}
 
   export interface Sign {}
@@ -394,20 +426,183 @@ declare module 'bukkit/block' {
 
   export interface TileState {}
 
-  export class DoubleChest {}
+  export class DoubleChest {
+    constructor(chest: DoubleChestInventory): DoubleChest;
 
-  export class Biome extends Enum<Biome> {}
+    getInventory(): Inventory;
+    getLeftSide(): InventoryHolder;
+    getLocation(): Location;
+    getRightSide(): InventoryHolder;
+    getWorld(): World;
+    getX(): number;
+    getY(): number;
+    getZ(): number;
+  }
 
-  export class BlockFace extends Enum<BlockFace> {}
+  export enum Biome {
+    BADLANDS,
+    BADLANDS_PLATEAU,
+    BAMBOO_JUNGLE,
+    BAMBOO_JUNGLE_HILLS,
+    BASALT_DELTAS,
+    BEACH,
+    BIRCH_FOREST,
+    BIRCH_FOREST_HILLS,
+    COLD_OCEAN,
+    CRIMSON_FOREST,
+    DARK_FOREST,
+    DARK_FOREST_HILLS,
+    DEEP_COLD_OCEAN,
+    DEEP_FROZEN_OCEAN,
+    DEEP_LUKEWARM_OCEAN,
+    DEEP_OCEAN,
+    DEEP_WARM_OCEAN,
+    DESERT,
+    DESERT_HILLS,
+    END_BARRENS,
+    END_HIGHLANDS,
+    END_MIDLANDS,
+    ERODED_BADLANDS,
+    FLOWER_FOREST,
+    FOREST,
+    FROZEN_OCEAN,
+    FROZEN_RIVER,
+    GIANT_SPURCE_TAIGA,
+    GIANT_SPRUCE_TAIGA_HILLS,
+    GIANT_TREE_TAIGA,
+    GIANT_TREE_TAIGA_HILLS,
+    GRAVELLY_MOUNTAINS,
+    ICE_SPIKES,
+    JUNGLE,
+    JUNGLE_EDGE,
+    JUNGLE_HILLS,
+    LUKEWARM_OCEAN,
+    MODIFIED_BADLANDS_PLATEAU,
+    MODIFIED_GRAVELLY_MOUNTAINS,
+    MODIFIED_JUNGLE,
+    MODIFIED_JUNGLE_EDGE,
+    MODIFIED_WOODED_BADLANDS_PLATEAU,
+    MOUNTAIN_EDGE,
+    MOUNTAINS,
+    MUSHROOM_FIELD_SHORE,
+    MUSHROOM_FIELDS,
+    NETHER_WASTES,
+    OCEAN,
+    PLAINS,
+    RIVER,
+    SAVANNA,
+    SAVANNA_PLATEAU,
+    SMALL_END_ISLANDS,
+    SNOWY_BEACH,
+    SNOWY_MOUNTAINS,
+    SNOWY_TAIGA,
+    SNOWY_TAIGA_HILLS,
+    SNOWY_TAIGA_MOUNTAINS,
+    SNOWY_TUNDRA,
+    SOUL_SAND_VALLEY,
+    STONE_SHORE,
+    SUNFLOWER_PLAINS,
+    SWAMP,
+    SWAMP_HILLS,
+    TAIGA,
+    TAIGA_HILLS,
+    TAIGA_MOUNTAINS,
+    TALL_BIRCH_FOREST,
+    TALL_BIRCH_HILLS,
+    THE_END,
+    THE_VOID,
+    WARM_OCEAN,
+    WARPED_FOREST,
+    WOODED_BADLANDS_PLATEAU,
+    WOODED_HILLS,
+    WOODED_MOUNTAINS
+  }
 
-  export class PistonMoveReaction extends Enum<PistonMoveReaction> {}
+  export enum BlockFace {
+    DOWN,
+    EAST,
+    EAST_NORTH_EAST,
+    EAST_SOUTH_EAST,
+    NORTH,
+    NORTH_EAST,
+    NORTH_NORTH_EAST,
+    NORTH_NORTH_WEST,
+    NORTH_WEST,
+    SELF,
+    SOUTH,
+    SOUTH_EAST,
+    SOUTH_SOUTH_EAST,
+    SOUTH_WEST,
+    UP,
+    WEST,
+    WEST_NORTH_WEST,
+    WEST_SOUTH_WEST
+  }
+
+  export enum PistonMoveReaction {
+    BLOCK,
+    BREAK,
+    IGNORE,
+    MOVE,
+    PUSH_ONLY
+  }
 }
 
 declare module 'bukkit/block/banner' {
-  import { Enum } from 'java/lang';
-  export class Pattern {}
+  import { DyeColor } from 'bukkit';
 
-  export class PatternType extends Enum<PatternType> {}
+  export class Pattern {
+    constructor(map: Map<string, object>): Pattern;
+    constructor(color: DyeColor, pattern: PatternType): Pattern;
+
+    getColor(): DyeColor;
+    getPattern(): PatternType;
+    serialize(): Map<string, object>;
+  }
+
+  export enum PatternType {
+    BASE,
+    BORDER,
+    BRICKS,
+    CIRCLE_MIDDLE,
+    CREEPER,
+    CROSS,
+    CURLY_BORDER,
+    DIAGONAL_LEFT,
+    DIAGONAL_LEFT_MIRROR,
+    DIAGONAL_RIGHT,
+    DIAGONAL_RIGHT_MIRROR,
+    FLOWER,
+    GLOBE,
+    GRADIENT,
+    GRADIENT_UP,
+    HALF_HORIZONTAL,
+    HALF_HORIZONTAL_MIRROR,
+    HALF_VERTICAL,
+    HALF_VERTICAL_MIRROR,
+    MOJANG,
+    PIGLIN,
+    RHOMBUS_MIDDLE,
+    SKULL,
+    SQUARE_BOTTOM_LEFT,
+    SQUARE_BOTTOM_RIGHT,
+    SQUARE_TOP_LEFT,
+    SQUARE_TOP_RIGHT,
+    STRAIGHT_CROSS,
+    STRIPE_BOTTOM,
+    STRIPE_CENTER,
+    STRIPE_DOWNLEFT,
+    STRIPE_DOWNRIGHT,
+    STRIPE_LEFT,
+    STRIPE_MIDDLE,
+    STRIPE_RIGHT,
+    STRIPE_SMALL,
+    STRIPE_TOP,
+    TRIANGLE_BOTTOM,
+    TRIANGLE_TOP,
+    TRIANGLES_BOTTOM,
+    TRIANGLES_TOP
+  }
 }
 
 declare module 'bukkit/block/data' {
@@ -429,7 +624,11 @@ declare module 'bukkit/block/data' {
 
   export interface Bisected {}
 
+  export interface BlockData {}
+
   export interface Directional {}
+
+  export interface FaceAttachable {}
 
   export interface Levelled {}
 
@@ -452,11 +651,33 @@ declare module 'bukkit/block/data' {
   export interface Waterlogged {}
 
   export module Bisected {
-    export class Half extends Enum<Half> {}
+    export enum Half {
+      BOTTOM,
+      TOP
+    }
+  }
+
+  export module FaceAttachable {
+    export enum AttachedFace {
+      CEILING,
+      FLOOR,
+      WALL
+    }
   }
 
   export module Rail {
-    export class Shape extends Enum<Shape> {}
+    export enum Shape {
+      ASCENDING_EAST,
+      ASCENDING_NORTH,
+      ASCENDING_SOUTH,
+      ASCENDING_WEST,
+      EAST_WEST,
+      NORTH_EAST,
+      NORTH_SOUTH,
+      NORTH_WEST,
+      SOUTH_EAST,
+      SOUTH_WEST
+    }
   }
 }
 
@@ -465,19 +686,33 @@ declare module 'bukkit/block/data/type' {
   export interface Bamboo {}
 
   export module Bamboo {
-    export class Leaves extends Enum<Leaves> {}
+    export enum Leaves {
+      LARGE,
+      NONE,
+      SMALL
+    }
   }
 
   export interface Bed {}
 
   export module Bed {
-    export class Part extends Enum<Part> {}
+    export enum Part {
+      FOOT,
+      HEAD
+    }
   }
+
+  export interface Beehive {}
 
   export interface Bell {}
 
   export module Bell {
-    export class Bell extends Enum<Bell> {}
+    export enum Attachment {
+      CEILING,
+      DOUBLE_WALL,
+      FLOOR,
+      SINGLE_WALL
+    }
   }
 
   export interface BrewingStand {}
@@ -491,7 +726,11 @@ declare module 'bukkit/block/data/type' {
   export interface Chest {}
 
   export module Chest {
-    export class Type extends Enum<Type> {}
+    export enum Type {
+      LEFT,
+      RIGHT,
+      SINGLE
+    }
   }
 
   export interface Cocoa {}
@@ -501,7 +740,10 @@ declare module 'bukkit/block/data/type' {
   export interface Comparator {}
 
   export module Comparator {
-    export class Mode extends Enum<Mode> {}
+    export enum Mode {
+      COMPARE,
+      SUBTRACT
+    }
   }
 
   export interface CoralWallFan {}
@@ -513,7 +755,10 @@ declare module 'bukkit/block/data/type' {
   export interface Door {}
 
   export module Door {
-    export class Hinge extends Enum<Hinge> {}
+    export enum Hinge {
+      LEFT,
+      RIGHT
+    }
   }
 
   export interface EnderChest {}
@@ -532,7 +777,28 @@ declare module 'bukkit/block/data/type' {
 
   export interface GlassPane {}
 
+  export interface Grindstone {}
+
   export interface Hopper {}
+
+  export interface Jigsaw {}
+
+  export module Jigsaw {
+    export enum Orientation {
+      DOWN_EAST,
+      DOWN_NORTH,
+      DOWN_SOUTH,
+      DOWN_WEST,
+      EAST_UP,
+      NORTH_UP,
+      SOUTH_UP,
+      UP_EAST,
+      UP_NORTH,
+      UP_SOUTH,
+      UP_WEST,
+      WEST_UP
+    }
+  }
 
   export interface Jukebox {}
 
@@ -559,10 +825,16 @@ declare module 'bukkit/block/data/type' {
   export interface RedstoneWire {}
 
   export module RedstoneWire {
-    export class Connection extends Enum<Connection> {}
+    export enum Connection {
+      NONE,
+      SIDE,
+      UP
+    }
   }
 
   export interface Repeater {}
+
+  export interface RespawnAnchor {}
 
   export interface Sapling {}
 
@@ -575,7 +847,11 @@ declare module 'bukkit/block/data/type' {
   export interface Slab {}
 
   export module Slab {
-    export class Type extends Enum<Type> {}
+    export enum Type {
+      BOTTOM,
+      DOUBLE,
+      TOP
+    }
   }
 
   export interface Snow {}
@@ -583,25 +859,42 @@ declare module 'bukkit/block/data/type' {
   export interface Stairs {}
 
   export module Stairs {
-    export class Shape extends Enum<Shape> {}
+    export enum Shape {
+      INNER_LEFT,
+      INNER_RIGHT,
+      OUTER_LEFT,
+      OUTER_RIGHT,
+      STRAIGHT
+    }
   }
 
   export interface StructureBlock {}
 
   export module StructureBlock {
-    export class Mode extends Enum<Mode> {}
+    export enum Mode {}
   }
 
   export interface Switch {}
 
   export module Switch {
-    export class Face extends Enum<Face> {}
+    /**
+     * @deprecated
+     * @see {FaceAttachable.AttachedFace}
+     */
+    export enum Face {
+      CEILING,
+      FLOOR,
+      WALL
+    }
   }
 
   export interface TechnicalPiston {}
 
   export module TechnicalPiston {
-    export class Type extends Enum<Type> {}
+    export enum Type {
+      NORMAL,
+      STICKY
+    }
   }
 
   export interface TNT {}
@@ -614,17 +907,33 @@ declare module 'bukkit/block/data/type' {
 
   export interface TurtleEgg {}
 
+  export interface Wall {}
+
   export interface WallSign {}
 }
 
 declare module 'bukkit/block/structure' {
   import { Enum } from 'java/lang';
 
-  export class Mirror extends Enum<Mirror> {}
+  export enum Mirror {
+    FRONT_BACK,
+    LEFT_RIGHT,
+    NONE
+  }
 
-  export class StructureRotation extends Enum<StructureRotation> {}
+  export enum StructureRotation {
+    CLOCKWISE_180,
+    CLOCKWISE_90,
+    COUNTERCLOCKWISE_90,
+    NONE
+  }
 
-  export class UsageMode extends Enum<UsageMode> {}
+  export enum UsageMode {
+    CORNER,
+    DATA,
+    LOAD,
+    SAVE
+  }
 }
 
 declare module 'bukkit/boss' {
@@ -653,30 +962,32 @@ declare module 'bukkit/boss' {
     show(): void;
   }
 
-  export class KeyedBossBar implements BossBar, Keyed {}
+  export interface DragonBattle {}
 
-  export class BarColor extends Enum<BarColor> {
-    static BLUE: BarColor;
-    static GREEN: BarColor;
-    static PINK: BarColor;
-    static PURPLE: BarColor;
-    static RED: BarColor;
-    static WHITE: BarColor;
-    static YELLOW: BarColor;
+  export interface KeyedBossBar extends BossBar, Keyed {}
+
+  export enum BarColor {
+    BLUE,
+    GREEN,
+    PINK,
+    PURPLE,
+    RED,
+    WHITE,
+    YELLOW
   }
 
-  export class BarFlag extends Enum<BarFlag> {
-    static CREATE_FOG: BarFlag;
-    static DARKEN_SKY: BarFlag;
-    static PLAY_BOSS_MUSIC: BarFlag;
+  export enum BarFlag {
+    CREATE_FOG,
+    DARKEN_SKY,
+    PLAY_BOSS_MUSIC
   }
 
-  export class BarStyle extends Enum<BarStyle> {
-    static SEGMENTED_10: BarStyle;
-    static SEGMENTED_12: BarStyle;
-    static SEGMENTED_20: BarStyle;
-    static SEGMENTED_6: BarStyle;
-    static SOLID: BarStyle;
+  export enum BarStyle {
+    SEGMENTED_10,
+    SEGMENTED_12,
+    SEGMENTED_20,
+    SEGMENTED_6,
+    SOLID
   }
 }
 
@@ -829,15 +1140,38 @@ declare module 'bukkit/conversations' {
   export class ValidatingPrompt implements Prompt {}
 
   export module Conversation {
-    export class ConversationState extends Enum<ConversationState> {}
+    export enum ConversationState {}
   }
 }
 
-declare module 'bukkit/enchantments' {}
+declare module 'bukkit/enchantments' {
+  export class Enchantment {}
+  export class EnchantmentOffer {}
+  export class EnchantmentWrapper {}
+
+  export enum EnchantmentTarget {
+    ALL,
+    ARMOR,
+    ARMOR_FEET,
+    ARMOR_HEAD,
+    ARMOR_LEGS,
+    ARMOR_TORSO,
+    BOW,
+    BREAKABLE,
+    CROSSBOW,
+    FISHING_ROD,
+    TOOL,
+    TRIDENT,
+    VANISHABLE,
+    WEAPON,
+    WEARABLE
+  }
+}
 
 declare module 'bukkit/entity' {
   import { UUID } from 'java/util';
   import { BlockFace, PistonMoveReaction } from 'bukkit/block';
+  import { Attachable } from 'bukkit/material';
   import * as Bukkit from 'bukkit';
 
   export interface Entity {
@@ -1001,6 +1335,74 @@ declare module 'bukkit/entity' {
     ZOMBIE_HORSE,
     ZOMBIE_VILLAGER
   }
+
+  export interface AbstractArrow {}
+
+  export interface AbstractHorse {}
+
+  export interface AbstractVillager {}
+
+  export interface Ageable {}
+
+  export interface Ambient {}
+
+  export interface Animals {}
+
+  export interface AnimalTamer {}
+
+  export interface AreaEffectCloud {}
+
+  export interface ArmorStand {}
+
+  export interface Arrow {}
+
+  export interface Bat {}
+
+  export interface Bee {}
+
+  export interface Blaze {}
+
+  export interface Boat {}
+
+  export interface Boss {}
+
+  export interface Cat {}
+
+  export interface CaveSpider {}
+
+  export interface ChestedHorse {}
+
+  export interface Chicken {}
+
+  export interface Cod {}
+
+  export interface ComplexEntityPart {}
+
+  export interface Cow {}
+
+  export interface Creature {}
+
+  export interface Creeper {}
+
+  export interface Damageable {}
+
+  export interface Dolphin {}
+
+  export interface Donkey {}
+
+  export interface DragonFireball {}
+
+  export interface Drowned {}
+
+  export interface Egg {}
+
+  export interface ElderGuardian {}
+
+  export interface EnderDragon {}
+
+  export interface Hanging extends Entity, Attachable {
+    setFacingDirection(face: BlockFace, force: boolean): boolean;
+  }
 }
 
 declare module 'bukkit/entity/memory' {}
@@ -1020,7 +1422,7 @@ declare module 'bukkit/event' {
     getHandlers(): HandlerList;
     isAsynchronous(): boolean;
   }
-  declare module Event {
+  export module Event {
     export enum Result {
       ALLOW,
       DEFAULT,
@@ -1048,41 +1450,67 @@ declare module 'bukkit/event' {
     unregister(listener: RegisteredListener): void;
     static unregisterAll(): void;
     static unregisterAll(listener: Listener): void;
+    static unregisterAll(plugin: Plugin): void;
   }
 }
 
 declare module 'bukkit/event/block' {
-  export interface BlockBreakEvent {}
-  export interface BlockPlaceEvent {}
-  export interface BlockCanBuildEvent {}
-  export interface BlockCookEvent {}
-  export interface BlockDamageEvent {}
-  export interface BlockDispenseArmorEvent {}
-  export interface BlockDispenseEvent {}
-  export interface BlockDropItemEvent {}
-  export interface BlockExpEvent {}
-  export interface BlockExplodeEvent {}
-  export interface BlockFadeEvent {}
-  export interface BlockFertilizeEvent {}
-  export interface BlockFormEvent {}
-  export interface BlockFromToEvent {}
-  export interface BlockGrowEvent {}
-  export interface BlockIgniteEvent {}
-  export interface BlockMultiPlaceEvent {}
-  export interface BlockPhysicsEvent {}
-  export interface BlockPistonExtendEvent {}
-  export interface BlockPistonRetractEvent {}
-  export interface BlockRedstoneEvent {}
-  export interface BlockShearEntityEvent {}
-  export interface BlockSpreadEvent {}
-  export interface CauldronLevelChangeEvent {}
-  export interface EntityBlockFormEvent {}
-  export interface FluidLevelChangeEvent {}
-  export interface LeavesDecayEvent {}
-  export interface MoistureChangeEvent {}
-  export interface NotePlayEvent {}
-  export interface SignChangeEvent {}
-  export interface SpongeAbsorbEvent {}
+  import { Event, Cancellable } from 'bukkit/event';
+  import { Block, BlockState } from 'bukkit/block';
+  import { Player } from 'bukkit/entity';
+  import { EquipmentSlot } from 'bukkit/inventory';
+
+  export interface BlockEvent extends Event, Cancellable {
+    getBlock(): Block;
+  }
+
+  export interface BlockBreakEvent extends BlockEvent {
+    constructor(block: Block, player: Player): BlockBreakEvent;
+    getPlayer(): Player;
+    isDropItems(): boolean;
+    setDropItems(dropItems: boolean): void;
+  }
+  export interface BlockBurnEvent extends BlockEvent {
+    constructor(block: Block): BlockBurnEvent;
+    constructor(block: Block, ignitingBlock: Block): BlockBurnEvent;
+    getIgnitingBlock(): Block;
+  }
+  export interface BlockPlaceEvent extends BlockEvent {
+    canBuild(): boolean;
+    getBlockAgainst(): Block;
+    getBlockPlaced(): Block;
+    getBlockReplacedState(): BlockState;
+    getHand(): EquipmentSlot;
+  }
+  export interface BlockCanBuildEvent extends BlockEvent {}
+  export interface BlockCookEvent extends BlockEvent {}
+  export interface BlockDamageEvent extends BlockEvent {}
+  export interface BlockDispenseArmorEvent extends BlockEvent {}
+  export interface BlockDispenseEvent extends BlockEvent {}
+  export interface BlockDropItemEvent extends BlockEvent {}
+  export interface BlockExpEvent extends BlockEvent {}
+  export interface BlockExplodeEvent extends BlockEvent {}
+  export interface BlockFadeEvent extends BlockEvent {}
+  export interface BlockFertilizeEvent extends BlockEvent {}
+  export interface BlockFormEvent extends BlockEvent {}
+  export interface BlockFromToEvent extends BlockEvent {}
+  export interface BlockGrowEvent extends BlockEvent {}
+  export interface BlockIgniteEvent extends BlockEvent {}
+  export interface BlockMultiPlaceEvent extends BlockEvent {}
+  export interface BlockPhysicsEvent extends BlockEvent {}
+  export interface BlockPistonExtendEvent extends BlockEvent {}
+  export interface BlockPistonRetractEvent extends BlockEvent {}
+  export interface BlockRedstoneEvent extends BlockEvent {}
+  export interface BlockShearEntityEvent extends BlockEvent {}
+  export interface BlockSpreadEvent extends BlockEvent {}
+  export interface CauldronLevelChangeEvent extends BlockEvent {}
+  export interface EntityBlockFormEvent extends BlockEvent {}
+  export interface FluidLevelChangeEvent extends BlockEvent {}
+  export interface LeavesDecayEvent extends BlockEvent {}
+  export interface MoistureChangeEvent extends BlockEvent {}
+  export interface NotePlayEvent extends BlockEvent {}
+  export interface SignChangeEvent extends BlockEvent {}
+  export interface SpongeAbsorbEvent extends BlockEvent {}
 }
 
 declare module 'bukkit/event/enchantment' {
@@ -1091,73 +1519,88 @@ declare module 'bukkit/event/enchantment' {
 }
 
 declare module 'bukkit/event/entity' {
-  export interface AreaEffectCloudApplyEvent {}
-  export interface BatToggleSleepEvent {}
-  export interface CreatureSpawnEvent {}
-  export interface CreeperPowerEvent {}
-  export interface EnderDragonChangePhaseEvent {}
-  export interface EntityAirChangeEvent {}
-  export interface EntityBreakDoorEvent {}
-  export interface EntityBreedEvent {}
-  export interface EntityChangeBlockEvent {}
-  export interface EntityCombustByBlockEvent {}
-  export interface EntityCombustByEntityEvent {}
-  export interface EntityCombustEvent {}
-  export interface EntityCreatePortalEvent {}
-  export interface EntityDamageByBlockEvent {}
-  export interface EntityDamageByEntityEvent {}
-  export interface EntityDamageEvent {}
-  export interface EntityDeathEvent {}
-  export interface EntityDropItemEvent {}
-  export interface EntityExplodeEvent {}
-  export interface EntityInteractEvent {}
-  export interface EntityPickupItemEvent {}
-  export interface EntityPlaceEvent {}
-  export interface EntityPortalEnterEvent {}
-  export interface EntityPortalEvent {}
-  export interface EntityPortalExitEvent {}
-  export interface EntityPoseChangeEvent {}
-  export interface EntityPotionEffectEvent {}
-  export interface EntityRegainHealthEvent {}
-  export interface EntityResurrectEvent {}
-  export interface EntityShootBowEvent {}
-  export interface EntitySpawnEvent {}
-  export interface EntityTameEvent {}
-  export interface EntityTargetEvent {}
-  export interface EntityTargetLivingEntityEvent {}
-  export interface EntityTeleportEvent {}
-  export interface EntityToggleGlideEvent {}
-  export interface EntityToggleSwimEvent {}
-  export interface EntityTransformEvent {}
-  export interface EntityUnleashEvent {}
-  export interface ExpBottleEvent {}
-  export interface ExplosionPrimeEvent {}
-  export interface FireworkExplodeEvent {}
-  export interface FoodLevelChangeEvent {}
-  export interface HorseJumpEvent {}
-  export interface ItemDespawnEvent {}
-  export interface ItemMergeEvent {}
-  export interface ItemSpawnEvent {}
-  export interface LingeringPotionSplashEvent {}
-  export interface PigZapEvent {}
-  export interface PigZombieAngerEvent {}
-  export interface PlayerDeathEvent {}
-  export interface PlayerLeashEntityEvent {}
-  export interface PotionSplashEvent {}
-  export interface ProjectileHitEvent {}
-  export interface SheepDyeWoolEvent {}
-  export interface SheepRegrowWoolEvent {}
-  export interface SlimeSplitEvent {}
-  export interface SpawnerSpawnEvent {}
-  export interface VillagerAcquireTradeEvent {}
-  export interface VillagerCareerChangeEvent {}
-  export interface VillagerReplenishTradeEvent {}
+  import { Event } from 'bukkit/event';
+  import { Entity, EntityType } from 'bukkit/entity';
+
+  export interface EntityEvent {
+    getEntity(): Entity;
+    getEntityType(): EntityType;
+  }
+
+  export interface AreaEffectCloudApplyEvent extends EntityEvent {}
+  export interface BatToggleSleepEvent extends EntityEvent {}
+  export interface CreatureSpawnEvent extends EntityEvent {}
+  export interface CreeperPowerEvent extends EntityEvent {}
+  export interface EnderDragonChangePhaseEvent extends EntityEvent {}
+  export interface EntityAirChangeEvent extends EntityEvent {}
+  export interface EntityBreakDoorEvent extends EntityEvent {}
+  export interface EntityBreedEvent extends EntityEvent {}
+  export interface EntityChangeBlockEvent extends EntityEvent {}
+  export interface EntityCombustByBlockEvent extends EntityEvent {}
+  export interface EntityCombustByEntityEvent extends EntityEvent {}
+  export interface EntityCombustEvent extends EntityEvent {}
+  export interface EntityCreatePortalEvent extends EntityEvent {}
+  export interface EntityDamageByBlockEvent extends EntityEvent {}
+  export interface EntityDamageByEntityEvent extends EntityEvent {}
+  export interface EntityDamageEvent extends EntityEvent {}
+  export interface EntityDeathEvent extends EntityEvent {}
+  export interface EntityDropItemEvent extends EntityEvent {}
+  export interface EntityExplodeEvent extends EntityEvent {}
+  export interface EntityInteractEvent extends EntityEvent {}
+  export interface EntityPickupItemEvent extends EntityEvent {}
+  export interface EntityPlaceEvent extends EntityEvent {}
+  export interface EntityPortalEnterEvent extends EntityEvent {}
+  export interface EntityPortalEvent extends EntityEvent {}
+  export interface EntityPortalExitEvent extends EntityEvent {}
+  export interface EntityPoseChangeEvent extends EntityEvent {}
+  export interface EntityPotionEffectEvent extends EntityEvent {}
+  export interface EntityRegainHealthEvent extends EntityEvent {}
+  export interface EntityResurrectEvent extends EntityEvent {}
+  export interface EntityShootBowEvent extends EntityEvent {}
+  export interface EntitySpawnEvent extends EntityEvent {}
+  export interface EntityTameEvent extends EntityEvent {}
+  export interface EntityTargetEvent extends EntityEvent {}
+  export interface EntityTargetLivingEntityEvent extends EntityEvent {}
+  export interface EntityTeleportEvent extends EntityEvent {}
+  export interface EntityToggleGlideEvent extends EntityEvent {}
+  export interface EntityToggleSwimEvent extends EntityEvent {}
+  export interface EntityTransformEvent extends EntityEvent {}
+  export interface EntityUnleashEvent extends EntityEvent {}
+  export interface ExpBottleEvent extends EntityEvent {}
+  export interface ExplosionPrimeEvent extends EntityEvent {}
+  export interface FireworkExplodeEvent extends EntityEvent {}
+  export interface FoodLevelChangeEvent extends EntityEvent {}
+  export interface HorseJumpEvent extends EntityEvent {}
+  export interface ItemDespawnEvent extends EntityEvent {}
+  export interface ItemMergeEvent extends EntityEvent {}
+  export interface ItemSpawnEvent extends EntityEvent {}
+  export interface LingeringPotionSplashEvent extends EntityEvent {}
+  export interface PigZapEvent extends EntityEvent {}
+  export interface PigZombieAngerEvent extends EntityEvent {}
+  export interface PlayerDeathEvent extends EntityEvent {}
+  export interface PlayerLeashEntityEvent extends EntityEvent {}
+  export interface PotionSplashEvent extends EntityEvent {}
+  export interface ProjectileHitEvent extends EntityEvent {}
+  export interface ProjectileLaunchEvent extends EntityEvent {}
+  export interface SheepDyeWoolEvent extends EntityEvent {}
+  export interface SheepRegrowWoolEvent extends EntityEvent {}
+  export interface SlimeSplitEvent extends EntityEvent {}
+  export interface SpawnerSpawnEvent extends EntityEvent {}
+  export interface VillagerAcquireTradeEvent extends EntityEvent {}
+  export interface VillagerCareerChangeEvent extends EntityEvent {}
+  export interface VillagerReplenishTradeEvent extends EntityEvent {}
 }
 
 declare module 'bukkit/event/hanging' {
-  export interface HangingBreakByEntityEvent {}
-  export interface HangingBreakEvent {}
-  export interface HangingPlaceEvent {}
+  import { Event } from 'bukkit/event';
+
+  export interface HangingEvent {
+    getEntity(): Hanging;
+  }
+
+  export interface HangingBreakByEntityEvent extends HangingEvent {}
+  export interface HangingBreakEvent extends HangingEvent {}
+  export interface HangingPlaceEvent extends HangingEvent {}
 }
 
 declare module 'bukkit/event/inventory' {
@@ -1201,7 +1644,7 @@ declare module 'bukkit/event/player' {
   export interface PlayerFishEvent {}
   export interface PlayerGameModeChangeEvent {}
   export interface PlayerInteractAtEntityEvent {}
-  export interface PlayerINteractEntityEvent {}
+  export interface PlayerInteractEntityEvent {}
   export interface PlayerInteractEvent {}
   export interface PlayerItemBreakEvent {}
   export interface PlayerItemConsumeEvent {}
@@ -1216,7 +1659,7 @@ declare module 'bukkit/event/player' {
   export interface PlayerMoveEvent {}
   export interface PlayerPickupArrowEvent {}
   export interface PlayerPickupItemEvent {}
-  export interface PlayerPortalEVent {}
+  export interface PlayerPortalEvent {}
   export interface PlayerPreLoginEvent {}
   export interface PlayerQuitEvent {}
   export interface PlayerRecipeDiscoverEvent {}
@@ -1358,6 +1801,15 @@ declare module 'bukkit/inventory' {
     setContents(items: ItemStack[]): void;
     setStorageContents(items: ItemStack[]): void;
   }
+
+  export enum EquipmentSlot {
+    CHEST,
+    FEET,
+    HAND,
+    HEAD,
+    LEGS,
+    OFF_HAND
+  }
 }
 
 declare module 'bukkit/inventory/meta' {
@@ -1374,7 +1826,18 @@ declare module 'bukkit/loot' {}
 
 declare module 'bukkit/map' {}
 
-declare module 'bukkit/material' {}
+declare module 'bukkit/material' {
+  import { BlockFace } from 'bukkit/block';
+
+  export interface Directional {
+    getFacing(): BlockFace;
+    setFacingDirection(face: BlockFace): void;
+  }
+
+  export interface Attachable extends Directional {
+    getAttachedFace(): BlockFace;
+  }
+}
 
 declare module 'bukkit/material/types' {}
 
@@ -1515,8 +1978,18 @@ declare module 'me/conji/cauldron/utils' {
 
 
 declare module 'cauldron' {
-  import { BlockBreakEvent, BlockPlaceEvent, BlockCanBuildEvent, BlockCookEvent, BlockDispenseArmorEvent, BlockDispenseEvent, BlockDropItemEvent, BlockExpEvent, BlockExplodeEvent, BlockFadeEvent, BlockFertilizeEvent, BlockFormEvent, BlockFromToEvent, BlockGrowEvent, BlockIgniteEvent, BlockMultiPlaceEvent, BlockPhysicsEvent, BlockPistonExtendEvent, BlockPistonRetractEvent, BlockShearEntityEvent, BlockSpreadEvent, CauldronLevelChangeEvent, EntityBlockFormEvent, FluidLevelChangeEvent, LeavesDecayEvent, MoistureChangeEvent, NotePlayEvent, SignChangeEvent, SpongeAbsorbEvent } from 'bukkit/event/block';
+  import { Event } from 'bukkit/event';
+  import { BlockBreakEvent, BlockPlaceEvent, BlockCanBuildEvent, BlockCookEvent, BlockDamageEvent, BlockDispenseArmorEvent, BlockDispenseEvent, BlockDropItemEvent, BlockExpEvent, BlockExplodeEvent, BlockFadeEvent, BlockFertilizeEvent, BlockFormEvent, BlockFromToEvent, BlockGrowEvent, BlockIgniteEvent, BlockMultiPlaceEvent, BlockPhysicsEvent, BlockPistonExtendEvent, BlockPistonRetractEvent, BlockShearEntityEvent, BlockSpreadEvent, CauldronLevelChangeEvent, EntityBlockFormEvent, FluidLevelChangeEvent, LeavesDecayEvent, MoistureChangeEvent, NotePlayEvent, SignChangeEvent, SpongeAbsorbEvent } from 'bukkit/event/block';
   import { EnchantItemEvent } from 'bukkit/event/enchantment';
+  import { AreaEffectCloudApplyEvent, BatToggleSleepEvent, CreatureSpawnEvent, CreeperPowerEvent, EnderDragonChangePhaseEvent, EntityAirChangeEvent, EntityBreakDoorEvent, EntityBreedEvent, EntityChangeBlockEvent, EntityCombustByBlockEvent, EntityCombustByEntityEvent, EntityCombustEvent, EntityCreatePortalEvent, EntityDamageByBlockEvent, EntityDamageByEntityEvent, EntityDamageEvent, EntityDeathEvent, EntityDropItemEvent, EntityExplodeEvent, EntityInteractEvent, EntityPickupItemEvent, EntityPlaceEvent, EntityPortalEnterEvent, EntityPortalEvent, EntityPortalExitEvent, EntityPoseChangeEvent, EntityPotionEffectEvent, EntityRegainHealthEvent, EntityResurrectEvent, EntityShootBowEvent, EntitySpawnEvent, EntityTameEvent, EntityTargetEvent, EntityTeleportEvent, EntityToggleGlideEvent, EntityToggleSwimEvent, EntityTransformEvent, EntityUnleashEvent, ExplosionPrimeEvent, FireworkExplodeEvent, FoodLevelChangeEvent, HorseJumpEvent, ItemDespawnEvent, LingeringPotionSplashEvent, PigZapEvent, PigZombieAngerEvent, PlayerDeathEvent, PlayerLeashEntityEvent, PotionSplashEvent, ProjectileHitEvent, ProjectileLaunchEvent, SheepDyeWoolEvent, SheepRegrowWoolEvent, SlimeSplitEvent, SpawnerSpawnEvent, VillagerAcquireTradeEvent, VillagerCareerChangeEvent, VillagerReplenishTradeEvent } from 'bukkit/event/entity';
+  import { HangingBreakByEntityEvent, HangingBreakEvent, HangingPlaceEvent } from 'bukkit/event/hanging';
+  import { BrewingStandFuelEvent, CraftItemEvent, FurnaceExtractEvent, FurnaceSmeltEvent, InventoryCloseEvent, InventoryCreativeEvent, InventoryDragEvent, InventoryInteractEvent, InventoryMoveItemEvent, InventoryOpenEvent, PrepareAnvilEvent, PrepareItemCraftEvent, TradeSelectEvent } from 'bukkit/event/inventory';
+  import { RaidSpawnWaveEvent, RaidFinishEvent, RaidStopEvent, RaidTriggerEvent } from 'bukkit/event/raid';
+  import { PlayerAdvancementDoneEvent, PlayerArmorStandManipulateEvent, PlayerBedEnterEvent, PlayerBedLeaveEvent, PlayerBucketEmptyEvent, PlayerChangedWorldEvent, PlayerChannelEvent, PlayerChatEvent, PlayerChatTabCompleteEvent, PlayerCommandPreprocessEvent, PlayerCommandSendEvent, PlayerDropItemEvent, PlayerEditBookEvent, PlayerEggThrowEvent, PlayerExpChangeEvent, PlayerFishEvent, PlayerGameModeChangeEvent, PlayerInteractAtEntityEvent, PlayerInteractEvent, PlayerInteractEntityEvent, PlayerItemBreakEvent, PlayerItemDamageEvent, PlayerItemHeldEvent, PlayerItemMendEvent, PlayerJoinEvent, PlayerKickEvent, PlayerLevelChangeEvent, PlayerLocaleChangeEvent, PlayerLoginEvent, PlayerMoveEvent, PlayerPickupArrowEvent, PlayerPortalEvent, PlayerPreLoginEvent, PlayerQuitEvent, PlayerRecipeDiscoverEvent, PlayerResourcePackStatusEvent, PlayerRespawnEvent, PlayerRiptideEvent, PlayerShearEntityEvent, PlayerStatisticIncrementEvent, PlayerSwapHandItemsEvent, PlayerTakeLecternBookEvent, PlayerTeleportEvent, PlayerToggleFlightEvent, PlayerToggleSprintEvent, PlayerUnleashEntityEvent, PlayerUnregisterChannelEvent } from 'bukkit/event/player';
+  import { BroadcastMessageEvent, PluginDisableEvent, PluginEnableEvent, RemoteServerCommandEvent, ServerCommandEvent, ServerListPingEvent, ServerLoadEvent, ServiceRegisterEvent, ServiceUnregisterEvent, TabCompleteEvent } from 'bukkit/event/server';
+  import { VehicleBlockCollision, VehicleBlockCollisionEvent, VehicleCreateEvent, VehicleDamageEvent, VehicleDestroyEvent, VehicleEnterEvent, VehicleEntityCollisionEvent, VehicleExitEvent, VehicleUpdateEvent } from 'bukkit/event/vehicle';
+  import { LightningStrikeEvent, ThunderChangeEvent, WeatherChangeEvent } from 'bukkit/event/weather';
+  import { ChunkLoadEvent, ChunkPopulateEvent, ChunkUnloadEvent, PortalCreateEvent, SpawnChangeEvent, StructureGrowEvent, WorldLoadEvent, WorldSaveEvent } from 'bukkit/event/world';
   import { BukkitPlugin } from 'bukkit/plugin/java';
   import { NamespacedKey } from 'bukkit';
   import { EventEmitter } from 'events';
@@ -1530,43 +2003,237 @@ declare module 'cauldron' {
     cancel(): void;
   }
 
+  interface EventHandler<T extends Event> {
+    (event: T): boolean?;
+  }
+
   interface CauldronEvents extends EventEmitter {
     // block
-    on(name: 'blockbreak', handler: (event: BlockBreakEvent) => boolean?): CancelToken;
-    on(name: 'blockplace', handler: (event: BlockPlaceEvent) => boolean?): CancelToken;
-    on(name: 'blockcanbuild', handler: (event: BlockCanBuildEvent) => boolean?): CancelToken;
-    on(name: 'blockcook', handler: (event: BlockCookEvent) => boolean?): CancelToken;
-    on(name: 'blockdamage', handler: (event: BlockDamageEvent) => boolean?): CancelToken;
-    on(name: 'blockdispensearmor', handler: (event: BlockDispenseArmorEvent) => boolean?): CancelToken;
-    on(name: 'blockdispense', handler: (event: BlockDispenseEvent) => boolean?): CancelToken;
-    on(name: 'blockdropitem', handler: (event: BlockDropItemEvent) => boolean?): CancelToken;
-    on(name: 'blockexp', handler: (event: BlockExpEvent) => boolean?): CancelToken;
-    on(name: 'blockexplode', handler: (event: BlockExplodeEvent) => boolean?): CancelToken;
-    on(name: 'blockfade', handler: (event: BlockFadeEvent) => boolean?): CancelToken;
-    on(name: 'blockfertilize', handler: (event: BlockFertilizeEvent) => boolean?): CancelToken;
-    on(name: 'blockform', handler: (event: BlockFormEvent) => boolean?): CancelToken;
-    on(name: 'blockfromto', handler: (event: BlockFromToEvent) => boolean?): CancelToken;
-    on(name: 'blockgrow', handler: (event: BlockGrowEvent) => boolean?): CancelToken;
-    on(name: 'blockignite', handler: (event: BlockIgniteEvent) => boolean?): CancelToken;
-    on(name: 'blockmultiplace', handler: (event: BlockMultiPlaceEvent) => boolean?): CancelToken;
-    on(name: 'blockphysics', handler: (event: BlockPhysicsEvent) => boolean?): CancelToken;
-    on(name: 'blockpistonextend', handler: (event: BlockPistonExtendEvent) => boolean?): CancelToken;
-    on(name: 'blockpistonretract', handler: (event: BlockPistonRetractEvent) => boolean?): CancelToken;
-    on(name: 'blockredstone', handler: (event: BlockRedstoneEvent) => boolean?): CancelToken;
-    on(name: 'blockshearentity', handler: (event: BlockShearEntityEvent) => boolean?): CancelToken;
-    on(name: 'blockspread', handler: (event: BlockSpreadEvent) => boolean?): CancelToken;
-    on(name: 'cauldronlevelchange', handler: (event: CauldronLevelChangeEvent) => boolean?): CancelToken;
-    on(name: 'blockentityform', handler: (event: EntityBlockFormEvent) => boolean?): CancelToken;
-    on(name: 'fluidlevelchange', handler: (event: FluidLevelChangeEvent) => boolean?): CancelToken;
-    on(name: 'leavesdecay', handler: (event: LeavesDecayEvent) => boolean?): CancelToken;
-    on(name: 'moisturechange', handler: (event: MoistureChangeEvent) => boolean?): CancelToken;
-    on(name: 'noteplay', handler: (event: NotePlayEvent) => boolean?): CancelToken;
-    on(name: 'signchange', handler: (event: SignChangeEvent) => boolean?): CancelToken;
-    on(name: 'spongeabsorb', handler: (event: SpongeAbsorbEvent) => boolean?): CancelToken;
+    on(name: 'blockbreak', handler: EventHandler<BlockBreakEvent>): CancelToken;
+    on(name: 'blockburn', handler: EventHandler<BlockBurnEvent>): CancelToken;
+    on(name: 'blockplace', handler: EventHandler<BlockPlaceEvent>): CancelToken;
+    on(name: 'blockcanbuild', handler: EventHandler<BlockCanBuildEvent>): CancelToken;
+    on(name: 'blockcook', handler: EventHandler<BlockCookEvent>): CancelToken;
+    on(name: 'blockdamage', handler: EventHandler<BlockDamageEvent>): CancelToken;
+    on(name: 'blockdispensearmor', handler: EventHandler<BlockDispenseArmorEvent>): CancelToken;
+    on(name: 'blockdispense', handler: EventHandler<BlockDispenseEvent>): CancelToken;
+    on(name: 'blockdropitem', handler: EventHandler<BlockDropItemEvent>): CancelToken;
+    on(name: 'blockexp', handler: EventHandler<BlockExpEvent>): CancelToken;
+    on(name: 'blockexplode', handler: EventHandler<BlockExplodeEvent>): CancelToken;
+    on(name: 'blockfade', handler: EventHandler<BlockFadeEvent>): CancelToken;
+    on(name: 'blockfertilize', handler: EventHandler<BlockFertilizeEvent>): CancelToken;
+    on(name: 'blockform', handler: EventHandler<BlockFormEvent>): CancelToken;
+    on(name: 'blockfromto', handler: EventHandler<BlockFromToEvent>): CancelToken;
+    on(name: 'blockgrow', handler: EventHandler<BlockGrowEvent>): CancelToken;
+    on(name: 'blockignite', handler: EventHandler<BlockIgniteEvent>): CancelToken;
+    on(name: 'blockmultiplace', handler: EventHandler<BlockMultiPlaceEvent>): CancelToken;
+    on(name: 'blockphysics', handler: EventHandler<BlockPhysicsEvent>): CancelToken;
+    on(name: 'blockpistonextend', handler: EventHandler<BlockPistonExtendEvent>): CancelToken;
+    on(name: 'blockpistonretract', handler: EventHandler<BlockPistonRetractEvent>): CancelToken;
+    on(name: 'blockredstone', handler: EventHandler<BlockRedstoneEvent>): CancelToken;
+    on(name: 'blockshearentity', handler: EventHandler<BlockShearEntityEvent>): CancelToken;
+    on(name: 'blockspread', handler: EventHandler<BlockSpreadEvent>): CancelToken;
+    on(name: 'cauldronlevelchange', handler: EventHandler<CauldronLevelChangeEvent>): CancelToken;
+    on(name: 'blockentityform', handler: EventHandler<EntityBlockFormEvent>): CancelToken;
+    on(name: 'fluidlevelchange', handler: EventHandler<FluidLevelChangeEvent>): CancelToken;
+    on(name: 'leavesdecay', handler: EventHandler<LeavesDecayEvent>): CancelToken;
+    on(name: 'moisturechange', handler: EventHandler<MoistureChangeEvent>): CancelToken;
+    on(name: 'noteplay', handler: EventHandler<NotePlayEvent>): CancelToken;
+    on(name: 'signchange', handler: EventHandler<SignChangeEvent>): CancelToken;
+    on(name: 'spongeabsorb', handler: EventHandler<SpongeAbsorbEvent>): CancelToken;
     // enchant
-    on(name: 'enchant', handler: (event: EnchantItemEvent) => boolean?): CancelToken;
-    on(name: 'prepareenchant', handler: (event: PrepareItemEnchantEvent) => boolean?): CancelToken;
-    on(name: 'playerjoin', handler: (event: Event) => boolean?): CancelToken;
+    on(name: 'enchant', handler: EventHandler<EnchantItemEvent>): CancelToken;
+    on(name: 'prepareenchant', handler: EventHandler<PrepareItemEnchantEvent>): CancelToken;
+
+    // entities
+    on(name: 'areaeffectcloudapply', handler: EventHandler<AreaEffectCloudApplyEvent>): CancelToken;
+    on(name: 'battogglesleep', handler: EventHandler<BatToggleSleepEvent>): CancelToken;
+    on(name: 'creaturespawn', handler: EventHandler<CreatureSpawnEvent>): CancelToken;
+    on(name: 'creeperpower', handler: EventHandler<CreeperPowerEvent>): CancelToken;
+    on(name: 'enderdragonchangephase', handler: EventHandler<EnderDragonChangePhaseEvent>): CancelToken;
+    on(name: 'entityairchange', handler: EventHandler<EntityAirChangeEvent>): CancelToken;
+    on(name: 'entitybreakdoor', handler: EventHandler<EntityBreakDoorEvent>): CancelToken;
+    on(name: 'entitybreed', handler: EventHandler<EntityBreedEvent>): CancelToken;
+    on(name: 'entitychangeblock', handler: EventHandler<EntityChangeBlockEvent>): CancelToken;
+    on(name: 'entitycombustbyblock', handler: EventHandler<EntityCombustByBlockEvent>): CancelToken;
+    on(name: 'entitycombustbyentity', handler: EventHandler<EntityCombustByEntityEvent>): CancelToken;
+    on(name: 'entitycombust', handler: EventHandler<EntityCombustEvent>): CancelToken;
+    on(name: 'entitycreateportal', handler: EventHandler<EntityCreatePortalEvent>): CancelToken;
+    on(name: 'entitydamagebyblock', handler: EventHandler<EntityDamageByBlockEvent>): CancelToken;
+    on(name: 'entitydamagebyentity', handler: EventHandler<EntityDamageByEntityEvent>): CancelToken;
+    on(name: 'entitydamage', handler: EventHandler<EntityDamageEvent>): CancelToken;
+    on(name: 'entitydeath', handler: EventHandler<EntityDeathEvent>): CancelToken;
+    on(name: 'entitydropitem', handler: EventHandler<EntityDropItemEvent>): CancelToken;
+    on(name: 'entityexplode', handler: EventHandler<EntityExplodeEvent>): CancelToken;
+    on(name: 'entityinteract', handler: EventHandler<EntityInteractEvent>): CancelToken;
+    on(name: 'entitypickupitem', handler: EventHandler<EntityPickupItemEvent>): CancelToken;
+    on(name: 'entityplace', handler: EventHandler<EntityPlaceEvent>): CancelToken;
+    on(name: 'entityportalenter', handler: EventHandler<EntityPortalEnterEvent>): CancelToken;
+    on(name: 'entityportal', handler: EventHandler<EntityPortalEvent>): CancelToken;
+    on(name: 'entityportalexit', handler: EventHandler<EntityPortalExitEvent>): CancelToken;
+    on(name: 'entityposechange', handler: EventHandler<EntityPoseChangeEvent>): CancelToken;
+    on(name: 'entitypotioneffect', handler: EventHandler<EntityPotionEffectEvent>): CancelToken;
+    on(name: 'entityregainhealth', handler: EventHandler<EntityRegainHealthEvent>): CancelToken;
+    on(name: 'entityresurrect', handler: EventHandler<EntityResurrectEvent>): CancelToken;
+    on(name: 'entityshootbow', handler: EventHandler<EntityShootBowEvent>): CancelToken;
+    on(name: 'entityspawn', handler: EventHandler<EntitySpawnEvent>): CancelToken;
+    on(name: 'entitytame', handler: EventHandler<EntityTameEvent>): CancelToken;
+    on(name: 'entitytarget', handler: EventHandler<EntityTargetEvent>): CancelToken;
+    on(name: 'entitytargetlivingentity', handler: EventHandler<EntityTargetLivingEntityEvent>): CancelToken;
+    on(name: 'entityteleport', handler: EventHandler<EntityTeleportEvent>): CancelToken;
+    on(name: 'entitytoggleglide', handler: EventHandler<EntityToggleGlideEvent>): CancelToken;
+    on(name: 'entitytoggleswim', handler: EventHandler<EntityToggleSwimEvent>): CancelToken;
+    on(name: 'entitytransform', handler: EventHandler<EntityTransformEvent>): CancelToken;
+    on(name: 'entityunleash', handler: EventHandler<EntityUnleashEvent>): CancelToken;
+    on(name: 'expbottle', handler: EventHandler<ExpBottleEvent>): CancelToken;
+    on(name: 'explosionprime', handler: EventHandler<ExplosionPrimeEvent>): CancelToken;
+    on(name: 'fireworkexplode', handler: EventHandler<FireworkExplodeEvent>): CancelToken;
+    on(name: 'foodlevelchange', handler: EventHandler<FoodLevelChangeEvent>): CancelToken;
+    on(name: 'horsejump', handler: EventHandler<HorseJumpEvent>): CancelToken;
+    on(name: 'itemdespawn', handler: EventHandler<ItemDespawnEvent>): CancelToken;
+    on(name: 'itemmerge', handler: EventHandler<EnchantItemEvent>): CancelToken;
+    on(name: 'lingeringpotionsplash', handler: EventHandler<LingeringPotionSplashEvent>): CancelToken;
+    on(name: 'pigzap', handler: EventHandler<PigZapEvent>): CancelToken;
+    on(name: 'pigzombieanger', handler: EventHandler<PigZombieAngerEvent>): CancelToken;
+    on(name: 'playerdeath', handler: EventHandler<PlayerDeathEvent>): CancelToken;
+    on(name: 'playerleashentity', handler: EventHandler<PlayerLeashEntityEvent>): CancelToken;
+    on(name: 'potionsplash', handler: EventHandler<PotionSplashEvent>): CancelToken;
+    on(name: 'projectilehit', handler: EventHandler<ProjectileHitEvent>): CancelToken;
+    on(name: 'projectilelaunch', handler: EventHandler<ProjectileLaunchEvent>): CancelToken;
+    on(name: 'sheepdyewool', handler: EventHandler<SheepDyeWoolEvent>): CancelToken;
+    on(name: 'sheepregrowwool', handler: EventHandler<SheepRegrowWoolEvent>): CancelToken;
+    on(name: 'slimesplit', handler: EventHandler<SlimeSplitEvent>): CancelToken;
+    on(name: 'spawnerspawn', handler: EventHandler<SpawnerSpawnEvent>): CancelToken;
+    on(name: 'villageracquiretrade', handler: EventHandler<VillagerAcquireTradeEvent>): CancelToken;
+    on(name: 'villagercareerchange', handler: EventHandler<VillagerCareerChangeEvent>): CancelToken;
+    on(name: 'villagerreplenishtrade', handler: EventHandler<VillagerReplenishTradeEvent>): CancelToken;
+
+    // hanging
+    on(name: 'hangingbreakbyentity', handler: EventHandler<HangingBreakByEntityEvent>): CancelToken;
+    on(name: 'hangingbreak', handler: EventHandler<HangingBreakEvent>): CancelToken;
+    on(name: 'hangingplace', handler: EventHandler<HangingPlaceEvent>): CancelToken;
+
+    // inventory
+    on(name: 'brewingstandfuel', handler: EventHandler<BrewingStandFuelEvent>): CancelToken;
+    on(name: 'craftitem', handler: EventHandler<CraftItemEvent>): CancelToken;
+    on(name: 'furnaceburn', handler: EventHandler<FurnaceBurnEvent>): CancelToken;
+    on(name: 'furnaceextract', handler: EventHandler<FurnaceExtractEvent>): CancelToken;
+    on(name: 'furnacesmelt', handler: EventHandler<FurnaceSmeltEvent>): CancelToken;
+    on(name: 'inventoryclick', handler: EventHandler<InventoryClickEvent>): CancelToken;
+    on(name: 'inventoryclose', handler: EventHandler<InventoryCloseEvent>): CancelToken;
+    on(name: 'inventorycreative', handler: EventHandler<InventoryCreativeEvent>): CancelToken;
+    on(name: 'inventorydrag', handler: EventHandler<InventoryDragEvent>): CancelToken;
+    on(name: 'inventoryinteract', handler: EventHandler<InventoryInteractEvent>): CancelToken;
+    on(name: 'inventorymoveitem', handler: EventHandler<InventoryMoveItemEvent>): CancelToken;
+    on(name: 'inventoryopen', handler: EventHandler<InventoryOpenEvent>): CancelToken;
+    on(name: 'inventorypickupitem', handler: EventHandler<InventoryPickupItemEvent>): CancelToken;
+    on(name: 'prepareanvil', handler: EventHandler<PrepareAnvilEvent>): CancelToken;
+    on(name: 'prepareitemcraft', handler: EventHandler<PrepareItemCraftEvent>): CancelToken;
+    on(name: 'tradeselect', handler: EventHandler<TradeSelectEvent>): CancelToken;
+
+    // player
+    on(name: 'playeradvancementdone', handler: EventHandler<PlayerAdvancementDoneEvent>): CancelToken;
+    on(name: 'playeranimation', handler: EventHandler<PlayerAnimationEvent>): CancelToken;
+    on(name: 'playerarmorstandmanipulate', handler: EventHandler<PlayerArmorStandManipulateEvent>): CancelToken;
+    on(name: 'playerbedenter', handler: EventHandler<PlayerBedEnterEvent>): CancelToken;
+    on(name: 'playerbedleave', handler: EventHandler<PlayerBedLeaveEvent>): CancelToken;
+    on(name: 'playerbucketempty', handler: EventHandler<PlayerBucketEmptyEvent>): CancelToken;
+    on(name: 'playerbucketfill', handler: EventHandler<PlayerBucketFillEvent>): CancelToken;
+    on(name: 'playerchangedmainhand', handler: EventHandler<PlayerChangedMainHandEvent>): CancelToken;
+    on(name: 'playerchangedworld', handler: EventHandler<PlayerChangedWorldEvent>): CancelToken;
+    on(name: 'playerchannel', handler: EventHandler<PlayerChannelEvent>): CancelToken;
+    on(name: 'playerchat', handler: EventHandler<PlayerChatEvent>): CancelToken;
+    on(name: 'playerchattabcomplete', handler: EventHandler<PlayerChatTabCompleteEvent>): CancelToken;
+    on(name: 'playercommandpreprocess', handler: EventHandler<PlayerCommandPreprocessEvent>): CancelToken;
+    on(name: 'playercommandsend', handler: EventHandler<PlayerCommandSendEvent>): CancelToken;
+    on(name: 'playerdropitem', handler: EventHandler<PlayerDropItemEvent>): CancelToken;
+    on(name: 'playereditbook', handler: EventHandler<PlayerEditBookEvent>): CancelToken;
+    on(name: 'playereggthrow', handler: EventHandler<PlayerEggThrowEvent>): CancelToken;
+    on(name: 'playerexpchange', handler: EventHandler<PlayerExpChangeEvent>): CancelToken;
+    on(name: 'playerfish', handler: EventHandler<PlayerFishEvent>): CancelToken;
+    on(name: 'playergamemodechange', handler: EventHandler<PlayerGameModeChangeEvent>): CancelToken;
+    on(name: 'playerinteractatentity', handler: EventHandler<PlayerInteractAtEntityEvent>): CancelToken;
+    on(name: 'playerinteractentity', handler: EventHandler<PlayerInteractEntityEvent>): CancelToken;
+    on(name: 'playerinteract', handler: EventHandler<PlayerInteractEvent>): CancelToken;
+    on(name: 'playeritembreak', handler: EventHandler<PlayerItemBreakEvent>): CancelToken;
+    on(name: 'playeritemconsume', handler: EventHandler<PlayerItemConsumeEvent>): CancelToken;
+    on(name: 'playeritemdamage', handler: EventHandler<PlayerItemDamageEvent>): CancelToken;
+    on(name: 'playeritemheld', handler: EventHandler<PlayerItemHeldEvent>): CancelToken;
+    on(name: 'playeritemmend', handler: EventHandler<PlayerItemMendEvent>): CancelToken;
+    on(name: 'playerjoin', handler: EventHandler<PlayerJoinEvent>): CancelToken;
+    on(name: 'playerkick', handler: EventHandler<PlayerKickEvent>): CancelToken;
+    on(name: 'playerlevelchange', handler: EventHandler<PlayerLevelChangeEvent>): CancelToken;
+    on(name: 'playerlocalechange', handler: EventHandler<PlayerLocaleChangeEvent>): CancelToken;
+    on(name: 'playerlogin', handler: EventHandler<PlayerLoginEvent>): CancelToken;
+    on(name: 'playermove', handler: EventHandler<PlayerMoveEvent>): CancelToken;
+    on(name: 'playerpickuparrow', handler: EventHandler<PlayerPickupArrowEvent>): CancelToken;
+    on(name: 'playerpickupitem', handler: EventHandler<PlayerPickupItemEvent>): CancelToken;
+    on(name: 'playerportal', handler: EventHandler<PlayerPortalEvent>): CancelToken;
+    on(name: 'playerprelogin', handler: EventHandler<PlayerPreLoginEvent>): CancelToken;
+    on(name: 'playerquit', handler: EventHandler<PlayerQuitEvent>): CancelToken;
+    on(name: 'playerrecipediscover', handler: EventHandler<PlayerRecipeDiscoverEvent>): CancelToken;
+    on(name: 'playerregisterchannel', handler: EventHandler<EnchantItemEvent>): CancelToken;
+    on(name: 'playerresourcepackstatus', handler: EventHandler<PlayerResourcePackStatusEvent>): CancelToken;
+    on(name: 'playerrespawn', handler: EventHandler<PlayerRespawnEvent>): CancelToken;
+    on(name: 'playerriptide', handler: EventHandler<PlayerRiptideEvent>): CancelToken;
+    on(name: 'playershearentity', handler: EventHandler<PlayerShearEntityEvent>): CancelToken;
+    on(name: 'playerstatisticincrement', handler: EventHandler<PlayerStatisticIncrementEvent>): CancelToken;
+    on(name: 'playerspawnhanditems', handler: EventHandler<PlayerSwapHandItemsEvent>): CancelToken;
+    on(name: 'playertakelecternbook', handler: EventHandler<PlayerTakeLecternBookEvent>): CancelToken;
+    on(name: 'playerteleport', handler: EventHandler<PlayerTeleportEvent>): CancelToken;
+    on(name: 'playertoggleflight', handler: EventHandler<PlayerToggleFlightEvent>): CancelToken;
+    on(name: 'playertogglesprint', handler: EventHandler<PlayerToggleSprintEvent>): CancelToken;
+    on(name: 'playerunleashentity', handler: EventHandler<PlayerUnleashEntityEvent>): CancelToken;
+    on(name: 'playerunregisterchannel', handler: EventHandler<PlayerUnregisterChannelEvent>): CancelToken;
+    on(name: 'playervelocity', handler: EventHandler<PlayerVelocityEvent>): CancelToken;
+    on(name: 'playerquit', handler: EventHandler<PlayerQuitEvent>): CancelToken;
+
+    // raid
+    on(name: 'raidfinish', handler: EventHandler<RaidFinishEvent>): CancelToken;
+    on(name: 'raidspawnwave', handler: EventHandler<RaidSpawnWaveEvent>): CancelToken;
+    on(name: 'raidstop', handler: EventHandler<RaidStopEvent>): CancelToken;
+    on(name: 'raidtrigger', handler: EventHandler<RaidTriggerEvent>): CancelToken;
+
+    // server
+    on(name: 'broadcastmessage', handler: EventHandler<BroadcastMessageEvent>): CancelToken;
+    on(name: 'mapinitialize', handler: EventHandler<MapInitializeEvent>): CancelToken;
+    on(name: 'plugindisable', handler: EventHandler<PluginDisableEvent>): CancelToken;
+    on(name: 'pluginenable', handler: EventHandler<PluginEnableEvent>): CancelToken;
+    on(name: 'remotecommand', handler: EventHandler<RemoteServerCommandEvent>): CancelToken;
+    on(name: 'servercommand', handler: EventHandler<ServerCommandEvent>): CancelToken;
+    on(name: 'serverlistping', handler: EventHandler<ServerListPingEvent>): CancelToken;
+    on(name: 'serverload', handler: EventHandler<ServerLoadEvent>): CancelToken;
+    on(name: 'serviceregister', handler: EventHandler<ServiceRegisterEvent>): CancelToken;
+    on(name: 'serviceunregister', handler: EventHandler<ServiceUnregisterEvent>): CancelToken;
+    on(name: 'tabcomplete', handler: EventHandler<TabCompleteEvent>): CancelToken;
+
+    // vehicle
+    on(name: 'vehicleblockcollision', handler: EventHandler<VehicleBlockCollisionEvent>): CancelToken;
+    on(name: 'vehiclecreate', handler: EventHandler<VehicleCreateEvent>): CancelToken;
+    on(name: 'vehicledamage', handler: EventHandler<VehicleDamageEvent>): CancelToken;
+    on(name: 'vehicledestroy', handler: EventHandler<VehicleDestroyEvent>): CancelToken;
+    on(name: 'vehicleenter', handler: EventHandler<VehicleEnterEvent>): CancelToken;
+    on(name: 'vehicleentitycollision', handler: EventHandler<VehicleEntityCollisionEvent>): CancelToken;
+    on(name: 'vehicleexit', handler: EventHandler<VehicleExitEvent>): CancelToken;
+    on(name: 'vehiclemove', handler: EventHandler<VehicleMoveEvent>): CancelToken;
+    on(name: 'vehicleupdate', handler: EventHandler<VehicleUpdateEvent>): CancelToken;
+
+    // weather
+    on(name: 'lightningstrike', handler: EventHandler<LightningStrikeEvent>): CancelToken;
+    on(name: 'thunderchange', handler: EventHandler<ThunderChangeEvent>): CancelToken;
+    on(name: 'weatherchange', handler: EventHandler<WeatherChangeEvent>): CancelToken;
+
+    // world
+    on(name: 'chunkload', handler: EventHandler<ChunkLoadEvent>): CancelToken;
+    on(name: 'chunkpopulate', handler: EventHandler<ChunkPopulateEvent>): CancelToken;
+    on(name: 'chunkunload', handler: EventHandler<ChunkUnloadEvent>): CancelToken;
+    on(name: 'portalcreate', handler: EventHandler<PortalCreateEvent>): CancelToken;
+    on(name: 'spawnchange', handler: EventHandler<SpawnChangeEvent>): CancelToken;
+    on(name: 'structuregrow', handler: EventHandler<StructureGrowEvent>): CancelToken;
+    on(name: 'worldinit', handler: EventHandler<WorldInitEvent>): CancelToken;
+    on(name: 'worldload', handler: EventHandler<WorldLoadEvent>): CancelToken;
+    on(name: 'worldsave', handler: EventHandler<WorldSaveEvent>): CancelToken;
+    on(name: 'worldunload', handler: EventHandler<WorldUnloadEvent>): CancelToken;
   }
 
   export const NAMESPACE_KEY: NamespacedKey;
