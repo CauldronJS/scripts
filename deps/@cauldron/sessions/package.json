@@ -1,0 +1,4 @@
+{
+  "name": "@cauldron/sessions",
+  "main": "./src/index.js"
+}

@@ -1,5 +1,5 @@
 declare module 'bukkit' {
-  import { ItemStack } from 'bukkit/inventory';
+  import { ItemStack, Inventory, ItemStack } from 'bukkit/inventory';
   import {
     CommandSender,
     ConsoleCommandSender,
@@ -1172,6 +1172,7 @@ declare module 'bukkit/entity' {
   import { UUID } from 'java/util';
   import { BlockFace, PistonMoveReaction } from 'bukkit/block';
   import { Attachable } from 'bukkit/material';
+  import { InventoryHolder } from 'bukkit/inventory';
   import * as Bukkit from 'bukkit';
 
   export interface Entity {
@@ -1348,7 +1349,10 @@ declare module 'bukkit/entity' {
 
   export interface Animals {}
 
-  export interface AnimalTamer {}
+  export interface AnimalTamer {
+    getName(): string;
+    getUniqueId(): UUID;
+  }
 
   export interface AreaEffectCloud {}
 
@@ -1402,6 +1406,34 @@ declare module 'bukkit/entity' {
 
   export interface Hanging extends Entity, Attachable {
     setFacingDirection(face: BlockFace, force: boolean): boolean;
+  }
+
+  export interface LivingEntity extends Entity {
+
+  }
+
+  export interface HumanEntity extends LivingEntity, InventoryHolder, AnimalTamer {
+    closeInventory(): void;
+    discoverRecipe(recipe: Bukkit.NamespacedKey): boolean;
+    discoverRecipes(recipes: Bukkit.NamespacedKey[]): number;
+    getAttackCooldown(): number;
+    getBedLocation(): Bukkit.Location;
+    getCooldown(material: Bukkit.Material): number;
+    getDiscoveredRecipes(): Set<NamespacedKey>;
+    getEnderChest(): Inventory;
+    getExpToLevel(): number
+    getGameMode(): Bukkit.GameMode;
+    getInventory(): PlayerInventory;
+    /**
+     * @deprecated players can now dual wield
+     */
+    getItemInHand(): ItemStack;
+    getItemOnCursor(): ItemStack;
+    getMainHand(): MainHand;
+  }
+
+  export interface Player extends HumanEntity, Bukkit.OfflinePlayer {
+
   }
 }
 
@@ -1623,60 +1655,67 @@ declare module 'bukkit/event/inventory' {
 }
 
 declare module 'bukkit/event/player' {
-  export interface PlayerAdvancementDoneEvent {}
-  export interface PlayerAnimationEvent {}
-  export interface PlayerArmorStandManipulateEvent {}
-  export interface PlayerBedEnterEvent {}
-  export interface PlayerBedLeaveEvent {}
-  export interface PlayerBucketEmptyEvent {}
-  export interface PlayerBucketFillEvent {}
-  export interface PlayerChangedMainHandEvent {}
-  export interface PlayerChangedWorldEvent {}
-  export interface PlayerChannelEvent {}
-  export interface PlayerChatEvent {}
-  export interface PlayerChatTabCompleteEvent {}
-  export interface PlayerCommandPreprocessEvent {}
-  export interface PlayerCommandSendEvent {}
-  export interface PlayerDropItemEvent {}
-  export interface PlayerEditBookEvent {}
-  export interface PlayerEggThrowEvent {}
-  export interface PlayerExpChangeEvent {}
-  export interface PlayerFishEvent {}
-  export interface PlayerGameModeChangeEvent {}
-  export interface PlayerInteractAtEntityEvent {}
-  export interface PlayerInteractEntityEvent {}
-  export interface PlayerInteractEvent {}
-  export interface PlayerItemBreakEvent {}
-  export interface PlayerItemConsumeEvent {}
-  export interface PlayerItemDamageEvent {}
-  export interface PlayerItemHeldEvent {}
-  export interface PlayerItemMendEvent {}
-  export interface PlayerJoinEvent {}
-  export interface PlayerKickEvent {}
-  export interface PlayerLevelChangeEvent {}
-  export interface PlayerLocaleChangeEvent {}
-  export interface PlayerLoginEvent {}
-  export interface PlayerMoveEvent {}
-  export interface PlayerPickupArrowEvent {}
-  export interface PlayerPickupItemEvent {}
-  export interface PlayerPortalEvent {}
-  export interface PlayerPreLoginEvent {}
-  export interface PlayerQuitEvent {}
-  export interface PlayerRecipeDiscoverEvent {}
-  export interface PlayerRegisterChannelEvent {}
-  export interface PlayerResourcePackStatusEvent {}
-  export interface PlayerRespawnEvent {}
-  export interface PlayerRiptideEvent {}
-  export interface PlayerStatisticIncrementEvent {}
-  export interface PlayerShearEntityEvent {}
-  export interface PlayerSwapHandItemsEvent {}
-  export interface PlayerTakeLecternBookEvent {}
-  export interface PlayerTeleportEvent {}
-  export interface PlayerToggleFlightEvent {}
-  export interface PlayerToggleSprintEvent {}
-  export interface PlayerUnleashEntityEvent {}
-  export interface PlayerUnregisterChannelEvent {}
-  export interface PlayerVelocityEvent {}
+  import { Event, Cancellable } from 'bukkit/event';
+  import { Player } from 'bukkit/entity';
+
+  export interface PlayerEvent extends Event, Cancellable {
+    getPlayer(): Player;
+  }
+
+  export interface PlayerAdvancementDoneEvent extends PlayerEvent {}
+  export interface PlayerAnimationEvent extends PlayerEvent {}
+  export interface PlayerArmorStandManipulateEvent extends PlayerEvent {}
+  export interface PlayerBedEnterEvent extends PlayerEvent {}
+  export interface PlayerBedLeaveEvent extends PlayerEvent {}
+  export interface PlayerBucketEmptyEvent extends PlayerEvent {}
+  export interface PlayerBucketFillEvent extends PlayerEvent {}
+  export interface PlayerChangedMainHandEvent extends PlayerEvent {}
+  export interface PlayerChangedWorldEvent extends PlayerEvent {}
+  export interface PlayerChannelEvent extends PlayerEvent {}
+  export interface PlayerChatEvent extends PlayerEvent {}
+  export interface PlayerChatTabCompleteEvent extends PlayerEvent {}
+  export interface PlayerCommandPreprocessEvent extends PlayerEvent {}
+  export interface PlayerCommandSendEvent extends PlayerEvent {}
+  export interface PlayerDropItemEvent extends PlayerEvent {}
+  export interface PlayerEditBookEvent extends PlayerEvent {}
+  export interface PlayerEggThrowEvent extends PlayerEvent {}
+  export interface PlayerExpChangeEvent extends PlayerEvent {}
+  export interface PlayerFishEvent extends PlayerEvent {}
+  export interface PlayerGameModeChangeEvent extends PlayerEvent {}
+  export interface PlayerInteractAtEntityEvent extends PlayerEvent {}
+  export interface PlayerInteractEntityEvent extends PlayerEvent {}
+  export interface PlayerInteractEvent extends PlayerEvent {}
+  export interface PlayerItemBreakEvent extends PlayerEvent {}
+  export interface PlayerItemConsumeEvent extends PlayerEvent {}
+  export interface PlayerItemDamageEvent extends PlayerEvent {}
+  export interface PlayerItemHeldEvent extends PlayerEvent {}
+  export interface PlayerItemMendEvent extends PlayerEvent {}
+  export interface PlayerJoinEvent extends PlayerEvent {}
+  export interface PlayerKickEvent extends PlayerEvent {}
+  export interface PlayerLevelChangeEvent extends PlayerEvent {}
+  export interface PlayerLocaleChangeEvent extends PlayerEvent {}
+  export interface PlayerLoginEvent extends PlayerEvent {}
+  export interface PlayerMoveEvent extends PlayerEvent {}
+  export interface PlayerPickupArrowEvent extends PlayerEvent {}
+  export interface PlayerPickupItemEvent extends PlayerEvent {}
+  export interface PlayerPortalEvent extends PlayerEvent {}
+  export interface PlayerPreLoginEvent extends PlayerEvent {}
+  export interface PlayerQuitEvent extends PlayerEvent {}
+  export interface PlayerRecipeDiscoverEvent extends PlayerEvent {}
+  export interface PlayerRegisterChannelEvent extends PlayerEvent {}
+  export interface PlayerResourcePackStatusEvent extends PlayerEvent {}
+  export interface PlayerRespawnEvent extends PlayerEvent {}
+  export interface PlayerRiptideEvent extends PlayerEvent {}
+  export interface PlayerStatisticIncrementEvent extends PlayerEvent {}
+  export interface PlayerShearEntityEvent extends PlayerEvent {}
+  export interface PlayerSwapHandItemsEvent extends PlayerEvent {}
+  export interface PlayerTakeLecternBookEvent extends PlayerEvent {}
+  export interface PlayerTeleportEvent extends PlayerEvent {}
+  export interface PlayerToggleFlightEvent extends PlayerEvent {}
+  export interface PlayerToggleSprintEvent extends PlayerEvent {}
+  export interface PlayerUnleashEntityEvent extends PlayerEvent {}
+  export interface PlayerUnregisterChannelEvent extends PlayerEvent {}
+  export interface PlayerVelocityEvent extends PlayerEvent {}
 }
 
 declare module 'bukkit/event/raid' {
@@ -1738,6 +1777,7 @@ declare module 'bukkit/help' {}
 declare module 'bukkit/inventory' {
   import { Material, Location } from 'bukkit';
   import { Block } from 'bukkit/block';
+  import { HumanEntity } from 'bukkit/entity';
 
   export interface ItemStack {
     addEnchantment(enchantment: Enchantment, level: number): void;
@@ -1809,6 +1849,46 @@ declare module 'bukkit/inventory' {
     HEAD,
     LEGS,
     OFF_HAND
+  }
+
+  export enum MainHand {
+    LEFT,
+    RIGHT
+  }
+
+  export interface PlayerInventory extends Inventory {
+    getArmorContents(): ItemStack[];
+    getBoots(): ItemStack;
+    getChestplate(): ItemStack;
+    getExtraContents(): ItemStack[];
+    getHeldItemSlot(): number;
+    getHelment(): ItemStack;
+    getHolder(): HumanEntity;
+    getItem(slot: EquipmentSlot): ItemStack;
+    /**
+     * @deprecated players can now dual wield
+     */
+    getItemInHand(): ItemStack;
+    getItemInMainHand(): ItemStack;
+    getItemInOffHand(): ItemStack;
+    getLeggings(): ItemStack;
+    setArmorContents(items: ItemStack[]): void;
+    setBoots(boots: ItemStack): void;
+    setChestplate(chestplate: ItemStack): void;
+    setExtraContents(contents: ItemStack[]): void;
+    setHeldItemSlot(slot: number): void;
+    setHelment(helment: ItemStack): void;
+    setItem(index: number, item: ItemStack): void;
+    setItem(slot: EquipmentSlot, item: ItemStack): void;
+    /**
+     * 
+     * @param stack 
+     * @deprecated players can now dual wield
+     */
+    setItemInHand(stack: ItemStack): void;
+    setItemInMainHand(item: ItemStack): void;
+    setItemInOffHand(item: ItemStack): void;
+    setLeggings(leggings: ItemStack): void;
   }
 }
 
@@ -1956,6 +2036,11 @@ declare module 'java/nio' {
 declare module 'java/util' {
   export class UUID {
     toString(): string;
+    clockSequence(): number;
+    compareTo(val: UUID): number;
+    equals(obj: object): boolean;
+    static fromString(uuid: string): UUID;
+    static randomUUID(): UUID;
   }
 }
 
