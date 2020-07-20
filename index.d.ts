@@ -6,6 +6,8 @@ declare module 'bukkit' {
     PluginCommand
   } from 'bukkit/command';
   import { KeyedBossBar, BossBar } from 'bukkit/boss';
+  import { UUID } from 'java/util';
+  import { Player } from 'bukkit/entity';
 
   export class Bukkit {
     static addRecipe(recipe: Recipe): boolean;
@@ -141,7 +143,10 @@ declare module 'bukkit' {
 
   export interface Keyed {}
 
-  export interface Nameable {}
+  export interface Nameable {
+    getCustomName(): string;
+    setCustomName(name: string): void;
+  }
 
   export interface OfflinePlayer {}
 
@@ -1170,12 +1175,19 @@ declare module 'bukkit/enchantments' {
 
 declare module 'bukkit/entity' {
   import { UUID } from 'java/util';
-  import { BlockFace, PistonMoveReaction } from 'bukkit/block';
+  import { AdvancementProgress, Advancement } from 'bukkit/advancement';
+  import { Attributable } from 'bukkit/attribute';
+  import { BlockFace, PistonMoveReaction, Block } from 'bukkit/block';
   import { Attachable } from 'bukkit/material';
-  import { InventoryHolder } from 'bukkit/inventory';
+  import { InventoryHolder, InventoryView, Inventory, ItemStack } from 'bukkit/inventory';
+  import { Metadatable } from 'bukkit/metadata';
+  import { PersistentDataHolder } from 'bukkit/persistence';
+  import { PotionEffect, PotionEffectType } from 'bukkit/potion';
+  import { RayTraceResult } from 'bukkit/util';
+  import { CommandSender } from 'bukkit/command';
   import * as Bukkit from 'bukkit';
 
-  export interface Entity {
+  export interface Entity extends Metadatable, CommandSender, Bukkit.Nameable, PersistentDataHolder {
     addPassenger(passenger: Entity): boolean;
     addScoreboardTag(tag: string): boolean;
     eject(): boolean;
@@ -1388,7 +1400,7 @@ declare module 'bukkit/entity' {
 
   export interface Creeper {}
 
-  export interface Damageable {}
+  export interface Damageable extends Entity {}
 
   export interface Dolphin {}
 
@@ -1404,14 +1416,54 @@ declare module 'bukkit/entity' {
 
   export interface EnderDragon {}
 
+  export interface EnderDragonPart {}
+
+  export interface Enderman {}
+
+  export interface Endermite {}
+
+  export interface EnderPearl {}
+
+  export interface EnderSignal {}
+
+  export interface Evoker {}
+
+  export interface EvokerFangs {}
+
+  export interface ExperienceOrb {}
+
+  export interface Explosive {}
+
+  export interface FallingBlock {}
+
+  export interface Fireball {}
+
+  export interface Firework {}
+
+  export interface Fish {}
+
+  export interface FishHook {}
+
+  export interface Flying {}
+
+  export interface Fox {}
+
+  export interface Ghast {}
+
+  export interface Giant {}
+
+  export interface Golem {}
+
+  export interface Guardian {}
+
   export interface Hanging extends Entity, Attachable {
     setFacingDirection(face: BlockFace, force: boolean): boolean;
   }
 
-  export interface LivingEntity extends Entity {
+  export interface Hoglin {}
 
-  }
-
+  export interface Horse {}
+  
   export interface HumanEntity extends LivingEntity, InventoryHolder, AnimalTamer {
     closeInventory(): void;
     discoverRecipe(recipe: Bukkit.NamespacedKey): boolean;
@@ -1430,10 +1482,337 @@ declare module 'bukkit/entity' {
     getItemInHand(): ItemStack;
     getItemOnCursor(): ItemStack;
     getMainHand(): MainHand;
+    getName(): string;
+    getOpenInventory(): InventoryView;
+    getShoulderEntityLeft(): Entity;
+    getShoulderEntityRight(): Entity;
+    getSleepTicks(): number;
+    hasCooldown(material: Bukkit.Material): boolean;
+    hasDiscoveredRecipe(recipe: Bukkit.NamespacedKey): boolean;
+    isBlocking(): boolean;
+    isHandRaised(): boolean;
+    openEnchanting(location: Bukkit.Location, force: boolean): InventoryView;
+    openInventory(inventory: Inventory): InventoryView;
+    openInventory(inventoryView: InventoryView): void;
+    openMerchent(trader: Villager, force: boolean): InventoryView;
+    openMerchent(merchant: Merchant): InventoryView;
+    openWorkbench(location: Bukkit.Location, force: boolean): InventoryView;
+    setCooldown(material: Bukkit.Material, ticks: number): void;
+    setGameMode(mode: Bukkit.GameMode): void;
+    /**
+     * 
+     * @param item
+     * @deprecated players can now dual wield
+     */
+    setItemInHand(item: ItemStack): void;
+    setItemOnCursor(item: ItemStack): void;
+    setShoulderEntityLeft(entity: Entity): void;
+    setShoulderEntityRight(entity: Entity): void;
+    setWindowProperty(prop: InventoryView.Property, value: number): boolean;
+    sleep(location: Bukkit.Location, force: boolean): boolean;
+    undiscoverRecipe(recipes: Bukkit.NamespacedKey[]): number;
+    wakeup(setSpawnLocation: boolean): void;
   }
 
-  export interface Player extends HumanEntity, Bukkit.OfflinePlayer {
+  export interface Husk {}
 
+  export interface Illager {}
+
+  export interface Illusioner {}
+
+  export interface IronGolem {}
+
+  export interface Item {}
+
+  export interface ItemFrame {}
+
+  export interface LargeFireball {}
+
+  export interface LeashHitch {}
+
+  export interface LightningStrike {}
+
+  export interface LingeringPotion {}
+
+  export interface LivingEntity extends Damageable, ProjectileSource, Attributable {
+    addPotionEffect(effect: PotionEffect): boolean;
+    addPotionEffect(effect: PotionEffect, force: boolean): boolean;
+    addPotionEffects(effects: PotionEffect[]): boolean;
+    attack(target: Entity): void;
+    getActivePotionEffects(): PotionEffect[];
+    getCanPickupItems(): boolean;
+    setCollidableExemptions(): Set<UUID>;
+    getEquipment(): EntityEquipment;
+    getEyeHeight(): number;
+    getKiller(): Player;
+    getLastDamage(): number;
+    getLastTwoTargetBlocks(transparent: Set<Material>, maxDistance: number): Block;
+    getTargetBlockExact(maxDistance: number): Block;
+    getTargetBlockExact(maxDistance: number, fluidCollisionMode: Bukkit.FluidCollisionMode): Block;
+    hasAI(): boolean;
+    hasLineOfSight(other: Entity): boolean;
+    hasPotionEffect(type: PotionEffectType): boolean;
+    isCollidable(): boolean;
+    isGliding(): boolean;
+    isLeashed(): boolean;
+    isRiptiding(): boolean;
+    isSleeping(): boolean;
+    rayTraceBlocks(maxDistance: number): RayTraceResult;
+    rayTraceBlocks(maxDistance: number, fluidCollisionMode: Bukkit.FluidCollisionMode): RayTraceResult;
+    removePotionEffect(type: PotionEffectType): void;
+    setAI(ai: boolean): void;
+    setCanPickupItems(pickup: boolean): void;
+    setCollidable(collidable: boolean): void;
+    setGliding(gliding: boolean): void;
+    setLastDamage(damage: boolean): void;
+    setLeashHolder(holder: Entity): boolean;
+    setMaximumAir(ticks: number): void;
+    setMemory(memoryKey: MemoryKey<T>, value: T): void;
+    setNoDamageTicks(ticks: number): void;
+    setRemainingAir(ticks: number): void;
+    setRemoveWhenFarAway(remove: boolean): void;
+    setSwimming(swimming: boolean): void;
+    swingMainHand(): void;
+    swingOffHand(): void;
+  }
+
+  export interface Llama {}
+
+  export interface LlamaSpit {}
+
+  export interface MagmaCube {}
+
+  export interface Minecart {}
+
+  export interface Mob {}
+
+  export interface Monster {}
+
+  export interface Mule {}
+
+  export interface MushroomCow {}
+
+  export interface NPC {}
+
+  export interface Ocelot {}
+
+  export interface Painting {}
+
+  export interface Panda {}
+
+  export interface Parrot {}
+
+  export interface Phantom {}
+
+  export interface Pig {}
+
+  export interface Piglin {}
+
+  export interface PigZombie {}
+
+  export interface Pillager {}
+
+  export interface Player extends HumanEntity, Bukkit.OfflinePlayer {
+    canSee(player: Player): boolean;
+    chat(msg: string): void;
+    getAddress(): InetSocketAddress;
+    getAdvancementProgress(advancement: Advancment): AdvancementProgress;
+    getAllowFlight(): boolean;
+    getBedSpawnLocation(): Bukkit.Location;
+    getClientViewDistance(): number;
+    getCompassTarget(): Bukkit.Location;
+    getDisplayName(): string;
+    getExhaustion(): number;
+    getExp(): number;
+    getFlySpeed(): number;
+    getFoodLevel(): number;
+    getHealthScale(): number;
+    getLevel(): number;
+    getLocal(): string;
+    getPlayerListFooter(): string;
+    getPlayerListHeader(): string;
+    getPlayerListName(): string;
+    getPlayerTime(): number;
+    getPlayerTimeOffset(): number;
+    getPlayerWeather(): Bukkit.WeatherType;
+    getSaturation(): number;
+    getScoreboard(): Scoreboard;
+    getSpectatorTarget(): Entity;
+    getTotalExperience(): number;
+    getWalkSpeed(): number;
+    giveExp(amount: number): void;
+    giveExpLevels(amount: number): void;
+    hidePlayer(player: Player): void;
+    isFlying(): boolean;
+    isHealthScaled(): boolean;
+    isOnGround(): boolean;
+    isPlayerTimeRelative(): boolean;
+    isSleepingIgnored(): boolean;
+    isSneaking(): boolean;
+    isSprinting(): boolean;
+    kickPlayer(msg: string): void;
+    loadData(): void;
+    openBook(book: ItemStack): void;
+    performCommand(command: string): boolean;
+    playEffect(loc: Bukkit.Location, effect: Bukkit.Effect, data: number): void;
+    playNote(loc: Bukkit.Location,)
+  }
+
+  export interface PolarBear {}
+
+  export interface Projectile {}
+
+  export interface PufferFish {}
+
+  export interface Rabbit {}
+
+  export interface Raider {}
+
+  export interface Ravager {}
+
+  export interface Salmon {}
+
+  export interface Sheep {}
+
+  export interface Shulker {}
+
+  export interface ShulkerBullet {}
+
+  export interface Silverfish {}
+
+  export interface Sittable {}
+
+  export interface SizedFireball {}
+
+  export interface Skeleton {}
+
+  export interface SkeletonHorse {}
+
+  export interface Slime {}
+
+  export interface SmallFireball {}
+
+  export interface Snowball {}
+
+  export interface Snowman {}
+
+  export interface SpectralArrow {}
+
+  export interface Spellcaster {}
+
+  export interface Spider {}
+
+  export interface SplashPotion {}
+
+  export interface Squid {}
+
+  export interface Steerable {}
+
+  export interface Stray {}
+
+  export interface Strider {}
+
+  export interface Tameable {}
+
+  export interface ThrowableProjectile {}
+
+  export interface ThrownExpBottle {}
+
+  export interface TippedArrow {}
+
+  export interface TNTPrimed {}
+
+  export interface TraderLlama {}
+
+  export interface Trident {}
+
+  export interface TropicalFish {}
+
+  export interface Turtle {}
+
+  export interface Vehicle {}
+
+  export interface Vex {}
+
+  export interface Villager {
+
+  }
+
+  export interface Vindicator {}
+
+  export interface WanderingTrader {}
+
+  export interface WaterMob {}
+
+  export interface Witch {}
+
+  export interface Wither {}
+
+  export interface WitherSkeleton {}
+
+  export interface WitherSkull {}
+
+  export interface Wolf {}
+
+  export interface Zoglin {}
+
+  export interface Zombie {}
+
+  export interface ZombieHorse {}
+
+  export interface ZombieVillager {}
+
+  export module AbstractArrow {
+    export enum PickupStatus {
+
+    }
+  }
+
+  export module Cat {
+    export enum Type {
+
+    }
+  }
+
+  export module EnderDragon {
+    export enum Phase {
+
+    }
+  }
+
+  export module Evoker {
+    export enum Spell {
+
+    }
+  }
+
+  export module Fox {
+    export enum Type {
+
+    }
+  }
+
+  export module Horse {
+    export enum Color {
+
+    }
+
+    export enum Style {
+
+    }
+
+    /**
+     * @deprecated Different variants are different classes
+     */
+    export enum Variant {
+
+    }
+  }
+  
+  export module Llama {
+    export enum Color {
+
+    }
   }
 }
 
@@ -1442,7 +1821,7 @@ declare module 'bukkit/entity/memory' {}
 declare module 'bukkit/entity/minecart' {}
 
 declare module 'bukkit/event' {
-  import { RegisteredListener, Plugin } from 'bukkit/plugin';
+  import { RegisteredListener, Plugin, Plugin } from 'bukkit/plugin';
 
   export interface Listener {}
   export interface Cancellable {
@@ -1856,6 +2235,46 @@ declare module 'bukkit/inventory' {
     RIGHT
   }
 
+  export enum InventoryType {
+    ANVIL,
+    BARREL,
+    BEACON,
+    BLAST_FURNACE,
+    BREWING,
+    CARTOGRAPHY,
+    CHEST,
+    CRAFTING,
+    CREATIVE,
+    DISPENSER,
+    DROPPER,
+    ENCHANTING,
+    ENDER_CHEST,
+    FURNACE,
+    GRINDSTONE,
+    HOPPER,
+    LECTERN,
+    LOOM,
+    MERCHANT,
+    PLAYER,
+    SHULKER_BOX,
+    SMITHING,
+    SMOKER,
+    STONECUTTER,
+    WORKBENCH
+  }
+
+  export module InventoryType {
+    export enum SlotType {
+      ARMOR,
+      CONTAINER,
+      CRAFTING,
+      FUEL,
+      OUTSIDE,
+      QUICKBAR,
+      RESULT
+    }
+  }
+
   export interface PlayerInventory extends Inventory {
     getArmorContents(): ItemStack[];
     getBoots(): ItemStack;
@@ -1890,6 +2309,52 @@ declare module 'bukkit/inventory' {
     setItemInOffHand(item: ItemStack): void;
     setLeggings(leggings: ItemStack): void;
   }
+
+  export interface InventoryView {
+    close(): void;
+    convertSlot(rawSlot: number): number;
+    countSlots(): number;
+    getBottomInventory(): Inventory;
+    getCursor(): ItemStack;
+    getInventory(rawSlot: number): Inventory;
+    getItem(slot: number): ItemStack;
+    getPlayer(): HumanEntity;
+    getSlotType(slot: number): InventoryType.SlotType;
+    getTitle(): string;
+    getTopInventory(): Inventory;
+    getType(): InventoryType;
+    setCursor(item: ItemStack): void;
+    setItem(slot: number, item: ItemStack): void;
+    setProperty(prop: InventoryView.Property, value: number): boolean;
+  }
+
+  export module InventoryView {
+    export enum Property {
+      BOOK_PAGE,
+      BREW_TIME,
+      BURN_TIME,
+      COOK_TIME,
+      ENCHANT_BUTTON1,
+      ENCHANT_BUTTON2,
+      ENCHANT_BUTTON3,
+      ENCHANT_ID1,
+      ENCHANT_ID2,
+      ENCHANT_ID3,
+      ENCHANT_LEVEL1,
+      ENCHANT_LEVEL2,
+      ENCHANT_LEVEL3,
+      ENCHANT_XP_SEED,
+      FUEL_TIME,
+      LEVELS,
+      PRIMARY_EFFECT,
+      REPAIR_COST,
+      SECONDARY_EFFECT,
+      REPAIR_COST,
+      SECONDARY_EFFECT,
+      TICKS_FOR_CURRENT_FUEL,
+      TICKS_FOR_CURRENT_SMELTING
+    }
+  }
 }
 
 declare module 'bukkit/inventory/meta' {
@@ -1921,11 +2386,85 @@ declare module 'bukkit/material' {
 
 declare module 'bukkit/material/types' {}
 
-declare module 'bukkit/metadata' {}
+declare module 'bukkit/metadata' {
+  import { Plugin } from 'bukkit/plugin';
+
+  export class MetadataValue {
+    asBoolean(): number;
+    asByte(): number;
+    asDouble(): number;
+    asFloat(): number;
+    asInt(): number;
+    asLong(): number;
+    asShort(): number;
+    asString(): string;
+    getOwningPlugin(): Plugin;
+    invalidate(): void;
+    value(): object;
+  }
+
+  export class FixedMetadataValue implements MetadataValue {
+    constructor(owner: Plugin, value: object): FixedMetadataValue;
+  }
+
+  export class LazyMetadataValue implements MetadataValue {
+
+  }
+
+  export module LazyMetadataValue {
+    export enum CacheStrategy {
+      CACHE_AFTER_FIRST_EVAL,
+      CACHE_ETERNALLY,
+      NEVER_CACHE
+    }
+  }
+
+  export class Metadatable {
+    getMetadata(key: string): MetadataValue[];
+    hasMetadata(key: string): boolean;
+    removeMetadat(key: string, owner: Plugin): void;
+    setMetadata(key: string, value: MetadataValue): void;
+  }
+}
 
 declare module 'bukkit/permissions' {}
 
-declare module 'bukkit/persistence' {}
+declare module 'bukkit/persistence' {
+  import { NamespacedKey } from 'bukkit';
+
+  export interface PersistentDataType {
+    static BYTE: PersistentDataType;
+    static BYTE_ARRAY: PersistentDataType;
+    static DOUBLE: PersistentDataType;
+    static FLOAT: PersistentDataType;
+    static INTEGER: PersistentDataType;
+    static INTEGER_ARRAY: PersistentDataType;
+    static LONG: PersistentDataType;
+    static LONG_ARRAY: PersistentDataType;
+    static SHORT: PersistentDataType;
+    static STRING: PersistentDataType;
+    static TAG_CONTAINER: PersistentDataType;
+    static TAG_CONTAINER_ARRAY: PersistentDataType;
+  }
+
+  export interface PersistentDataAdapterContext {
+    newPersistentDataContainer(): PersistentDataContainer;
+  }
+
+  export interface PersistentDataContainer {
+    get(key: NamespacedKey, type: PersistentDataType): object;
+    getAdapterContext(): PersistentDataAdapterContext;
+    getKeys(): Set<NamespacedKey>;
+    getOrDefault(key: NamespacedKey, type: PersistentDataType, defaultValue: object): object;
+    has(key: NamespacedKey, type: PersistentDataType): boolean;
+    remove(key: NamespacedKey): void;
+    set(key: NamespacedKey, type: PersistentDataType, value: object): void;
+  }
+
+  export interface PersistentDataHolder {
+    getPersistentDataContainer(): PersistentDataContainer;
+  }
+}
 
 declare module 'bukkit/plugin' {
   import { Event, Listener, EventPriority } from 'bukkit/event';
@@ -1945,7 +2484,80 @@ declare module 'bukkit/plugin/java' {}
 
 declare module 'bukkit/plugin/messaging' {}
 
-declare module 'bukkit/potion' {}
+declare module 'bukkit/potion' {
+  import { ConfigurationSerializable } from 'bukkit/configuration/serialization';
+  import { Color } from 'bukkit';
+  import { LivingEntity } from 'bukkit/entity';
+
+  export interface PotionEffectType {
+    protected constructor(id: number): PotionEffectType;
+    createEffect(duration: number, amplifier: number): PotionEffect;
+    static getById(id: number): PotionEffectType;
+    static getByName(name: string): PotionEffectType;
+    getColor(): Color;
+    getDurationModifier(): number;
+    getId(): number;
+    getName(): string;
+    hashCode(): number;
+    isInstant(): boolean;
+    static registerPotionEffectType(type: PotionEffectType): void;
+    static stopAcceptingRegistrations(): void;
+    toString(): string;
+    static values(): PotionEffectType[];
+
+    static ABSORPTION: PotionEffectType;
+    static BAD_OMEN: PotionEffectType;
+    static BLINDNESS: PotionEffectType;
+    static CONDUIT_POWER: PotionEffectType;
+    static CONFUSION: PotionEffectType;
+    static DAMAGE_RESISTANCE: PotionEffectType;
+    static DOLPHINS_GRACE: PotionEffectType;
+    static FAST_DIGGING: PotionEffectType;
+    static FIRE_RESISTANCE: PotionEffectType;
+    static GLOWING: PotionEffectType;
+    static HARM: PotionEffectType;
+    static HEAL: PotionEffectType;
+    static HEALTH_BOOST: PotionEffectType;
+    static HERO_OF_THE_VILLAGE: PotionEffectType;
+    static HUNGER: PotionEffectType;
+    static INCREASE_DAMAGE: PotionEffectType;
+    static INVISIBILITY: PotionEffectType;
+    static JUMP: PotionEffectType;
+    static LEVITATION: PotionEffectType;
+    static LUCK: PotionEffectType;
+    static NIGHT_VISION: PotionEffectType;
+    static POISON: PotionEffectType;
+    static REGENERATION: PotionEffectType;
+    static SATURATION: PotionEffectType;
+    static SLOW: PotionEffectType;
+    static SLOW_DIGGING: PotionEffectType;
+    static SLOW_FALLING: PotionEffectType;
+    static SPEED: PotionEffectType;
+    static UNLUCK: PotionEffectType;
+    static WATER_BREATHING: PotionEffectType;
+    static WEAKNESS: PotionEffectType;
+    static WITHER: PotionEffectType;
+  }
+
+  export class PotionEffect implements ConfigurationSerializable {
+    constructor(map: Map<string, object>): PotionEffect;
+    constructor(type: PotionEffectType, amplifier: number): PotionEffect;
+    constructor(type: PotionEffectType, amplifier: number, ambient: boolean): PotionEffect;
+    constructor(type: PotionEffectType, amplifier: number, ambient: boolean, particles: boolean, icon: boolean): PotionEffectType;
+
+    apply(entity: LivingEntity): boolean;
+    getAmplifier(): number;
+    getColor(): Color;
+    getDuration(): number;
+    getType(): PotionEffectType;
+    hashCode(): number;
+    hasIcon(): boolean;
+    hasParticles(): boolean;
+    isAmbient(): boolean;
+    serialize(): Map<string, object>;
+    toString(): string;
+  }
+}
 
 declare module 'bukkit/projectiles' {}
 
@@ -1953,7 +2565,89 @@ declare module 'bukkit/scheduler' {}
 
 declare module 'bukkit/scoreboard' {}
 
-declare module 'bukkit/util' {}
+declare module 'bukkit/util' {
+  import { Block, BlockFace } from 'bukkit/block';
+  import { Entity } from 'bukkit/entity';
+  import { ConfigurationSerializable } from 'bukkit/configuration/serialization';
+  import { World, Location } from 'bukkit';
+
+  export class Vector implements ConfigurationSerializable {
+    constructor(x: number, y: number, z: number): Vector;
+
+    add(vec: Vector): Vector;
+    angle(other: Vector): number;
+    checkFinite(): void;
+    clone(): Vector;
+    copy(vec: Vector): Vector;
+    crossProduct(o: Vector): Vector;
+    static deserialize(args: Map<string, object>): Vector;
+    distance(o: Vector): number;
+    distanceSquared(o: Vector): number;
+    divide(vec: Vector): Vector;
+    dot(other: Vector): number;
+    equals(obj: object): boolean;
+    getBlockX(): number;
+    getBlockY(): number;
+    getBlockZ(): number;
+    getCrossProduct(o: Vector): Vector;
+    static getEpsilon(): number;
+    static getMaximum(v1: Vector, v2: Vector): Vector;
+    getMidpoint(other: Vector): Vector;
+    static getMinimum(v1: Vector, v2: Vector): Vector;
+    static getRandom(): Vector;
+    getX(): number;
+    getY(): number;
+    getZ(): number;
+    hashCode(): number;
+    isInAABB(min: Vector, max: Vector): boolean;
+    isInSphere(origin: Vector, radius: number): boolean;
+    isNormalized(): boolean;
+    length(): number;
+    lengthSquared(): number;
+    midpoint(other: Vector): Vector;
+    multiply(other: Vector): Vector;
+    multiply(m: number): Vector;
+    normalize(): Vector;
+    rotateAroundAxis(axis: Vector, angle: number): Vector;
+    rotateAroundNonUnitAxis(axis: Vector, angle: number): Vector;
+    rotateAroundX(angle: number): Vector;
+    rotateAroundY(angle: number): Vector;
+    rotateAroundZ(angle: number): Vector;
+    serialize(): Map<string, object>;
+    setX(x: number): void;
+    setY(y: number): void;
+    setZ(z: number): void;
+    subtract(vec: Vector): Vector;
+    toBlockVector(): BlockVector;
+    toLocation(world: World): Location;
+    toLocation(world: World, yaw: number, pitch: number): Location;
+    toString(): string;
+    zero(): Vector;
+  }
+
+  export class BlockVector extends Vector {
+    constructor(x: number, y: number, z: number): BlockVector;
+    constructor(vec: Vector): BlockVector;
+
+    clone(): BlockVector;
+    static deserialize(args: Map<string, object>): BlockVector;
+  }
+
+  export class RayTraceResult {
+    constructor(hitPosition: Vector): RayTraceResult;
+    constructor(hitPosition: Vector, hitBlockFace: BlockFace): RayTraceResult;
+    constructor(hitPosition: Vector, hitBlock: Block, hitBlockFace: BlockFace): RayTraceResult;
+    constructor(hitPosition: Vector, hitEntity: Entity): RayTraceResult;
+    constructor(hitPosition: Vector, hitEntity: Entity, hitBlockFace: BlockFace): RayTraceResult;
+
+    getHitBlock(): Block;
+    getHitBlockFace(): BlockFace;
+    getHitEntity(): Entity;
+    getHitPosition(): Vector;
+    hashCode(): number;
+    toString(): string;
+  }
+}
 
 declare module 'bukkit/util/io' {}
 
