@@ -2770,7 +2770,7 @@ declare module 'cauldron' {
   import { LightningStrikeEvent, ThunderChangeEvent, WeatherChangeEvent } from 'bukkit/event/weather';
   import { ChunkLoadEvent, ChunkPopulateEvent, ChunkUnloadEvent, PortalCreateEvent, SpawnChangeEvent, StructureGrowEvent, WorldLoadEvent, WorldSaveEvent } from 'bukkit/event/world';
   import { BukkitPlugin } from 'bukkit/plugin/java';
-  import { NamespacedKey } from 'bukkit';
+  import { NamespacedKey, Server } from 'bukkit';
   import { EventEmitter } from 'events';
   export interface Command {
     registerCommand(name: string): void;
@@ -3018,6 +3018,7 @@ declare module 'cauldron' {
   export const NAMESPACE_KEY: NamespacedKey;
   export const events: CauldronEvents;
   export function getPlugin(name: string): BukkitPlugin;
+  export function use(listener: (server: Server) => void): void;
 
   export default {
     Command,

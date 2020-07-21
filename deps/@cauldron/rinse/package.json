@@ -1,4 +1,7 @@
 {
   "name": "@cauldron/rinse",
-  "main": "./src/index.js"
+  "main": "./dist/index.js",
+  "scripts": {
+    "compile": "babel src --out-dir dist --copy-files"
+  }
 }

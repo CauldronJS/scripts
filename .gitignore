@@ -10,3 +10,4 @@ yarn-error.log
 **/dist/
 .realsync
 realsync.exe.lnk
+lerna-debug.log

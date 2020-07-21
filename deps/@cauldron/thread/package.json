@@ -1,7 +1,0 @@
-{
-  "name": "@cauldron/thread",
-  "main": "./src/index.js",
-  "scripts": {
-    "compile": "babel src --out-dir dist"
-  }
-}

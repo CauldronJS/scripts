@@ -1,4 +1,7 @@
 {
-  "main": "./src/index.js",
-  "name": "@cauldron/lts"
+  "main": "./dist/index.js",
+  "name": "@cauldron/lts",
+  "scripts": {
+    "compile": "babel src --out-dir dist --copy-files"
+  }
 }
