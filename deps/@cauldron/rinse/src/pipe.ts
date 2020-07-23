@@ -64,10 +64,10 @@ export function rinse(Component, attrs, ...children) {
     Object.getOwnPropertyDescriptors(Component)
   );
   component.__canRemount = true;
-  const mount = () => mount(component);
+  const _mount = () => mount(component);
   // mount is a shortcut to allow components to manually mount the
   // children, allowing any logic to be ran at the top instead of
   // top down. This can be useful if there is a specific state
   // inaccessible to the current component.
-  return { component, props, mount };
+  return { component, props, mount: _mount };
 }

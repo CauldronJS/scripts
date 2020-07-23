@@ -3,6 +3,10 @@
   "description": "A minigame framework for CauldronJS",
   "main": "./dist/index.js",
   "scripts": {
-    "start": "babel src --out-dir dist --copy-files"
+    "compile": "babel src --out-dir dist --copy-files --extensions .ts,.tsx"
+  },
+  "dependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4"
   }
 }

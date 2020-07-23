@@ -2703,6 +2703,10 @@ declare module 'java/lang' {
   export interface Cloneable {
     clone(): object;
   }
+
+  export class Runnable {
+
+  }
 }
 
 declare module 'java/nio' {
@@ -2772,8 +2776,20 @@ declare module 'cauldron' {
   import { BukkitPlugin } from 'bukkit/plugin/java';
   import { NamespacedKey, Server } from 'bukkit';
   import { EventEmitter } from 'events';
-  export interface Command {
+  export class Command {
+    constructor(name: string, options: object): Command;
     registerCommand(name: string): void;
+    register();
+    addSubcommand(command: Command): Command;
+    static fromPath(path: string): Command;
+  }
+
+  export module Command {
+    export enum CommandRestriction {
+      NONE,
+      CONSOLE_ONLY,
+      PLAYER_ONLY
+    }
   }
 
   interface CancelToken {

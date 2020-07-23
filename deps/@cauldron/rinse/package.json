@@ -2,6 +2,11 @@
   "name": "@cauldron/rinse",
   "main": "./dist/index.js",
   "scripts": {
-    "compile": "babel src --out-dir dist --copy-files"
+    "compile": "babel src --out-dir dist --copy-files --extensions .ts,.tsx"
+  },
+  "dependencies": {
+    "@babel/plugin-transform-typescript": "^7.10.5",
+    "@babel/preset-typescript": "^7.10.4",
+    "object-hash": "^2.0.3"
   }
 }
