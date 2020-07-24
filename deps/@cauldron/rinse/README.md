@@ -2,7 +2,7 @@
 
 > A JSX library for Cauldron
 
-Ok I understand how crazy this sounds. We aren't rendering HTML, we aren't processing SSR templates, so why use JSX? 
+Ok I understand how crazy this sounds. We aren't rendering HTML, we aren't processing SSR templates, so why use JSX?
 
 ## Its Use As A State Machine
 
@@ -33,7 +33,7 @@ const UIMenu = ({player, children}) => {
 const UIApp = Rinse.mount(<UIMenu player={somePlayer} />);
 ```
 
-## VDOM In Minecraft
+## VDOM In Minecraft (aka the VOL)
 
 The concept sounds far-fetched, but hear me out. When we're interacting with player lifecycles, there's only ever one view state for the user. They're either playing, in an inventory, typing, or paused. That's it. That means we can break the UX into 4 different groups of consumption:
 
@@ -46,6 +46,9 @@ What this shows is that in 50% of the player's cases, they are simply **reading*
 
 ## TODO
 
-* Remove capability for class components. I'd like this to solely take on the methodology of "function components only"
-* Create a consumer for async methods and proper lifecycle handling
-* Proper VDOM management
+- Create a consumer for async methods and proper lifecycle handling
+- Proper VDOM management
+
+## Footnote
+
+Obviously this package was highly inspired by Facebook's React. If you haven't used it, I highly recommend it for web development. The makeup of the component class is a mirror of the React component, but with a couple more things to help development within Cauldron. By no means is it as optimized since the engineers on that team and the open source contributions far outweigh my knowledge or skillset, but I definitely want to make it close.
