@@ -4,8 +4,6 @@ import JsCommand from './js';
 import landmine from './landmine';
 import express from 'express';
 
-const runnable = internalBinding('Runnable').create;
-
 landmine();
 const App = () => (
   <>

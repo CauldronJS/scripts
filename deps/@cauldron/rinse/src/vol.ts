@@ -56,6 +56,8 @@ class VolInstance {
     if (this.taskId !== -1) {
       // cancel the task
     }
+    // TODO: this should be it's own separate thread with temp IDs for each function ref
+    // if we have a separate thread, we can just pass messages back and forth via subscriptions
     this.taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(
       $$cauldron$$,
       runnable(() => {
