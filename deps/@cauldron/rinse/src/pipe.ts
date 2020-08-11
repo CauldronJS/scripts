@@ -1,7 +1,7 @@
 import { FRAG_SYMBOL } from './fragment';
 import { setCurrentComponent, getCurrentComponent } from './reconciler';
-import { VolInstance, beginWatchingTree } from './vol';
-import Rinsable from './rinsable'
+import { VtreeInstance, beginWatchingTree } from './vtree';
+import Rinsable from './rinsable';
 
 // I'd like to figure out a way to allow functional components to do
 // logic unhooking/destruction. Perhaps a hook?

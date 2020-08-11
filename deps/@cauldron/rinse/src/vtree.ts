@@ -3,22 +3,22 @@ import { Runnable } from 'java/lang';
 import Queue from 'internal/queue';
 import Component, { StateUpdateHandler } from './component';
 import Rinsable, { RenderResult } from './rinsable';
-import { FiberEventType, FiberEvent } from './fiber';
+import { FiberEventType, FiberEvent, FiberNode } from './fiber';
 
 const MOST_UPDATES_PER_TICK = 64;
 
 //@ts-ignore
 const runnable = run => Java.extend(Runnable, { run });
 
-let currentVolInstance: VolInstance = null;
-const volInstances = new Map<string, VolInstance>();
+let currentVtreeInstance: VtreeInstance = null;
+const vtreeInstances = new Map<string, VtreeInstance>();
 
-export function getCurrentVolInstance() {
-  return currentVolInstance;
+export function getCurrentVtreeInstance() {
+  return currentVtreeInstance;
 }
 
-export function getVolByNamespace(namespace: string): VolInstance {
-  return volInstances.get(namespace);
+export function getVtreeByNamespace(namespace: string): VtreeInstance {
+  return vtreeInstances.get(namespace);
 }
 
 type StateUpdateEvent = {
@@ -28,23 +28,23 @@ type StateUpdateEvent = {
 };
 
 /**
- * The VOL (Virtual Object Lifecycle) is in charge of watching instances
+ * The Vtree is in charge of watching instances
  * of components registered within Rinse. This is done by iterating through
  * each namespace that is mounted
  */
-class VolInstance {
+export class VtreeInstance {
   taskId: number;
   namespace: string;
-  registeredComponents: Map<Rinsable, object>; // function/props map
+  fibers: Map<string, FiberNode>;
   branches: Map<Rinsable, boolean>;
   fiberUpdates: Queue;
   isReadingQueue: boolean;
   hookedStates: Map<Rinsable, object>;
 
   constructor(namespace: string) {
-    volInstances.set(namespace, this);
+    vtreeInstances.set(namespace, this);
     this.namespace = namespace;
-    this.registeredComponents = new Map<Rinsable, object>();
+    this.fibers = new Map<string, FiberNode>();
     this.branches = new Map<Rinsable, boolean>();
     this.fiberUpdates = new Queue();
     this.taskId = -1;
@@ -66,11 +66,6 @@ class VolInstance {
           // 64 should be fine, right?
           if (this.fiberUpdates.size() === 0) return;
           const fiberEvent = this.fiberUpdates.pop() as FiberEvent;
-          switch (fiberEvent.type) {
-            case FiberEventType.UPDATE_STATE:
-              this.updateStateFor(fiberEvent.args as StateUpdateEvent);
-              break;
-          }
         }
       }),
       1
@@ -109,16 +104,19 @@ class VolInstance {
     });
   }
 
-  registerComponent(component: Rinsable, children: RenderResult): VolInstance {
+  registerComponent(
+    component: Rinsable,
+    children: RenderResult
+  ): VtreeInstance {
     return this;
   }
 
   getStateFor(component: Rinsable) {}
 }
 
-export function beginWatchingTree(namespace: string): VolInstance {
-  const instance = new VolInstance(namespace);
-  currentVolInstance = instance;
+export function beginWatchingTree(namespace: string): VtreeInstance {
+  const instance = new VtreeInstance(namespace);
+  currentVtreeInstance = instance;
   instance.startWatch();
   return instance;
 }
