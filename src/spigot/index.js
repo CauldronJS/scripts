@@ -12,7 +12,7 @@ const App = () => (
   </>
 );
 
-Rinse.mount(<App />);
+Rinse.mount(<App />, 'commands');
 
 // const app = express();
 // app.use(express.static('./site/public'));

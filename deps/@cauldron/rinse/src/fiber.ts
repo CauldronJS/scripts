@@ -1,17 +1,9 @@
-import Rinsable from './rinsable';
-import { UUID } from 'java/lang';
-
-export enum FiberEventType {
-  UNMOUNT,
-  MOUNT,
-  UPDATE_PROPS,
-  UPDATE_STATE
-}
+import { FiberEventType, Rinsable, RinseProps } from './types';
+import { UUID } from 'java/util';
 
 export type FiberEvent = {
   type: FiberEventType;
   node: FiberNode;
-  args: any;
 };
 
 /**
@@ -39,17 +31,33 @@ export class FiberNode {
    * @type {object}
    * @memberof FiberNode
    */
-  _pendingProps: object;
+  _pendingProps: RinseProps;
+  /**
+   * Represents the props object passed into the component
+   *
+   * @type {RinseProps}
+   * @memberof FiberNode
+   */
+  _props: RinseProps;
   _namespace: string;
+  /**
+   * The ID of the node. These will never change for as long as the
+   * component is alive (stayed mounted, prop changes not included)
+   *
+   * @type {string}
+   * @memberof FiberNode
+   */
   _id: string;
   _isMarkedForDelete: boolean;
+  _isMounted: boolean;
 
-  constructor(component: Rinsable, props: object, owner?: FiberNode) {
+  constructor(component: Rinsable, props: RinseProps, owner?: FiberNode) {
     this._owner = owner;
     this._component = component;
     this._pendingProps = props;
-    this._id = UUID.random().toString();
+    this._id = UUID.randomUUID().toString();
     this._isMarkedForDelete = false;
+    this._isMounted = false;
   }
 
   delete() {

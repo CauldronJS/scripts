@@ -51,4 +51,4 @@ What this shows is that in 50% of the player's cases, they are simply **reading*
 
 ## Footnote
 
-Obviously this package was highly inspired by Facebook's React. If you haven't used it, I highly recommend it for web development. The makeup of the component class is a mirror of the React component, but with a couple more things to help development within Cauldron. By no means is it as optimized since the engineers on that team and the open source contributions far outweigh my knowledge or skillset, but I definitely want to make it close.
+Obviously this package was highly inspired by Facebook's React. If you haven't used it, I highly recommend it for web development. That being said, I think that a difference in viewpoints must be acknowledged for this to properly fit into the ecosystem. There is more of a reliance on context and less of a reliance on lifecycle management here. Of course this can be used for UI, but there is nothing complex I can foresee so a drastic opinion has been forced on this library: no components.

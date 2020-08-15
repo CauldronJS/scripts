@@ -1,51 +1,26 @@
 import { FRAG_SYMBOL } from './fragment';
-import { setCurrentComponent, getCurrentComponent } from './reconciler';
-import { VtreeInstance, beginWatchingTree } from './vtree';
-import Rinsable from './rinsable';
-
-// I'd like to figure out a way to allow functional components to do
-// logic unhooking/destruction. Perhaps a hook?
+import { VirtualTree, getCurrentVtreeInstance, Rinsed } from './vtree';
+import Rinsable, { RinseProps } from './rinsable';
 
 /**
+ * Mounts an app to the virtual tree
  *
- * @param {{component: (props) => any, props: any}} rinsed
+ * @param {Rinsed} rinsed
+ * @param {string} namespace
  */
-export const mount = rinsed => {
+export const mount = (rinsed: Rinsed, namespace: string): VirtualTree => {
   if (!rinsed) return null;
-  const { component, props } = rinsed;
-  if (!component.__canRemount) return null;
-
-  const instanceWrapper = { __state: undefined };
-  setCurrentComponent({ instanceWrapper, component });
-  const result = component.apply(getCurrentComponent(), [props]);
-
-  if (typeof result === 'object') {
-    if (Array.isArray(result)) {
-      // find the next non-frag parent
-      let parent = rinsed;
-      while (parent[FRAG_SYMBOL] && parent.props.parent) {
-        parent = parent.props.parent;
-      }
-      // it returned the children to be executed
-      result.forEach(child => {
-        child.props.parent = parent;
-        mount(child);
-      });
-    } else {
-      mount(result);
-    }
-  } else {
-    mount(result);
-  }
-
-  if (component.onmount) component.onmount(props, instanceWrapper.__state);
-
-  return component;
+  const tree = new VirtualTree(namespace);
+  tree.mount(rinsed);
+  tree.startWatch();
+  return tree;
 };
 
-export const unmount = component => {};
-
-export function rinse(Component: Function, attrs, ...children) {
+export function createComponent(
+  Component: Rinsable,
+  attrs: any,
+  ...children: Rinsable[]
+): Rinsed {
   if (!Component) {
     throw new Error('Component cannot be undefined or null');
   }
@@ -65,11 +40,5 @@ export function rinse(Component: Function, attrs, ...children) {
     component,
     Object.getOwnPropertyDescriptors(Component)
   );
-  component.__canRemount = true;
-  const _mount = () => mount(component);
-  // mount is a shortcut to allow components to manually mount the
-  // children, allowing any logic to be ran at the top instead of
-  // top down. This can be useful if there is a specific state
-  // inaccessible to the current component.
-  return { component, props, mount: _mount };
+  return { component, props };
 }

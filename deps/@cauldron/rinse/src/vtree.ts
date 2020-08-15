@@ -1,146 +1,197 @@
-import { Bukkit } from 'bukkit';
-import { Runnable } from 'java/lang';
-import Queue from 'internal/queue';
-import Component, { StateUpdateHandler } from './component';
-import Rinsable, { RenderResult } from './rinsable';
-import { FiberEventType, FiberEvent, FiberNode } from './fiber';
+import Queue from './queue';
+import { FiberEvent, FiberNode } from './fiber';
+import {
+  EffectCallback,
+  FiberEventType,
+  Rinsed,
+  Rinsable,
+  RinseProps,
+  MarkedEffect,
+  SetStateCaller,
+  EffectCleanup
+} from './types';
 
 const MOST_UPDATES_PER_TICK = 64;
 
-//@ts-ignore
-const runnable = run => Java.extend(Runnable, { run });
-
-let currentVtreeInstance: VtreeInstance = null;
-const vtreeInstances = new Map<string, VtreeInstance>();
+let currentVtreeInstance: VirtualTree = null;
+const vtreeInstances = new Map<string, VirtualTree>();
 
 export function getCurrentVtreeInstance() {
   return currentVtreeInstance;
 }
 
-export function getVtreeByNamespace(namespace: string): VtreeInstance {
+export function getVtreeByNamespace(namespace: string): VirtualTree {
   return vtreeInstances.get(namespace);
 }
-
-type StateUpdateEvent = {
-  component: Component;
-  newValues: object;
-  handler: (newState: object) => void;
-};
 
 /**
  * The Vtree is in charge of watching instances
  * of components registered within Rinse. This is done by iterating through
  * each namespace that is mounted
  */
-export class VtreeInstance {
+export class VirtualTree {
   taskId: number;
   namespace: string;
+  mountNode: FiberNode;
   fibers: Map<string, FiberNode>;
-  branches: Map<Rinsable, boolean>;
-  fiberUpdates: Queue;
+  idTree: Map<string, string[]>;
+  fiberUpdates: Queue<FiberEvent>;
+  effectBag: Map<string, EffectCallback[]>;
+  cleanupBag: Map<string, EffectCleanup[]>;
   isReadingQueue: boolean;
-  hookedStates: Map<Rinsable, object>;
+  private currentComponent: string;
 
   constructor(namespace: string) {
     vtreeInstances.set(namespace, this);
     this.namespace = namespace;
     this.fibers = new Map<string, FiberNode>();
-    this.branches = new Map<Rinsable, boolean>();
-    this.fiberUpdates = new Queue();
+    this.idTree = new Map<string, string[]>();
+    this.fiberUpdates = new Queue<FiberEvent>();
+    this.effectBag = new Map<string, EffectCallback[]>();
+    this.cleanupBag = new Map<string, EffectCleanup[]>();
     this.taskId = -1;
     this.isReadingQueue = false;
-    this.hookedStates = new Map<Rinsable, object>();
+  }
+
+  mount(rinsed: Rinsed) {
+    if (!rinsed) {
+      throw new Error('Cannot mount undefined');
+    }
+    // move all of this to the fiber queue
+    const processBranch = (branch: Rinsed, owner?: FiberNode) => {
+      const { component, props } = branch;
+      const node = this.registerComponent(component, props, owner);
+      const result = this.mountComponent(node);
+      if (Array.isArray(result)) {
+        // it returned a collection of children
+        result.forEach((child: Rinsed) => processBranch(child, node));
+      } else {
+        processBranch(result, node);
+      }
+      node._isMounted = true;
+    };
+    // iterate and build a tree
+    this.mountNode = this.registerComponent(rinsed.component, rinsed.props);
+
+    console.trace(this.fibers);
   }
 
   startWatch() {
     if (this.taskId !== -1) {
       // cancel the task
+      clearInterval(this.taskId);
     }
-    // TODO: this should be it's own separate thread with temp IDs for each function ref
-    // if we have a separate thread, we can just pass messages back and forth via subscriptions
-    this.taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(
-      $$cauldron$$,
-      runnable(() => {
-        if (this.isReadingQueue) return;
-        for (let i = 0; i < MOST_UPDATES_PER_TICK; ++i) {
-          // 64 should be fine, right?
-          if (this.fiberUpdates.size() === 0) return;
-          const fiberEvent = this.fiberUpdates.pop() as FiberEvent;
+    // for something to be in the queue:
+    // - it should have already been checked if the props change
+    // - state change has to have been triggered
+    this.taskId = setInterval(() => {
+      if (this.isReadingQueue) return;
+      this.isReadingQueue = true;
+      const mountedComponents = [];
+      for (let i = 0; i < MOST_UPDATES_PER_TICK; ++i) {
+        // 64 should be fine, right?
+        if (this.fiberUpdates.size() === 0) return;
+        const fiberEvent = this.fiberUpdates.pop();
+        this.currentComponent = fiberEvent.node._id;
+        if (
+          fiberEvent.type !== FiberEventType.UNMOUNT &&
+          fiberEvent.node._isMarkedForDelete
+        ) {
+          fiberEvent.type = FiberEventType.UNMOUNT;
         }
-      }),
-      1
-    );
-  }
+        switch (fiberEvent.type) {
+          case FiberEventType.MOUNT:
+            // call the component with the given props, clear the pending props,
+            // and then let the queue known that it's ready to run said effects
+            // TODO: process component here vvvvvvvvv
 
-  private updateStateFor(stateUpdate: StateUpdateEvent) {
-    const { component } = stateUpdate;
-    if (!component) return; // the component was unmounted
-    const oldState = { ...component.state };
-    const newState = { ...oldState, ...stateUpdate.newValues };
-    stateUpdate.handler(newState);
-    component.componentDidUpdate(component.props, oldState);
-    // mark this branch of the tree as invalid
-    this.branches.set(component, false);
-  }
+            // process component here ^^^^^^^^^^
+            mountedComponents.push(fiberEvent.node._id);
+            break;
+          case FiberEventType.UNMOUNT:
+            // unmount the component and queue all of its children for unmounting
+            // TODO: process unmounting here vvvvvvvvv
 
-  private updatePropsFor(component: Rinsable, newProps: object) {}
-
-  private mountComponent(component: Rinsable, props: object) {}
-
-  private unmountComponent(component: Rinsable) {}
-
-  queueStateUpdate(component: Component, newValues: object): Promise<object> {
-    return new Promise(resolve => {
-      const stateUpdate = {
-        componentId: component.__id,
-        newValues,
-        handler: resolve
-      };
-      this.fiberUpdates.push({
-        type: FiberEventType.UPDATE_STATE,
-        component,
-        args: stateUpdate
+            // process unmounting here ^^^^^^^^
+            const cleanup = this.cleanupBag.get(fiberEvent.node._id);
+            if (cleanup) {
+              cleanup.forEach(fn => fn());
+            }
+            break;
+          case FiberEventType.UPDATE_STATE:
+            // call all effects (?) and then check children components for prop updates
+            break;
+        }
+      }
+      // fully flush the effect queue of all items that were mounted
+      mountedComponents.forEach((id: string) => {
+        const effects = this.effectBag.get(id);
+        effects.forEach(effect => {
+          const cleanup = effect();
+          if (cleanup) {
+            if (this.cleanupBag.get(id)) {
+              this.cleanupBag.get(id).push(cleanup);
+            } else {
+              this.cleanupBag.set(id, [cleanup]);
+            }
+          }
+        });
       });
     });
   }
 
-  registerComponent(
-    component: Rinsable,
-    children: RenderResult
-  ): VtreeInstance {
-    return this;
+  createStateChangeFn<T>(setState: SetStateCaller<T>): SetStateCaller<T> {
+    // this is some black magic BUT it allows the setter in useState to inform the tree
+    // of a state update. Ideally I'd like to collect all state changes at once but that's
+    // probably not gonna happen and might result in components being remounted like crazy
+    // like in React
+    var id = this.currentComponent;
+    return (value: T) => {
+      setState(value);
+      this.fiberUpdates.push({
+        node: this.fibers.get(id),
+        type: FiberEventType.UPDATE_STATE
+      });
+    };
   }
 
-  getStateFor(component: Rinsable) {}
-}
+  queueEffect(effect: EffectCallback) {
+    const component = this.currentComponent;
+    if (this.effectBag.has(component)) {
+      this.effectBag.get(component).push(effect);
+    } else {
+      this.effectBag.set(component, [effect]);
+    }
+  }
 
-export function beginWatchingTree(namespace: string): VtreeInstance {
-  const instance = new VtreeInstance(namespace);
-  currentVtreeInstance = instance;
-  instance.startWatch();
-  return instance;
+  private registerComponent(
+    component: Rinsable,
+    props: RinseProps,
+    owner?: FiberNode
+  ): FiberNode {
+    const node = new FiberNode(component, props, owner);
+    const event = {
+      type: FiberEventType.MOUNT,
+      node,
+      args: props
+    };
+    this.fiberUpdates.push(event);
+    return node;
+  }
+
+  private shouldNodeUpdate(node: FiberNode, newProps: RinseProps): boolean {
+    if (node._isMarkedForDelete || node._pendingProps) return true;
+    return newProps == node._props;
+  }
+
+  private mountComponent(node: FiberNode): Rinsed {
+    if (node._isMounted && node._pendingProps == node._props) {
+      return;
+    }
+    return node._component(node._pendingProps);
+  }
 }
 
 export function registerComponent(component: Rinsable) {}
 
 export function registerFunction() {}
-
-const stateUpdateQueue = new Map<string, StateUpdateHandler>();
-export function queueStateUpdate(
-  component: Component,
-  newValues: object
-): Promise<object> {
-  return new Promise((resolve, reject) => {
-    Bukkit.getScheduler().scheduleSyncDelayedTask(
-      $$cauldron$$,
-      runnable(() => {}),
-      1
-    );
-  });
-}
-
-export function processComponent(component: Rinsable) {}
-
-export function shouldUpdate(id, props) {}
-
-export function unmountComponent(component: Rinsable) {}

@@ -6,6 +6,7 @@
       "@babel/plugin-transform-react-jsx",
       { "pragma": "Rinse", "pragmaFrag": "Rinse.Fragment" }
     ],
-    "@babel/plugin-transform-modules-commonjs"
+    "@babel/plugin-transform-modules-commonjs",
+    "@babel/plugin-proposal-optional-chaining"
   ]
 }

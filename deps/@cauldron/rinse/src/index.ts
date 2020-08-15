@@ -1,12 +1,11 @@
 import Fragment from './fragment';
-import { mount, unmount, rinse } from './pipe';
+import { mount, createComponent } from './pipe';
 import elements from './elements';
 import useState from './hooks/useState';
 
 module.exports = {
   mount,
-  unmount,
-  createComponent: rinse,
+  createComponent,
   activate: rinsed => rinsed.activate,
   Fragment,
   useState,
