@@ -1,13 +1,14 @@
 import Fragment from './fragment';
 import { mount, createComponent } from './pipe';
 import elements from './elements';
-import useState from './hooks/useState';
+import hooks from './hooks';
 
 module.exports = {
   mount,
   createComponent,
   activate: rinsed => rinsed.activate,
   Fragment,
-  useState,
+  useState: hooks.useState,
+  useEffect: hooks.useEffect,
   ...elements
 };

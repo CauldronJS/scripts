@@ -1,16 +1,19 @@
-import Rinse from '@cauldron/rinse';
+import Rinse, { useState, useEffect } from '@cauldron/rinse';
 import RtpCommand from './rtp';
 import JsCommand from './js';
 import landmine from './landmine';
 import express from 'express';
 
 landmine();
-const App = () => (
-  <>
-    <RtpCommand />
-    <JsCommand />
-  </>
-);
+const App = () => {
+  const [test, setTest] = useState(42);
+  return (
+    <>
+      <RtpCommand />
+      <JsCommand />
+    </>
+  );
+};
 
 Rinse.mount(<App />, 'commands');
 

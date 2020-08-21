@@ -2,7 +2,7 @@
 import { getCurrentVtreeInstance } from './vtree';
 import { SetStateCaller, EffectCallback } from './types';
 
-module.exports = (function() {
+export default (function() {
   let hooks = [],
     currentHook = 0;
 
@@ -32,3 +32,6 @@ module.exports = (function() {
     }
   };
 })();
+
+export const useState = exports.default.useState;
+export const useEffect = exports.default.useEffect;

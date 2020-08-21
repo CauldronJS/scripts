@@ -6,10 +6,9 @@ import {
   Rinsed,
   Rinsable,
   RinseProps,
-  MarkedEffect,
   SetStateCaller,
   EffectCleanup
-} from './types';
+} from './types.d';
 
 const MOST_UPDATES_PER_TICK = 64;
 
@@ -57,20 +56,6 @@ export class VirtualTree {
     if (!rinsed) {
       throw new Error('Cannot mount undefined');
     }
-    // move all of this to the fiber queue
-    const processBranch = (branch: Rinsed, owner?: FiberNode) => {
-      const { component, props } = branch;
-      const node = this.registerComponent(component, props, owner);
-      const result = this.mountComponent(node);
-      if (Array.isArray(result)) {
-        // it returned a collection of children
-        result.forEach((child: Rinsed) => processBranch(child, node));
-      } else {
-        processBranch(result, node);
-      }
-      node._isMounted = true;
-    };
-    // iterate and build a tree
     this.mountNode = this.registerComponent(rinsed.component, rinsed.props);
 
     console.trace(this.fibers);
@@ -104,6 +89,38 @@ export class VirtualTree {
             // call the component with the given props, clear the pending props,
             // and then let the queue known that it's ready to run said effects
             // TODO: process component here vvvvvvvvv
+            const { node } = fiberEvent;
+            // the check on props is to ensure that components with null for props
+            // also get remounted
+            if (node._props && node._props === node._pendingProps) {
+              continue;
+            }
+            // add the node to the appropriate trees
+            this.fibers.set(node._id, node);
+            this.idTree.set(node._owner._id, [
+              ...(this.idTree.get(node._owner._id) || []),
+              node._id
+            ]);
+            // execute the component
+            const result = node._component(node._pendingProps);
+            // cleanup the component
+            node._props = node._pendingProps;
+            delete node._pendingProps;
+            this.fibers.set(node._id, node);
+
+            // resolve the children and process
+            if (Array.isArray(result)) {
+              result.forEach(rinsed => {
+                this.registerComponent(rinsed.component, rinsed.props, node);
+              });
+            } else if (result) {
+              this.registerComponent(result.component, result.props, node);
+            } else {
+              console.error(
+                'The return values of a component must be either null, another component, or an array of components'
+              );
+            }
+            // unmount old children
 
             // process component here ^^^^^^^^^^
             mountedComponents.push(fiberEvent.node._id);
@@ -177,18 +194,6 @@ export class VirtualTree {
     };
     this.fiberUpdates.push(event);
     return node;
-  }
-
-  private shouldNodeUpdate(node: FiberNode, newProps: RinseProps): boolean {
-    if (node._isMarkedForDelete || node._pendingProps) return true;
-    return newProps == node._props;
-  }
-
-  private mountComponent(node: FiberNode): Rinsed {
-    if (node._isMounted && node._pendingProps == node._props) {
-      return;
-    }
-    return node._component(node._pendingProps);
   }
 }
 

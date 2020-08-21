@@ -10,16 +10,12 @@ export interface EffectCleanup {
   (): void;
 }
 
-export type MarkedEffect = {
-  effect: EffectCallback;
-  component: string;
-};
-
 export enum FiberEventType {
   UNMOUNT,
   MOUNT,
   UPDATE_PROPS,
-  UPDATE_STATE
+  UPDATE_STATE,
+  UPDATE_CONTEXT
 }
 
 export type RinseProps<T = unknown> = T & {
@@ -27,7 +23,7 @@ export type RinseProps<T = unknown> = T & {
 };
 
 export interface Rinsable<TProps = RinseProps> {
-  (props: RinseProps & TProps): Rinsed;
+  (props: RinseProps & TProps): Rinsed | Rinsed[];
   defaultProps?: RinseProps<TProps>;
 }
 

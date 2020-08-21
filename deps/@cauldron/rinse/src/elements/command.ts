@@ -1,6 +1,6 @@
 import { Command } from 'cauldron';
 import PropTypes from 'prop-types';
-import useState from '../hooks/useState';
+import { useState, useEffect } from '../hooks';
 
 const { CommandRestriction } = Command;
 
