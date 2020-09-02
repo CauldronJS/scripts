@@ -1,5 +1,6 @@
 import useStore from '@cauldron/store';
 import cauldron from 'cauldron';
+import { Bukkit } from 'bukkit';
 
 const [history, setHistory] = useStore('players_history');
 

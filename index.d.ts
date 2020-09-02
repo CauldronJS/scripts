@@ -6,6 +6,7 @@ declare module 'bukkit' {
     PluginCommand
   } from 'bukkit/command';
   import { KeyedBossBar, BossBar } from 'bukkit/boss';
+  import { BukkitScheduler } from 'bukkit/scheduler';
   import { UUID } from 'java/util';
   import { Player } from 'bukkit/entity';
 
@@ -1821,7 +1822,7 @@ declare module 'bukkit/entity/memory' {}
 declare module 'bukkit/entity/minecart' {}
 
 declare module 'bukkit/event' {
-  import { RegisteredListener, Plugin, Plugin } from 'bukkit/plugin';
+  import { RegisteredListener, Plugin, Plugin, Plugin } from 'bukkit/plugin';
 
   export interface Listener {}
   export interface Cancellable {
@@ -2561,7 +2562,101 @@ declare module 'bukkit/potion' {
 
 declare module 'bukkit/projectiles' {}
 
-declare module 'bukkit/scheduler' {}
+declare module 'bukkit/scheduler' {
+  import { Plugin } from 'bukkit/plugin';
+  import { Runnable } from 'java/lang';
+  import { Future, Callable } from 'java/util/concurrent';
+  import { Consumer } from 'java/util/function';
+
+  export interface BukkitScheduler {
+    /**
+     * Calls a method on the main thread and returns a Future object
+     * 
+     * @param plugin 
+     * @param task 
+     */
+    callSyncMethod<T>(plugin: Plugin, task: Callable<T>): Future<T>;
+    /**
+     * Removes task from scheduler
+     * 
+     * @param id 
+     */
+    cancelTask(id: number): void;
+    /**
+     * Removes all tasks associated with a particular plugin from the scheduler
+     * 
+     * @param plugin 
+     */
+    cancelTasks(plugin: Plugin): void;
+    /**
+     * Checks if the task is currently running
+     * 
+     * @param id 
+     */
+    isCurrentlyRunning(id: number): boolean;
+    /**
+     * Checks if the task is queued to be run later
+     *  
+     * @param id 
+     */
+    isQueued(id: number): boolean;
+
+    /**
+     * Returns a task that will run on the next server tick
+     * 
+     * @param plugin 
+     * @param task 
+     */
+    runTask(plugin: Plugin, task: Runnable): BukkitTask;
+    /**
+     * Returns a task that will run on the next server tick
+     * @param plugin
+     * @param task 
+     */
+    runTask(plugin: Plugin, task: Consumer<BukkitTask>): void;
+
+    /**
+     * 
+     * @param plugin 
+     * @param task 
+     */
+    runTaskAsynchronously(plugin: Plugin, task: Runnable): BukkitTask;
+    runTaskAsynchronously(plugin: Plugin, task: Consumer<BukkitTask>): void;
+
+    runTaskLater(plugin: Plugin, task: Runnable, delay: number): BukkitTask;
+    runTaskLater(plugin: Plugin, task: Consumer<BukkitTask>, delay: number): void;
+
+    runTaskLaterAsynchronously(plugin: Plugin, task: Runnable, delay: number): BukkitTask;
+    runTaskLaterAsynchronously(plugin: Plugin, task: Consumer<BukkitTask>, delay: number): void;
+
+    runTaskTimer(plugin: Plugin, task: Runnable, delay: number, period: number): BukkitTask;
+    runTaskTimer(plugin: Plugin, task: Consumer<BukkitTask>, delay: number, period: number): void;
+
+    runTaskTimerAsynchronously(plugin: Plugin, task: Runnable, delay: number, period: number): BukkitTask;
+    runTaskTimerAsynchronously(plugin: Plugin, task: Consumer<BukkitTask>, delay: number, period: number): void;
+
+    scheduleSyncDelayedTask(plugin: Plugin, task: Runnable): number;
+    scheduleSyncDelayedTask(plugin: Plugin, task: Runnable, delay: number): number;
+    scheduleSyncRepeatingTask(plugin: Plugin, task: Runnable, delay: number, period: number): number;
+  }
+
+  export interface BukkitTask {
+    cancel(): void;
+    getOwner(): Plugin;
+    getTaskId(): number;
+    isCancelled(): boolean;
+    isSync(): boolean;
+  }
+
+  export interface BukkitWorker {
+    getOwner(): Plugin;
+    getTaskId(): number;
+  }
+
+  export class BukkitRunnable {
+
+  }
+}
 
 declare module 'bukkit/scoreboard' {}
 
@@ -2742,12 +2837,42 @@ declare module 'java/util' {
   }
 }
 
+declare module 'java/util/concurrent' {
+  export interface Future<T> {
+    cancel(mayInterrupt: boolean): boolean;
+    get(): T;
+    get(timeout: long, unit: TimeUnit): T;
+    isCancelled(): boolean;
+    isDone(): boolean;
+  }
+
+  export interface Callable<T> {
+    call(): T;
+  }
+}
+
+declare module 'java/util/function' {
+  export interface Consumer<T> {
+    (t: T): Consumer<T>;
+    accept(t: T): void;
+    andThen(after: Consumer<T>): Consumer<T>;
+  }
+}
+
 declare module 'me/conji/cauldron' {
+  import { Runnable } from 'java/lang';
   export class Cauldron {
     static isolate(): Cauldron;
     setIsDebugging(value: boolean): void;
     getIsDebugging(): boolean;
     spawn(command: string, directory: string): string;
+  }
+
+  export interface CauldronAPI {
+    isDebugging(): boolean;
+    scheduleRepeatingTask(fn: Runnable, interval: number, timeout: number): number;
+    scheduleTask(fn: Runnable, timeout: number): number;
+    cancelTask(id: number);
   }
 }
 
@@ -3035,6 +3160,8 @@ declare module 'cauldron' {
   export const events: CauldronEvents;
   export function getPlugin(name: string): BukkitPlugin;
   export function use(listener: (server: Server) => void): void;
+  export const $$cauldron$$: import('me/conji/cauldron').CauldronAPI;
+  export const $$isolate$$: Isolate;
 
   export default {
     Command,

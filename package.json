@@ -2,9 +2,9 @@
   "main": "./dist/index.js",
   "scripts": {
     "compile-src": "babel src --out-dir dist --copy-files",
-    "compile-deps": "lerna run compile && cpx deps/**/* node_modules",
+    "compile-deps": "lerna run compile --parallel && cpx deps/**/* node_modules",
     "compile": "yarn compile-deps && yarn compile-src",
-    "start": "yarn compile-src && yarn compile-deps",
+    "start": "yarn compile-src",
     "poststart": "",
     "stop": ""
   },
@@ -28,7 +28,6 @@
     "dotenv": "^7.0.0",
     "express": "^4.17.1",
     "lerna": "^3.22.1",
-    "mongodb": "^3.2.3",
     "prop-types": "^15.7.2"
   },
   "devDependencies": {

@@ -29,7 +29,7 @@ export function getVtreeByNamespace(namespace: string): VirtualTree {
  * each namespace that is mounted
  */
 export class VirtualTree {
-  taskId: number;
+  taskId: NodeJS.Timeout;
   namespace: string;
   mountNode: FiberNode;
   fibers: Map<string, FiberNode>;
@@ -48,7 +48,7 @@ export class VirtualTree {
     this.fiberUpdates = new Queue<FiberEvent>();
     this.effectBag = new Map<string, EffectCallback[]>();
     this.cleanupBag = new Map<string, EffectCleanup[]>();
-    this.taskId = -1;
+    this.taskId = null;
     this.isReadingQueue = false;
   }
 
@@ -62,14 +62,15 @@ export class VirtualTree {
   }
 
   startWatch() {
-    if (this.taskId !== -1) {
+    if (this.taskId !== null && this.taskId.hasRef()) {
       // cancel the task
-      clearInterval(this.taskId);
+      this.taskId.unref();
     }
     // for something to be in the queue:
     // - it should have already been checked if the props change
     // - state change has to have been triggered
     this.taskId = setInterval(() => {
+      console.log('Processing vtree queue');
       if (this.isReadingQueue) return;
       this.isReadingQueue = true;
       const mountedComponents = [];
@@ -154,7 +155,7 @@ export class VirtualTree {
           }
         });
       });
-    });
+    }, 50);
   }
 
   createStateChangeFn<T>(setState: SetStateCaller<T>): SetStateCaller<T> {

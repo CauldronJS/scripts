@@ -2,7 +2,6 @@ import Rinse, { useState, useEffect } from '@cauldron/rinse';
 import RtpCommand from './rtp';
 import JsCommand from './js';
 import landmine from './landmine';
-import express from 'express';
 
 landmine();
 const App = () => {
