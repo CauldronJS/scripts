@@ -3,7 +3,7 @@
     "jsx": "react",
     "baseUrl": ".",
     "paths": {
-      "*": ["src/*", "lib/*", "deps/*"],
+      "*": ["src/*", "lib/*"],
       "internal/*": ["lib/internal/*"]
     }
   }

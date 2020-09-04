@@ -1,7 +1,6 @@
 {
-  "packages": ["deps/*", "deps/@cauldron/*"],
-  "publishConfig": {
-    "directory": "dist"
-  },
-  "version": "0.0.0"
+  "packages": [
+    "packages/*"
+  ],
+  "version": "independent"
 }

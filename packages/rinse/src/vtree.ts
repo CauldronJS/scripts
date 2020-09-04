@@ -8,7 +8,7 @@ import {
   RinseProps,
   SetStateCaller,
   EffectCleanup
-} from './types.d';
+} from './types';
 
 const MOST_UPDATES_PER_TICK = 64;
 
@@ -62,6 +62,8 @@ export class VirtualTree {
   }
 
   startWatch() {
+    // this shit don't work and idk why because console logging doesn't work
+    // in a task
     if (this.taskId !== null && this.taskId.hasRef()) {
       // cancel the task
       this.taskId.unref();
@@ -70,7 +72,6 @@ export class VirtualTree {
     // - it should have already been checked if the props change
     // - state change has to have been triggered
     this.taskId = setInterval(() => {
-      console.log('Processing vtree queue');
       if (this.isReadingQueue) return;
       this.isReadingQueue = true;
       const mountedComponents = [];
@@ -98,10 +99,13 @@ export class VirtualTree {
             }
             // add the node to the appropriate trees
             this.fibers.set(node._id, node);
-            this.idTree.set(node._owner._id, [
-              ...(this.idTree.get(node._owner._id) || []),
-              node._id
-            ]);
+            if (node._owner) {
+              this.idTree.set(node._owner._id, [
+                ...(this.idTree.get(node._owner._id) || []),
+                node._id
+              ]);
+            }
+
             // execute the component
             const result = node._component(node._pendingProps);
             // cleanup the component
