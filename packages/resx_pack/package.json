@@ -1,6 +1,7 @@
 {
   "name": "@cauldron/resx_pack",
   "main": "./dist/index.js",
+  "version": "1.0.0",
   "author": "Conji",
   "scripts": {
     "build": "babel src --out-dir dist --copy-files"

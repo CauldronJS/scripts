@@ -1,10 +1,9 @@
 import { Command } from 'cauldron';
-import PropTypes from 'prop-types';
 import { useState, useEffect } from '../hooks';
 
 const { CommandRestriction } = Command;
 
-const CommandComponent = props => {
+const CommandComponent = (props) => {
   const { name, isForConsole, isForPlayer, parent, children } = props;
   let restriction;
   if (isForConsole && isForPlayer) {
@@ -35,19 +34,6 @@ const CommandComponent = props => {
   return children;
 };
 
-CommandComponent.propTypes = {
-  name: PropTypes.string.isRequired,
-  execute: PropTypes.func,
-  description: PropTypes.string,
-  usage: PropTypes.string,
-  aliases: PropTypes.arrayOf(PropTypes.string),
-  permission: PropTypes.string,
-  children: PropTypes.arrayOf(PropTypes.func),
-  isForConsole: PropTypes.bool,
-  isForPlayer: PropTypes.bool,
-  tabComplete: PropTypes.any
-};
-
 CommandComponent.defaultProps = {
   execute() {},
   description: 'A Cauldron command',
@@ -55,7 +41,7 @@ CommandComponent.defaultProps = {
   aliases: [],
   permission: null,
   children: [],
-  tabComplete() {}
+  tabComplete() {},
 };
 
 export default CommandComponent;

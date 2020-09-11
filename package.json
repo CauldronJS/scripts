@@ -1,16 +1,44 @@
 {
   "main": "./packages/server/dist/index.js",
   "scripts": {
-    "postinstall": "lerna bootstrap --force-local",
-    "build": "lerna run --parallel build",
+    "postinstall": "lerna run build && lerna bootstrap",
+    "build": "lerna run build",
     "start": "lerna run --scope cauldron-src build"
   },
   "dependencies": {
-    "lerna": "^3.22.1"
+    "lerna": "^3.22.1",
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/plugin-proposal-decorators": "^7.4.0",
+    "@babel/plugin-proposal-export-default-from": "^7.2.0",
+    "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.3",
+    "@babel/plugin-proposal-optional-chaining": "^7.9.0",
+    "@babel/plugin-syntax-jsx": "^7.2.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.4.3",
+    "@babel/plugin-transform-react-jsx": "^7.3.0"
   },
   "pluginDependencies": {},
   "debugMessages": true,
   "watchRecompile": true,
   "validateLib": false,
-  "name": "cauldron-scripts"
+  "name": "cauldron-scripts",
+  "private": true,
+  "workspaces": [
+    "packages/colors",
+    "packages/config",
+    "packages/energy",
+    "packages/gameboy",
+    "packages/lts",
+    "packages/menu",
+    "packages/players",
+    "packages/pretty",
+    "packages/resx_pack",
+    "packages/rinse",
+    "packages/server",
+    "packages/sessions",
+    "packages/store",
+    "packages/types"
+  ]
 }

@@ -5,12 +5,16 @@ import fs from 'fs';
  * for the given app.
  *
  * @export
- * @param {*} name
- * @param {*} [defaultStore=null]
+ * @param name
+ * @param defaultStore
+ *
  * @returns {[store, setStore: (updatedProps:Object)]} An array of
  * the stored object and a function that updates the store.
  */
-function useStore(name, defaultStore = Object.create(null)) {
+function useStore(
+  name: string,
+  defaultStore: any = Object.create(null)
+): [any, (updatedProps: any) => void] {
   let store = defaultStore;
   if (!fs.existsSync('.store')) {
     fs.mkdirSync('.store');
@@ -19,11 +23,11 @@ function useStore(name, defaultStore = Object.create(null)) {
   if (fs.existsSync(`.store/${name}.json`)) {
     const savedStoreJson = fs.readFileSync(`.store/${name}.json`);
     if (savedStoreJson.length > 0) {
-      store = JSON.parse(savedStoreJson);
+      store = JSON.parse(savedStoreJson.toString());
     }
   }
 
-  function setStore(updatedProps) {
+  function setStore(updatedProps: any) {
     for (const field in updatedProps) {
       if (updatedProps[field] === undefined) {
         delete store[field];

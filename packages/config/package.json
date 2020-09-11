@@ -1,6 +1,7 @@
 {
   "name": "@cauldron/config",
   "main": "./dist/index.js",
+  "version": "1.0.0",
   "scripts": {
     "build": "babel src --out-dir dist --copy-files"
   }

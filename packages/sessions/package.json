@@ -1,7 +1,8 @@
 {
   "name": "@cauldron/sessions",
   "main": "./dist/index.js",
+  "version": "1.0.0",
   "scripts": {
-    "compile": "babel src --out-dir dist --copy-files"
+    "build": "babel src --out-dir dist --copy-files"
   }
 }

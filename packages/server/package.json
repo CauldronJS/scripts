@@ -1,8 +1,10 @@
 {
   "main": "./dist/index.js",
+  "module": "./src/index.js",
   "name": "cauldron-src",
+  "version": "1.0.0",
   "scripts": {
-    "build": "babel src --out-dir dist --copy-files"
+    "build": "babel src --out-dir dist --copy-files --extensions .ts,.tsx,.js,.jsx"
   },
   "dependencies": {
     "@babel/cli": "^7.2.3",
@@ -23,6 +25,7 @@
     "@cauldron/gameboy": "^1.0.0",
     "@cauldron/menu": "^1.0.0",
     "@cauldron/players": "^1.0.0",
+    "@cauldron/pretty": "^1.0.0",
     "@cauldron/rinse": "^1.0.0",
     "@cauldron/sessions": "^1.0.0",
     "@cauldron/store": "^1.0.0",

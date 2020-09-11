@@ -1,7 +1,15 @@
 {
   "main": "./dist/index.js",
   "name": "@cauldron/lts",
+  "version": "1.0.0",
   "scripts": {
     "build": "babel src --out-dir dist --copy-files"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
+    "@babel/plugin-proposal-optional-chaining": "^7.11.0",
+    "@babel/plugin-transform-typescript": "^7.10.5",
+    "@babel/preset-typescript": "^7.10.4"
   }
 }
