@@ -7,7 +7,7 @@ import {
   Rinsable,
   RinseProps,
   SetStateCaller,
-  EffectCleanup
+  EffectCleanup,
 } from './types';
 
 const MOST_UPDATES_PER_TICK = 64;
@@ -80,6 +80,7 @@ export class VirtualTree {
         if (this.fiberUpdates.size() === 0) return;
         const fiberEvent = this.fiberUpdates.pop();
         this.currentComponent = fiberEvent.node._id;
+        console.log(`Processing updates for ${fiberEvent.node._id}`);
         if (
           fiberEvent.type !== FiberEventType.UNMOUNT &&
           fiberEvent.node._isMarkedForDelete
@@ -102,7 +103,7 @@ export class VirtualTree {
             if (node._owner) {
               this.idTree.set(node._owner._id, [
                 ...(this.idTree.get(node._owner._id) || []),
-                node._id
+                node._id,
               ]);
             }
 
@@ -115,7 +116,7 @@ export class VirtualTree {
 
             // resolve the children and process
             if (Array.isArray(result)) {
-              result.forEach(rinsed => {
+              result.forEach((rinsed) => {
                 this.registerComponent(rinsed.component, rinsed.props, node);
               });
             } else if (result) {
@@ -137,7 +138,7 @@ export class VirtualTree {
             // process unmounting here ^^^^^^^^
             const cleanup = this.cleanupBag.get(fiberEvent.node._id);
             if (cleanup) {
-              cleanup.forEach(fn => fn());
+              cleanup.forEach((fn) => fn());
             }
             break;
           case FiberEventType.UPDATE_STATE:
@@ -148,7 +149,7 @@ export class VirtualTree {
       // fully flush the effect queue of all items that were mounted
       mountedComponents.forEach((id: string) => {
         const effects = this.effectBag.get(id);
-        effects.forEach(effect => {
+        effects.forEach((effect) => {
           const cleanup = effect();
           if (cleanup) {
             if (this.cleanupBag.get(id)) {
@@ -172,7 +173,7 @@ export class VirtualTree {
       setState(value);
       this.fiberUpdates.push({
         node: this.fibers.get(id),
-        type: FiberEventType.UPDATE_STATE
+        type: FiberEventType.UPDATE_STATE,
       });
     };
   }
@@ -195,7 +196,7 @@ export class VirtualTree {
     const event = {
       type: FiberEventType.MOUNT,
       node,
-      args: props
+      args: props,
     };
     this.fiberUpdates.push(event);
     return node;

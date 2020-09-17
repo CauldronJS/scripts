@@ -1,19 +1,21 @@
 {
   "name": "@cauldron/rinse",
-  "main": "./dist/index.js",
-  "source": "./src/index.ts",
-  "version": "1.0.0",
+  "main": "./src/index.js",
   "scripts": {
-    "build": "babel src --out-dir dist --copy-files --extensions .ts,.tsx --source-maps"
+    "build": "babel src --out-dir dist --copy-files --extensions .js --source-maps"
   },
   "dependencies": {
-    "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.3.4",
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-proposal-optional-chaining": "^7.11.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.10.4",
+    "@babel/plugin-transform-react-jsx": "^7.10.4",
     "@babel/plugin-transform-typescript": "^7.10.5",
+    "@babel/preset-env": "^7.11.5",
     "@babel/preset-typescript": "^7.10.4",
+    "@types/cauldron": "*",
     "object-hash": "^2.0.3",
-    "prop-types": "^15.7.2",
-    "@types/cauldron": "*"
+    "prop-types": "^15.7.2"
   }
 }
