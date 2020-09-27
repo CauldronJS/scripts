@@ -1,6 +1,10 @@
 // prettifier util
 
-function pretty(content, color = true) {
+function pretty(content, color = true, depth = 0) {
+  if (depth === 2) {
+    // cut off at 5
+    return `\xA7${content}`;
+  }
   switch (typeof content) {
     case 'boolean':
       return `\xA7${content ? 'atrue' : 'cfalse'}`;
@@ -12,7 +16,7 @@ function pretty(content, color = true) {
     case 'number':
       return `\xA79${content}`;
     case 'function':
-      return `\xA7dfunction ${content.name} ()...`;
+      return `\xA7dfunction${content.name ? ` ${content.name}` : ''} ()...`;
     case 'object':
     case 'symbol':
       if (content === null) {
@@ -20,11 +24,22 @@ function pretty(content, color = true) {
       }
       let result;
       if (Array.isArray(content)) {
-        result = content.map(item => pretty(item, color));
+        result = content.map((item) => pretty(item, color, depth + 1));
       } else {
-        result = [...content].map(item => pretty(item, color));
+        if (content[Symbol.iterator]) {
+          result = [...content].map((item) => pretty(item, color, depth + 1));
+        } else {
+          const fieldNames = Object.getOwnPropertyNames(content);
+          result = [];
+          for (let field of fieldNames) {
+            // manually add the field and value to the result
+            result.push({
+              [field]: pretty(content[field], color, depth + 1),
+            });
+          }
+        }
       }
-      return JSON.stringify(result, ' ', '\t').replace(/\t/g, '  ');
+      return JSON.stringify(result);
     default:
       return '\xA77undefined';
   }

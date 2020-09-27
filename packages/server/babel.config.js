@@ -1,17 +1,18 @@
-module.exports = api => {
+module.exports = (api) => {
   api.cache(true);
   const config = {
     sourceMaps: true,
+    presets: ['@babel/preset-typescript'],
     plugins: [
       '@babel/plugin-syntax-jsx',
       [
         '@babel/plugin-transform-react-jsx',
-        { pragma: 'Rinse.createComponent', pragmaFrag: 'Rinse.Fragment' }
+        { pragma: 'Rinse.createComponent', pragmaFrag: 'Rinse.Fragment' },
       ],
       '@babel/plugin-transform-modules-commonjs',
       '@babel/plugin-proposal-class-properties',
-      '@babel/plugin-proposal-optional-chaining'
-    ]
+      '@babel/plugin-proposal-optional-chaining',
+    ],
   };
   return config;
 };

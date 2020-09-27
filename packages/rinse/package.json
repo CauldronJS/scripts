@@ -1,6 +1,8 @@
 {
   "name": "@cauldron/rinse",
-  "main": "./src/index.js",
+  "main": "./dist/index.js",
+  "source": "./src/index.js",
+  "version": "1.0.0",
   "scripts": {
     "build": "babel src --out-dir dist --copy-files --extensions .js --source-maps"
   },

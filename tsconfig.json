@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "jsxFactory": "Rinse.createElement",
+    "jsxFragmentFactory": "Rinse.Fragment",
+    "baseUrl": ".",
+    "paths": {
+      "*": ["src/*", "lib/*"],
+      "internal/*": ["lib/internal/*"]
+    }
+  }
+}

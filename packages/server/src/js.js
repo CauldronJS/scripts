@@ -1,13 +1,37 @@
-import { Module } from 'module';
 import Rinse, { Command } from '@cauldron/rinse';
-import { clearCommands } from 'cauldron';
+import { parseExpression } from '@babel/parser';
 import pretty from '@cauldron/pretty';
 import colors from '@cauldron/colors';
+import { Bukkit } from 'bukkit';
 
-const executeJs = ({ args }) => {
+const executeJs = ({ args, sender }) => {
   const patched = args.join(' ');
-  const result = $$isolate$$.runScript(patched, 'repl');
+  const wrapper = '(function(me,require){' + patched + '})';
+  const fn = $$isolate$$.runScript(wrapper, 'repl');
+  const result = fn.call(this, sender, require.mainRequire);
   return `\xA77=> ${pretty(result)}`;
+};
+
+const tabCompleteJs = (sender, ...script) => {
+  const parsed = parseExpression(script.join(' '), {
+    plugins: [
+      '@babel/plugin-syntax-jsx',
+      [
+        '@babel/plugin-transform-react-jsx',
+        { pragma: 'Rinse.createComponent', pragmaFrag: 'Rinse.Fragment' },
+      ],
+      '@babel/plugin-transform-modules-commonjs',
+      '@babel/plugin-proposal-class-properties',
+      '@babel/plugin-proposal-optional-chaining',
+    ],
+  });
+  if (!parsed.object) {
+    // the first part of the identifier hasn't been input yet, ignore for subcommands
+    return;
+  }
+  const g = parsed.object.name;
+  const value = eval(g);
+  return Object.getOwnPropertyNames(value);
 };
 
 const reloadJs = ({ sender }) => {
@@ -27,6 +51,7 @@ const JsCommand = () => (
     execute={executeJs}
     description="Executes a JS snippet"
     usage="/<command> [snippet]"
+    tabComplete={tabCompleteJs}
   >
     <Command
       name="reload"

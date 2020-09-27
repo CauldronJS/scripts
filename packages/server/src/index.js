@@ -1,11 +1,13 @@
-import Rinse, { useState, useEffect } from '@cauldron/rinse';
+import Rinse from '@cauldron/rinse';
 import RtpCommand from './rtp';
 import JsCommand from './js';
 import landmine from './landmine';
+import { events, services } from 'cauldron';
+import essentials from './essentials';
+import deathbox from './deathbox';
 
 landmine();
 const App = () => {
-  const [test, setTest] = useState(42);
   return (
     <>
       <RtpCommand />
@@ -15,6 +17,13 @@ const App = () => {
 };
 
 Rinse.mount(<App />, 'commands');
+
+events.on('playerjoin', (event) => {
+  event.getPlayer().setHealthScale(2.0);
+});
+
+services.use(essentials);
+services.use(deathbox);
 
 // const app = express();
 // app.use(express.static('./site/public'));

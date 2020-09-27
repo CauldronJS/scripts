@@ -19,6 +19,7 @@
     "@babel/plugin-transform-modules-commonjs": "^7.10.4",
     "@babel/plugin-transform-react-jsx": "^7.10.4",
     "@babel/preset-env": "^7.11.5",
+    "@babel/preset-typescript": "^7.10.4",
     "@cauldron/colors": "^1.0.0",
     "@cauldron/config": "^1.0.0",
     "@cauldron/energy": "^1.0.0",

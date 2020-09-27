@@ -25,7 +25,7 @@ const MOB_TYPES = [
   EntityType.MAGMA_CUBE,
   EntityType.PIG_ZOMBIE,
   EntityType.PHANTOM,
-  EntityType.SILVERFISH
+  EntityType.SILVERFISH,
 ];
 
 const ANIMAL_TYPS = [
@@ -56,11 +56,11 @@ const ANIMAL_TYPS = [
   EntityType.TRADER_LLAMA,
   EntityType.TROPICAL_FISH,
   EntityType.TURTLE,
-  EntityType.WOLF
+  EntityType.WOLF,
 ];
 
 export default function registerEvents() {
-  cauldron.events.on('creaturespawn', event => {
+  cauldron.events.on('creaturespawn', (event) => {
     const entity = event.getEntity();
     const entityType = event.getEntityType();
     const chunkCoords = getChunkCoordsForEntity(entity);
@@ -75,7 +75,7 @@ export default function registerEvents() {
     }
   });
 
-  cauldron.events.on('entitycombust', event => {
+  cauldron.events.on('entitycombust', (event) => {
     const entity = event.getEntity();
     const entityType = event.getEntityType();
     const chunkCoords = getChunkCoordsForEntity(entity);
@@ -90,7 +90,7 @@ export default function registerEvents() {
     }
   });
 
-  cauldron.events.on('entitydamagebyentity', event => {
+  cauldron.events.on('entitydamagebyentity', (event) => {
     const entity = event.getEntity();
     const entityType = event.getEntityType();
     const damager = event.getDamager && event.getDamager();
@@ -111,7 +111,7 @@ export default function registerEvents() {
     }
   });
 
-  cauldron.events.on('entityexplode', event => {
+  cauldron.events.on('entityexplode', (event) => {
     const entity = event.getEntity();
     if (entity.getType() !== EntityType.CREEPER) return;
     const chunkCoords = getChunkCoordsForEntity(entity);
@@ -124,7 +124,7 @@ export default function registerEvents() {
     }
   });
 
-  cauldron.events.on('entityshootbow', event => {
+  cauldron.events.on('entityshootbow', (event) => {
     const entity = event.getEntity();
     if (entity.getType() !== EntityType.SKELETON) return;
     const chunkCoords = getChunkCoordsForEntity(entity);
@@ -137,12 +137,15 @@ export default function registerEvents() {
     }
   });
 
-  cauldron.events.on('blockbreak', event => {
+  cauldron.events.on('blockbreak', (event) => {
     const player = event.getPlayer();
     const chunkCoords = getChunkCoordsForEntity(player);
     const profile = getProfileFor(player.getUniqueId().toString());
     if (profile.claims[chunkCoords]) return;
     const claim = getClaimFor(chunkCoords);
+    if (!claim) {
+      return;
+    }
     const owner = getProfileFor(claim.owner);
     if (!owner.rules[CLAIM_OPTIONS.BLOCK_BREAK]) {
       player.sendMessage(colors.red("You don't have permission to do that!"));
@@ -150,7 +153,7 @@ export default function registerEvents() {
     }
   });
 
-  cauldron.events.on('blockplace', event => {
+  cauldron.events.on('blockplace', (event) => {
     const player = event.getPlayer();
     const chunkCoords = getChunkCoordsForEntity(player);
     const profile = getProfileFor(player.getUniqueId().toString());
