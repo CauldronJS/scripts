@@ -2645,13 +2645,23 @@ declare module 'bukkit/boss' {
 }
 
 declare module 'bukkit/command' {
+  import { BaseComponent } from 'bungee/api/chat';
+
   export interface BlockCommandSender {}
 
   export interface CommandExecutor {}
 
   export interface CommandMap {}
 
-  export interface CommandSender {}
+  export interface CommandSender {
+    spigot(): CommandSender.Spigot;
+  }
+
+  export module CommandSender {
+    export interface Spigot {
+      sendMessage(...components: BaseComponent[]): void;
+    }
+  }
 
   export interface ConsoleCommandSender {}
 
@@ -4893,5 +4903,224 @@ declare module 'java/util/function' {
     (t: T): Consumer<T>;
     accept(t: T): void;
     andThen(after: Consumer<T>): Consumer<T>;
+  }
+}
+
+declare module 'java/util/regex' {
+  export class Pattern {}
+}
+
+declare module 'bungee/api/chat' {
+  import { Pattern } from 'java/util/regex';
+  import { Content } from 'bungee/api/chat/hover/content';
+
+  export class ItemTag {
+    getNbt(): string;
+    static ofNbt(nbt: string): ItemTag;
+  }
+
+  export module ItemTag {
+    export class Serializer {}
+  }
+
+  export class ChatColor {
+    static ALL_CODES: string;
+    static AQUA: ChatColor;
+    static BLACK: ChatColor;
+    static BLUE: ChatColor;
+    static BOLD: ChatColor;
+    static COLOR_CHAR: string;
+    static DARK_AQUA: ChatColor;
+    static DARK_BLUE: ChatColor;
+    static DARK_GRAY: ChatColor;
+    static DARK_GREEN: ChatColor;
+    static DARK_PURPLE: ChatColor;
+    static DARK_RED: ChatColor;
+    static GOLD: ChatColor;
+    static GRAY: ChatColor;
+    static GREEN: ChatColor;
+    static ITALIC: ChatColor;
+    static LIGHT_PURPLE: ChatColor;
+    static MAGIC: ChatColor;
+    static RED: ChatColor;
+    static RESET: ChatColor;
+    static STRIKETHROUGH: ChatColor;
+    static STRIP_COLOR_PATTERN: Pattern;
+    static UNDERLINE: ChatColor;
+    static WHITE: ChatColor;
+    static YELLOW: ChatColor;
+
+    equals(obj: any): boolean;
+    static getByChar(code: string): ChatColor;
+    // getColor(): Color;
+    getName(): string;
+    static of(name: string): ChatColor;
+    static stripColor(input: string): string;
+    toString(): string;
+    static translateAlternateColorCodes(
+      altColorCode: string,
+      textToTranslate: string
+    ): string;
+  }
+
+  export class ClickEvent {
+    constructor(action: ClickEvent.Action, value: string);
+
+    getAction(): ClickEvent.Action;
+    getValue(): string;
+  }
+
+  export module ClickEvent {
+    export enum Action {
+      CHANGE_PAGE,
+      COPY_TO_CLIPBOARD,
+      OPEN_FILE,
+      OPEN_URL,
+      RUN_COMMAND,
+      SUGGEST_COMMAND,
+    }
+  }
+
+  export class HoverEvent {
+    constructor(action: HoverEvent.Action, ...contents: Content[]);
+
+    addContent(content: Content): void;
+    getAction(): HoverEvent.Action;
+    getContents(): Content[];
+    isLegacy(): boolean;
+    setLegacy(legacy: boolean): void;
+  }
+
+  export module HoverEvent {
+    export enum Action {
+      SHOW_ENTITY,
+      SHOW_ITEM,
+      SHOW_TEXT,
+    }
+  }
+
+  export abstract class BaseComponent {
+    addExtra(component: BaseComponent): void;
+    addExtra(text: string): void;
+    copyFormatting(component: BaseComponent): void;
+    copyFormatting(component: BaseComponent, replace: boolean): void;
+    getClickevent(): ClickEvent;
+    getColor(): ChatColor;
+    getColorRaw(): ChatColor;
+    getExtra(): BaseComponent[];
+    getFont(): string;
+    getFontRaw(): string;
+    getHoverEvent(): HoverEvent;
+    getInsertion(): string;
+    hasFormatting(): boolean;
+    isBold(): boolean;
+    isItalic(): boolean;
+    isItalicRaw(): boolean;
+    isObfuscated(): boolean;
+    isObfuscatedRaw(): boolean;
+    isStrikethrough(): boolean;
+    isStrikethroughRaw(): boolean;
+    isUnderlined(): boolean;
+    isUnderlineRaw(): boolean;
+    setBold(value: boolean): void;
+    setClickEvent(value: ClickEvent): void;
+    setColor(value: ChatColor): void;
+    setExtra(components: BaseComponent[]): void;
+    setFont(value: string): void;
+    setHoverEvent(value: HoverEvent): void;
+    setInsertion(value: string): void;
+    setItalic(value: boolean): void;
+    setObfuscated(value: boolean): void;
+    setStrikethrough(value: boolean): void;
+    setUnderlined(value: boolean): void;
+    static toLegacyText(...components: BaseComponent[]): string;
+    toPlainText(): string;
+    static toPlainText(...components: BaseComponent[]): string;
+    toString(): string;
+  }
+
+  export class TextComponent extends BaseComponent {
+    constructor();
+    constructor(...extras: BaseComponent[]);
+    constructor(text: string);
+    constructor(component: TextComponent);
+
+    duplicate(): TextComponent;
+    static fromLegacyText(message: string): BaseComponent[];
+    static fromLegacyText(message: string, color: ChatColor): BaseComponent[];
+    getText(): string;
+    setText(value: string): void;
+  }
+
+  export class KeybindComponent extends BaseComponent {
+    constructor();
+    constructor(origin: KeybindComponent);
+    constructor(keybind: string);
+
+    duplicate(): KeybindComponent;
+    getKeybind(): string;
+    setKeybind(value: string): void;
+  }
+
+  export class ScoreComponent extends BaseComponent {
+    constructor(original: ScoreComponent);
+    constructor(name: string, objective: string);
+    constructor(name: string, objective: string, value: string);
+
+    duplicate(): ScoreComponent;
+    getName(): string;
+    getObjective(): string;
+    getValue(): string;
+
+    setName(value: string): void;
+    setObjective(value: string): void;
+    setValue(value: string): void;
+  }
+
+  export class SelectorComponent extends BaseComponent {
+    constructor(original: SelectorComponent);
+    constructor(selector: string);
+
+    duplicate(): SelectorComponent;
+    getSelector(): string;
+    setSelector(value: string): void;
+  }
+}
+
+declare module 'bungee/api/chat/hover/content' {
+  import { HoverEvent, BaseComponent, ItemTag } from 'bungee/api/chat';
+
+  export abstract class Content {
+    assertAction(input: HoverEvent.Action): void;
+    abstract requiredAction(): HoverEvent.Action;
+  }
+
+  export class Entity extends Content {
+    constructor(type: string, id: string, name: BaseComponent);
+    requiredAction(): HoverEvent.Action;
+    getId(): string;
+    getName(): BaseComponent;
+    getType(): string;
+    setId(id: string): void;
+    setName(name: BaseComponent): void;
+    setType(type: string): void;
+  }
+
+  export class Item extends Content {
+    constructor(id: string, count: number, tag: ItemTag);
+    requiredAction(): HoverEvent.Action;
+    getCount(): number;
+    getId(): string;
+    getTag(): ItemTag;
+    setCount(count: number): void;
+    setId(id: string): void;
+    setTag(tag: ItemTag): void;
+  }
+
+  export class Text extends Content {
+    constructor(value: BaseComponent[]);
+    constructor(value: string);
+    requiredAction(): HoverEvent.Action;
+    getValue(): object;
   }
 }

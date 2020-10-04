@@ -1,11 +1,13 @@
 import Rinse from '@cauldron/rinse';
 import { GmsCommand, GmcCommand, GmaCommand } from './gamemode';
+import SetSpawnCommand from './setspawn';
 
 const App = () => (
   <>
     <GmsCommand />
     <GmcCommand />
     <GmaCommand />
+    <SetSpawnCommand />
   </>
 );
 

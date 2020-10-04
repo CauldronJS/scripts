@@ -95,7 +95,10 @@ export default function registerEvents() {
     const entityType = event.getEntityType();
     const damager = event.getDamager && event.getDamager();
     const damagerType = damager && damager.getType();
-    if (entityType !== EntityType.PLAYER && damagerType !== EntityType.PLAYER)
+    if (
+      (entityType !== EntityType.PLAYER && damagerType !== EntityType.PLAYER) ||
+      !damager
+    )
       return;
     const mob = entityType !== EntityType.PLAYER ? entity : damager;
     const chunkCoords = getChunkCoordsForEntity(mob);

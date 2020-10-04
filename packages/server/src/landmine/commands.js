@@ -9,7 +9,7 @@ import {
   doesOwn,
   getProfileFor,
   commitProfiles,
-  CLAIM_OPTIONS
+  CLAIM_OPTIONS,
 } from './profile';
 import { createClaim, isClaimable, removeClaims, getClaimFor } from './claim';
 import {
@@ -17,28 +17,53 @@ import {
   getPlayerList,
   getPlayerByName,
   getMembersList,
-  getWorldNames
+  getWorldNames,
+  getChunkCoordsFromArgs,
 } from './utils';
+import {
+  ChatColor,
+  ClickEvent,
+  HoverEvent,
+  TextComponent,
+} from 'bungee/api/chat';
+import { Text } from 'bungee/api/chat/hover/content';
 
-function executeClaim({ sender }) {
+function executeClaim({ sender, args }) {
   const uuid = sender.getUniqueId().toString();
-  const coords = getChunkCoordsForEntity(sender);
+  const coords =
+    args.length === 0
+      ? getChunkCoordsForEntity(sender)
+      : getChunkCoordsFromArgs(sender, args[0], args[1]);
   const profile = getProfileFor(uuid);
+
+  function trySendMapWith(text) {
+    sender.sendMessage(text);
+    if (args.indexOf('--show-map') > -1) {
+      executeMap({ sender });
+    }
+  }
+
   if (profile.claimsAllowed <= profile.claims.length) {
-    return colors.red("[LandMine] You don't have any claims left");
+    return trySendMapWith(
+      colors.red("[LandMine] You don't have any claims left")
+    );
   }
   if (!canClaim(uuid, coords)) {
-    return colors.red(
-      "[LandMine] This claim isn't connected to any previous claims"
+    return trySendMapWith(
+      colors.red("[LandMine] This claim isn't connected to any previous claims")
     );
   }
   if (!isClaimable(coords)) {
-    return colors.red('[LandMine] This chunk has already been claimed');
+    return trySendMapWith(
+      colors.red('[LandMine] This chunk has already been claimed')
+    );
   }
   createClaim(coords, uuid);
   claim(uuid, coords);
 
-  return colors.green(`[LandMine] Claimed ${coords.x},${coords.z}`);
+  return trySendMapWith(
+    colors.green(`[LandMine] Claimed ${coords.x},${coords.z}`)
+  );
 }
 
 function executeUnclaim({ sender }) {
@@ -72,33 +97,50 @@ function executeMap({ sender }) {
   const coords = getChunkCoordsForEntity(sender);
   const mapWidth = 10;
   const mapHeight = 3;
-  const result = [
+  const atlas = new TextComponent(
     `${colors.green('Owned')} ${colors.yellow('Resident')} ${colors.red(
       'Claimed'
-    )} ${colors.white('Available')}`,
-    colors.yellow(`=====${coords.world}: ${coords.x},${coords.z}=====`)
-  ];
+    )} ${colors.white('Available')}\n`
+  );
+  const location = new TextComponent(
+    colors.yellow(`=====${coords.world}: ${coords.x},${coords.z}=====\n`)
+  );
+  const components = [atlas, location];
   for (let x = -mapHeight; x <= mapHeight; ++x) {
-    let line = '';
     for (let z = -mapWidth; z <= mapWidth; ++z) {
       const char = x === 0 && z === 0 ? '-' : '+';
+      const claimX = coords.x + x;
+      const claimZ = coords.z + z;
       const claim = getClaimFor({
-        x: coords.x + x,
-        z: coords.z + z,
-        world: coords.world
+        x: claimX,
+        z: claimZ,
+        world: coords.world,
       });
+      const textComponent = new TextComponent(char);
       if (claim) {
-        if (claim.owner === uuid) line += colors.green(char);
-        else if (claim.residents.indexOf(uuid) > -1)
-          line += colors.yellow(char);
-        else line += colors.red(char);
-      } else {
-        line += colors.white(char);
+        if (claim.owner === uuid) {
+          textComponent.setColor(ChatColor.GREEN);
+        } else if (claim.residents.indexOf(uuid) > -1) {
+          textComponent.setColor(ChatColor.YELLOW);
+        } else {
+          textComponent.setColor(ChatColor.RED);
+        }
       }
+      const hoverEvent = new HoverEvent(
+        HoverEvent.Action.SHOW_TEXT,
+        new Text(`${claimX};${claimZ}`)
+      );
+      const clickEvent = new ClickEvent(
+        ClickEvent.Action.RUN_COMMAND,
+        `/lm claim ${claimX} ${claimZ} --show-map`
+      );
+      textComponent.setHoverEvent(hoverEvent);
+      textComponent.setClickEvent(clickEvent);
+      components.push(textComponent);
     }
-    result.push(line);
+    components.push(new TextComponent('\n'));
   }
-  sender.sendMessage(result);
+  sender.spigot().sendMessage(...components);
 }
 
 function executeInfo({ sender }) {
