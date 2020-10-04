@@ -4910,18 +4910,8 @@ declare module 'java/util/regex' {
   export class Pattern {}
 }
 
-declare module 'bungee/api/chat' {
+declare module 'bungee/api' {
   import { Pattern } from 'java/util/regex';
-  import { Content } from 'bungee/api/chat/hover/content';
-
-  export class ItemTag {
-    getNbt(): string;
-    static ofNbt(nbt: string): ItemTag;
-  }
-
-  export module ItemTag {
-    export class Serializer {}
-  }
 
   export class ChatColor {
     static ALL_CODES: string;
@@ -4961,6 +4951,20 @@ declare module 'bungee/api/chat' {
       altColorCode: string,
       textToTranslate: string
     ): string;
+  }
+}
+
+declare module 'bungee/api/chat' {
+  import { Content } from 'bungee/api/chat/hover/content';
+  import { ChatColor } from 'bungee/api';
+
+  export class ItemTag {
+    getNbt(): string;
+    static ofNbt(nbt: string): ItemTag;
+  }
+
+  export module ItemTag {
+    export class Serializer {}
   }
 
   export class ClickEvent {

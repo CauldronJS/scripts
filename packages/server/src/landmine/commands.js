@@ -20,12 +20,8 @@ import {
   getWorldNames,
   getChunkCoordsFromArgs,
 } from './utils';
-import {
-  ChatColor,
-  ClickEvent,
-  HoverEvent,
-  TextComponent,
-} from 'bungee/api/chat';
+import { ChatColor } from 'bungee/api';
+import { ClickEvent, HoverEvent, TextComponent } from 'bungee/api/chat';
 import { Text } from 'bungee/api/chat/hover/content';
 
 function executeClaim({ sender, args }) {
