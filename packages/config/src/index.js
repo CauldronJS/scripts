@@ -23,16 +23,7 @@ function createConfigHook(value, handler) {
   return [value, setConfigFn];
 }
 
-/**
- * Enables a human-friendly configuration file in the config/ directory.
- *
- * @param {String} name The name of the config to use
- * @param {*} defaultConfig The configuration to be used if one doesn't exist
- *
- * @returns {[config, (newConfigProperties) => void]}an array where the first index is the config value and the second is a function
- * that can be called to update config values.
- */
-function useConfig(name, defaultConfig = Object.create(null)) {
+export default function useConfig(name, defaultConfig = Object.create(null)) {
   const configName = path.resolve(configDirectory, `${name}.json`);
   let config = defaultConfig;
   const stat = fs.statSync(configName);
@@ -62,5 +53,3 @@ function useConfig(name, defaultConfig = Object.create(null)) {
   });
   return configHook;
 }
-
-export default useConfig;

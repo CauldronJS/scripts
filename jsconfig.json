@@ -3,8 +3,9 @@
     "jsx": "react",
     "baseUrl": ".",
     "paths": {
-      "*": ["src/*", "lib/*"],
+      "*": ["lib/*"],
       "internal/*": ["lib/internal/*"]
-    }
+    },
+    "files": ["index.d.ts"]
   }
 }

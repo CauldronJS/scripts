@@ -6,7 +6,6 @@ import { events, services } from 'cauldron';
 import essentials from './essentials';
 import deathbox from './deathbox';
 
-landmine();
 const App = () => {
   return (
     <>
@@ -18,10 +17,7 @@ const App = () => {
 
 Rinse.mount(<App />, 'commands');
 
-events.on('playerjoin', (event) => {
-  event.getPlayer().setHealthScale(2.0);
-});
-
+services.use(landmine);
 services.use(essentials);
 services.use(deathbox);
 

@@ -1,14 +1,26 @@
 import { events } from 'cauldron';
 import useStore from '@cauldron/store';
 import useConfig from '@cauldron/config';
-import { Material } from 'bukkit';
-import { FixedMetadataValue } from 'bukkit/metadata';
+import { Location, Material } from 'bukkit';
 import { EntityType } from 'bukkit/entity';
 
 const [deathboxCache, setDeathboxCache] = useStore('deathboxes');
 const [deathboxConfig, setDeathboxConfig] = useConfig('deathbox');
 
+/**
+ *
+ * @param {import('bukkit').Server} server
+ */
 export default function deathboxService(server) {
+  const jsonToLocation = (json) =>
+    new Location(server.getWorld(json.world), json.x, json.y, json.z);
+  const locationToJson = (location) => ({
+    x: location.getX(),
+    y: location.getY(),
+    z: location.getZ(),
+    world: location.getWorld().getName(),
+  });
+
   events.on('playerdeath', (event) => {
     if (event.getEntityType() !== EntityType.PLAYER) {
       return;
@@ -24,7 +36,13 @@ export default function deathboxService(server) {
       block = block.getRelative(0, 1, 0);
     }
     block.setType(Material.CHEST);
-    block.getState().setLock('test');
+    const state = block.getState();
+    state.getBlockInventory().addItem(drops);
+    state.update(true);
+    setDeathboxCache({
+      [player.getUniqueId().toString()]: locationToJson(block.getLocation()),
+    });
+    console.log(drops.length);
   });
 
   events.on('playerinteract', (event) => {
@@ -35,9 +53,13 @@ export default function deathboxService(server) {
     const state = event.getClickedBlock().getState();
     if (
       state.isLocked() &&
-      state.getLock() !== player.getUniqueId().toString()
+      state.getLock() !== player.getUniqueId().toString() &&
+      !player.hasPermission('deathbox.admin')
     ) {
       event.setCancelled(true);
+    } else {
+      state.setLock('');
+      state.update(true);
     }
   });
 
@@ -47,12 +69,16 @@ export default function deathboxService(server) {
     if (block.getType() !== Material.CHEST) {
       return;
     }
-    const state = block.getState();
+    const playersDeathbox = jsonToLocation(
+      deathboxCache[player.getUniqueId().toString()]
+    );
     if (
-      state.isLocked() &&
-      state.getLock() !== player.getUniqueId().toString()
+      block.getLocation().equals(playersDeathbox) &&
+      !player.hasPermission('deathbox.admin')
     ) {
       event.setCancelled(true);
+    } else {
+      setDeathboxCache({ [player.getUniqueId().toString()]: undefined });
     }
   });
   return true;

@@ -1,16 +1,5 @@
-import fs from 'fs';
+import * as fs from 'fs';
 
-/**
- * Creates a stored file that can be used to persist data
- * for the given app.
- *
- * @export
- * @param name
- * @param defaultStore
- *
- * @returns {[store, setStore: (updatedProps:Object)]} An array of
- * the stored object and a function that updates the store.
- */
 function useStore(
   name: string,
   defaultStore: any = Object.create(null)

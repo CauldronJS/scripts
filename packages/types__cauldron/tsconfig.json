@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "lib": ["ES6"],
+    "noImplicitAny": true,
+    "noImplicitThis": true
+  },
+  "files": ["index.d.ts"]
+}

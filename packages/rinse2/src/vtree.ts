@@ -58,7 +58,7 @@ export class VirtualTree {
     }
     this.mountNode = this.registerComponent(rinsed.component, rinsed.props);
 
-    console.trace(this.fibers);
+    console.debug(this.fibers);
   }
 
   startWatch() {

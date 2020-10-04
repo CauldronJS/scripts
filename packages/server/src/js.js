@@ -5,10 +5,13 @@ import colors from '@cauldron/colors';
 import { Bukkit } from 'bukkit';
 
 const executeJs = ({ args, sender }) => {
-  const patched = args.join(' ');
-  const wrapper = '(function(me,require){' + patched + '})';
+  let patched = args.join(' ');
+  if (patched.indexOf('\n') === -1 && !patched.startsWith('return ')) {
+    patched = `return ${patched}`;
+  }
+  const wrapper = '(function(me,require,server){' + patched + '})';
   const fn = $$isolate$$.runScript(wrapper, 'repl');
-  const result = fn.call(this, sender, require.mainRequire);
+  const result = fn.call(this, sender, require.mainRequire, Bukkit);
   return `\xA77=> ${pretty(result)}`;
 };
 
