@@ -1,7 +1,6 @@
 {
   "main": "./packages/server/dist/index.js",
   "scripts": {
-    "postinstall": "lerna bootstrap",
     "build": "lerna run build",
     "start": "lerna run --scope cauldron-src build",
     "clean": "lerna clean && lerna exec -- rm -rf dist"

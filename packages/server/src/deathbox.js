@@ -37,12 +37,14 @@ export default function deathboxService(server) {
     }
     block.setType(Material.CHEST);
     const state = block.getState();
-    state.getBlockInventory().addItem(drops);
-    state.update(true);
+    state.getBlockInventory().setContents(drops);
+    if (!state.update(true)) {
+      console.error('An error occured when updating the state of the chest');
+    }
     setDeathboxCache({
       [player.getUniqueId().toString()]: locationToJson(block.getLocation()),
     });
-    console.log(state.getBlockInventory().getContents().length);
+    console.log(state.getBlockInventory().getContents());
   });
 
   events.on('playerinteract', (event) => {

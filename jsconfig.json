@@ -5,7 +5,6 @@
     "paths": {
       "*": ["lib/*"],
       "internal/*": ["lib/internal/*"]
-    },
-    "files": ["index.d.ts"]
+    }
   }
 }

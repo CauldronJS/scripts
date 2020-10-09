@@ -11,10 +11,15 @@ const loginUser = ({ sender, args }) => {
 };
 
 export const LoginCommand = () => (
-  <Command name="auth" permission="nn.auth" execute={loginUser} isForPlayer />
+  <Command
+    name="auth"
+    permission="cauldron.auth"
+    execute={loginUser}
+    isForPlayer
+  />
 );
 
-const isSessionValid = player => {
+const isSessionValid = (player) => {
   if (!player.hasPlayedBefore()) return false;
   const uuid = player.getUniqueId();
   const address = player.getAddress();
@@ -25,9 +30,9 @@ const isSessionValid = player => {
   const lastSession = storedHistory[uuid];
 };
 
-const markCurrentSesssion = player => {};
+const markCurrentSesssion = (player) => {};
 
-events.on('playerjoin', event => {
+events.on('playerjoin', (event) => {
   // check if player needs to login
   const player = event.getPlayer();
   const uuid = player.getUniqueId();

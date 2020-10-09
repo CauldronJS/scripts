@@ -46,12 +46,16 @@ function executeClaim({ sender, args }) {
   }
   if (!canClaim(uuid, coords)) {
     return trySendMapWith(
-      colors.red("[LandMine] This claim isn't connected to any previous claims")
+      colors.red(
+        `[LandMine] This claim isn't connected to any previous claims (${coords.x}, ${coords.z})`
+      )
     );
   }
   if (!isClaimable(coords)) {
     return trySendMapWith(
-      colors.red('[LandMine] This chunk has already been claimed')
+      colors.red(
+        `[LandMine] This chunk has already been claimed (${coords.x}, ${coords.z})`
+      )
     );
   }
   createClaim(coords, uuid);
@@ -62,16 +66,28 @@ function executeClaim({ sender, args }) {
   );
 }
 
-function executeUnclaim({ sender }) {
+function executeUnclaim({ sender, args }) {
   const uuid = sender.getUniqueId().toString();
-  const coords = getChunkCoordsForEntity(sender);
+  const coords =
+    args.length === 0
+      ? getChunkCoordsForEntity(sender)
+      : getChunkCoordsFromArgs(sender, args[0], args[1]);
   try {
+    function trySendMapWith(text) {
+      sender.sendMessage(text);
+      if (args.indexOf('--show-map') > -1) {
+        executeMap({ sender });
+      }
+    }
+
     if (getClaimFor(coords).owner !== uuid) {
-      return colors.red("[LandMine] You don't own this chunk!");
+      return trySendMapWith(colors.red("[LandMine] You don't own this chunk!"));
     }
     unclaim(uuid, coords);
     removeClaims(coords);
-    return colors.green(`[LandMine] Unclaimed ${coords.x},${coords.z}`);
+    return trySendMapWith(
+      colors.green(`[LandMine] Unclaimed ${coords.x},${coords.z}`)
+    );
   } catch (err) {
     return colors.red(`[LandMine] Failed to unclaim: ${err}`);
   }
@@ -81,7 +97,7 @@ function executeUnclaimAll({ sender }) {
   const uuid = sender.getUniqueId().toString();
   try {
     const unclaimed = unclaimAll(uuid);
-    removeClaims(unclaimed);
+    removeClaims(...unclaimed);
     return colors.green(`[LandMine] Unclaimed ${unclaimed.length} chunks`);
   } catch (err) {
     return colors.red(`[LandMine] Failed to unclaim all: ${err}`);
@@ -113,8 +129,10 @@ function executeMap({ sender }) {
         world: coords.world,
       });
       const textComponent = new TextComponent(char);
+      let isOwned = false;
       if (claim) {
         if (claim.owner === uuid) {
+          isOwned = true;
           textComponent.setColor(ChatColor.GREEN);
         } else if (claim.residents.indexOf(uuid) > -1) {
           textComponent.setColor(ChatColor.YELLOW);
@@ -128,7 +146,7 @@ function executeMap({ sender }) {
       );
       const clickEvent = new ClickEvent(
         ClickEvent.Action.RUN_COMMAND,
-        `/lm claim ${claimX} ${claimZ} --show-map`
+        `/lm ${isOwned ? 'unclaim' : 'claim'} ${claimX} ${claimZ} --show-map`
       );
       textComponent.setHoverEvent(hoverEvent);
       textComponent.setClickEvent(clickEvent);

@@ -5,9 +5,8 @@
     "jsxFragmentFactory": "Rinse.Fragment",
     "baseUrl": ".",
     "paths": {
-      "*": ["src/*", "lib/*"],
+      "*": ["lib/*"],
       "internal/*": ["lib/internal/*"]
-    },
-    "lib": ["ES2015"]
+    }
   }
 }

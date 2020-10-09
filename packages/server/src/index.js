@@ -1,6 +1,7 @@
 import Rinse from '@cauldron/rinse';
 import RtpCommand from './rtp';
 import JsCommand from './js';
+import StatsCommand from './stats';
 import landmine from './landmine';
 import { events, services } from 'cauldron';
 import essentials from './essentials';
@@ -11,6 +12,7 @@ const App = () => {
     <>
       <RtpCommand />
       <JsCommand />
+      <StatsCommand />
     </>
   );
 };

@@ -10,13 +10,11 @@ export const getChunkCoordsForEntity = (entity) => {
   return { x, z, world };
 };
 
-export const getChunkCoordsFromArgs = (caller, xS, zS) => {
-  if (!xS || !zS) {
+export const getChunkCoordsFromArgs = (caller, x, z) => {
+  if (!x || !z) {
     throw new Error(`Expected <x> <z> but got either one or none`);
   }
   const world = caller.getLocation().getWorld().getName();
-  const x = Math.floor(parseInt(xS) / 16);
-  const z = Math.floor(parseInt(zS) / 16);
   if (isNaN(x) || isNaN(z)) {
     throw new Error(`Invalid coordinates passed: ${x},${z}`);
   }

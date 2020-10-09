@@ -1,0 +1,260 @@
+{
+  "env": {
+    "browser": false,
+    "node": true,
+    "es6": true
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly",
+    "globalThis": "readonly",
+    "$$cauldron$$": "readonly",
+    "$$isolate$$": "readonly",
+    "Polyglot": "readonly",
+    "load": "readonly",
+    "Java": "readonly",
+    "java": "readonly",
+    "BigInt": "readonly",
+    "log": "readonly",
+    "debugMessages": "readonly",
+    "evalScript": "readonly",
+    "internalBinding": "readonly",
+    "DTRACE_HTTP_CLIENT_REQUEST": "readonly",
+    "COUNTER_HTTP_CLIENT_REQUEST": "readonly",
+    "DTRACE_HTTP_CLIENT_RESPONSE": "readonly",
+    "COUNTER_HTTP_CLIENT_RESPONSE": "readonly"
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:flowtype/recommended"
+  ],
+  "plugins": ["react", "flowtype"],
+  "settings": {
+    "flowtype": {
+      "onlyFilesWithFlowAnnotation": true
+    }
+  },
+  "rules": {
+    // fixable styles
+    "strict": "off",
+    "eqeqeq": [2, "allow-null"], // require the use of === and !== (fixable)
+    "object-shorthand": [1, "always", { "avoidExplicitReturnArrows": true }],
+    "camelcase": [
+      2,
+      {
+        "properties": "never"
+      }
+    ], // require camel case vars but not properties
+    "no-extra-boolean-cast": [1],
+    "spaced-comment": [1, "always"], // require or disallow a space immediately following the // or /* in a comment
+    "no-lonely-if": [1], // disallow if as the only statement in an else block
+    "no-new-object": [1], // disallow the use of the Object constructor
+    "global-require": [2],
+    "no-buffer-constructor": [2],
+    "no-mixed-requires": [2],
+    "no-new-require": [2],
+    "no-path-concat": [2],
+    "no-restricted-modules": [
+      2,
+      {
+        "paths": [],
+        "patterns": ["internal/*", "internal/**"]
+      }
+    ],
+    "brace-style": [2, "1tbs", { "allowSingleLine": false }],
+
+    // code
+    "no-empty-pattern": [2], // disallow use of empty destructuring patterns
+    "no-empty": [1],
+    "no-eval": [2], // disallow use of eval()
+    "no-nested-ternary": [1],
+    "no-implied-eval": [2], // disallow use of eval()-like methods
+    "no-labels": [2], // disallow use of labeled statements
+    "no-lone-blocks": [2], // disallow unnecessary nested blocks
+    "no-native-reassign": [2], // disallow reassignments of native objects
+    "no-new-func": [2], // disallow use of new operator for Function object
+    "no-redeclare": [2], // disallow declaring the same variable more then once
+    "no-self-compare": [2], // disallow comparisons where both sides are exactly the same (off by default)
+    "no-sequences": [0], // disallow use of comma operator
+    "no-throw-literal": [0], // Restrict what can be thrown as an exception
+    "no-unused-expressions": [1, { "allowTernary": true }], // disallow usage of expressions in statement position
+    "no-useless-call": [1], // disallow unnecessary .call() and .apply()
+    "max-nested-callbacks": [1, 5], // specify the maximum depth callbacks can be nested
+    "max-params": [1],
+    "prefer-arrow-callback": [1],
+
+    // variables
+    "no-catch-shadow": 2, // disallow the catch clause parameter name being the same as a variable in the outer scope (off by default in the node environment)
+    "no-label-var": 2, // disallow labels that share a name with a variable
+    "no-shadow-restricted-names": 2, // disallow shadowing of names such as arguments
+    "no-undef": 2, // disallow use of undeclared variables unless mentioned in a /*global */ block
+    "no-undef-init": 2, // disallow use of undefined when initializing variables
+    "no-unused-vars": [
+      2,
+      {
+        "vars": "local",
+        "args": "after-used",
+        "ignoreRestSiblings": true // left siblings are ignored when a rest property sibling is present
+      }
+    ], //  disallow declaration of variables that are not used in the code (recommended)
+    "no-useless-concat": [1], // disallow unnecessary concatenation of literals or template literals
+    "consistent-return": [1], // require return statements to either always or never specify values
+    "dot-notation": [1], // encourages use of dot notation whenever possible
+    "no-caller": [1], // disallow use of arguments.caller or arguments.callee
+    "no-extra-bind": [1], // disallow unnecessary function binding
+    "no-new-wrappers": [1], // disallows creating new instances of String, Number, and Boolean
+    "no-proto": [1], // disallow usage of __proto__ property
+    "no-script-url": [1], // disallow use of javascript: urls.
+    "no-void": [1], // disallow use of the void operator
+    "no-with": [1], // disallow use of the with statement
+    "new-cap": [1, { "capIsNewExceptions": ["Deferred", "DataTable"] }], // require a capital letter for constructors
+    "no-unneeded-ternary": [1], // disallow the use of ternary operators when a simpler alternative exists
+    "no-fallthrough": [1],
+    "no-unreachable": [1],
+    "no-self-assign": [1],
+    "no-unexpected-multiline": [1],
+    "no-inline-comments": [0], // disallow inline comments after code
+    "no-var": [1], // create variables with block scope instead of function scope using the let and const keywords
+
+    /* SOME DAY */
+    "no-multi-str": [0], // disallow use of multiline strings
+    "consistent-this": [0, "self"], // require "this" alias to be "self"
+    "linebreak-style": 0, // disallow mixed 'LF' and 'CRLF' as linebreaks
+    "prefer-rest-params": [1],
+    "prefer-const": [
+      1,
+      {
+        "destructuring": "any",
+        "ignoreReadBeforeAssign": true
+      }
+    ],
+    "no-useless-constructor": [2],
+    "no-iterator": [2],
+    "no-dupe-class-members": [2],
+    "constructor-super": [2],
+    "no-class-assign": [2],
+    "no-const-assign": [2],
+    "no-new-symbol": [2],
+    "no-this-before-super": [2],
+    "no-useless-computed-key": [2],
+    "prefer-template": [0],
+    "arrow-body-style": [0, "as-needed"],
+    /* Import */
+    // analysis/correctness
+    "import/named": [2], // prevents having your import be undefined
+    "import/namespace": [2], // prevents accessing named members which do not appear in the export
+    "import/default": [2], // ensure a default export exists when default importing
+    "import/export": [2], // "Reports funny business with exports, like repeated exports of names or defaults."
+    "import/first": [2], // group imports before all other code
+    "import/no-mutable-exports": [2], // don't export mutable entities
+
+    // weird syntax
+    "import/no-named-default": [2], // don't do "import {default as something} from 'foo'", it's weird
+    "import/no-named-as-default": [2], // don't import the default using the same name as a named export
+    "import/no-named-as-default-member": [2], // don't destructure defaults, use named imports
+    "import/no-duplicates": [2], // don't import the same module more than once
+
+    // warnings
+    "import/newline-after-import": [1], // keep your formatting nice
+    "import/no-deprecated": [1], // Prevent import of deprecated members using @deprecated
+
+    // Explicitly disable rules that are handled by prettier
+    "react/jsx-closing-bracket-location": "off",
+    "react/jsx-closing-tag-location": "off",
+    "react/jsx-curly-spacing": "off",
+    "react/jsx-equals-spacing": "off",
+    "react/jsx-first-prop-new-line": "off",
+    "react/jsx-indent": "off",
+    "react/jsx-indent-props": "off",
+    "react/jsx-max-props-per-line": "off",
+    "react/jsx-space-before-closing": "off",
+    "react/jsx-tag-spacing": "off",
+    "react/jsx-wrap-multilines": "off",
+    "react/react-in-jsx-scope": "off",
+    "flowtype/generic-spacing": "off",
+    "flowtype/space-after-type-colon": "off",
+    "import/no-unresolved": "off",
+    "max-len": 0,
+    "no-console": "off",
+    "no-confusing-arrow": 0,
+    "no-mixed-operators": 0,
+    "no-tabs": 0,
+    "quotes": 0,
+    "array-bracket-newline": "off",
+    "array-bracket-spacing": "off",
+    "array-element-newline": "off",
+    "arrow-parens": "off",
+    "arrow-spacing": "off",
+    "block-spacing": "off",
+    "comma-dangle": "off",
+    "comma-spacing": "off",
+    "comma-style": "off",
+    "computed-property-spacing": "off",
+    "dot-location": "off",
+    "eol-last": "off",
+    "func-call-spacing": "off",
+    "function-paren-newline": "off",
+    "generator-star": "off",
+    "generator-star-spacing": "off",
+    "indent": "off",
+    "indent-legacy": "off",
+    "jsx-quotes": "off",
+    "key-spacing": "off",
+    "keyword-spacing": "off",
+    "multiline-ternary": "off",
+    "newline-per-chained-call": "off",
+    "new-parens": "off",
+    "no-arrow-condition": "off",
+    "no-comma-dangle": "off",
+    "no-extra-parens": "off",
+    "no-extra-semi": "off",
+    "no-floating-decimal": "off",
+    "no-mixed-spaces-and-tabs": "off",
+    "no-multi-spaces": "off",
+    "no-multiple-empty-lines": "off",
+    "no-reserved-keys": "off",
+    "no-space-before-semi": "off",
+    "no-spaced-func": "off",
+    "no-trailing-spaces": "off",
+    "no-whitespace-before-property": "off",
+    "no-wrap-func": "off",
+    "nonblock-statement-body-position": "off",
+    "object-curly-newline": "off",
+    "object-property-newline": "off",
+    "one-var-declaration-per-line": "off",
+    "operator-linebreak": "off",
+    "padded-blocks": "off",
+    "quote-props": "off",
+    "react/prop-types": "off",
+    "rest-spread-spacing": "off",
+    "semi": "off",
+    "semi-spacing": "off",
+    "semi-style": "off",
+    "space-after-function-name": "off",
+    "space-after-keywords": "off",
+    "space-before-blocks": "off",
+    "space-before-function-paren": "off",
+    "space-before-function-parentheses": "off",
+    "space-before-keywords": "off",
+    "space-in-brackets": "off",
+    "space-in-parens": "off",
+    "space-infix-ops": "off",
+    "space-return-throw-case": "off",
+    "space-unary-ops": "off",
+    "space-unary-word-ops": "off",
+    "switch-colon-spacing": "off",
+    "template-curly-spacing": "off",
+    "template-tag-spacing": "off",
+    "unicode-bom": "off",
+    "wrap-iife": "off",
+    "wrap-regex": "off",
+    "yield-star-spacing": "off"
+  }
+}

@@ -1,4 +1,5 @@
 import Rinse, { Command } from '@cauldron/rinse';
+import colors from '@cauldron/colors';
 import { GameMode, Bukkit } from 'bukkit';
 
 const setGameMode = (gameMode) => ({ sender, args }) => {
@@ -7,11 +8,13 @@ const setGameMode = (gameMode) => ({ sender, args }) => {
     throw new Error(`Cannot find player ${args[0]}`);
   }
   target.setGameMode(gameMode);
+  return colors.green(`Gamemode switched to ${gameMode}`);
 };
 
 export const GmcCommand = () => (
   <Command
     name="gmc"
+    usage="/<command [player]"
     permission="essentials.gamemode.creative"
     execute={setGameMode(GameMode.CREATIVE)}
     description="Sets a players gamemode to creative"
@@ -21,6 +24,7 @@ export const GmcCommand = () => (
 export const GmsCommand = () => (
   <Command
     name="gms"
+    usage="/<command [player]"
     permission="essentials.gamemode.survival"
     execute={setGameMode(GameMode.SURVIVAL)}
     description="Sets a players gamemode to survival"
@@ -30,6 +34,7 @@ export const GmsCommand = () => (
 export const GmaCommand = () => (
   <Command
     name="gma"
+    usage="/<command [player]"
     permission="essentials.gamemode.adventure"
     execute={setGameMode(GameMode.ADVENTURE)}
     description="Sets a players gamemode to adventure"

@@ -150,7 +150,10 @@ export default function registerEvents() {
       return;
     }
     const owner = getProfileFor(claim.owner);
-    if (!owner.rules[CLAIM_OPTIONS.BLOCK_BREAK]) {
+    if (
+      !owner.rules[CLAIM_OPTIONS.BLOCK_BREAK] &&
+      claim.owner !== player.getUniqueId().toString()
+    ) {
       player.sendMessage(colors.red("You don't have permission to do that!"));
       event.setCancelled(true);
     }
