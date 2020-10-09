@@ -18,7 +18,7 @@ function makeStatReadable(stat) {
 function executeStats({ sender, args }) {
   let page = args.filter((arg) => !isNaN(arg))[0];
   if (!page) {
-    page = 1;
+    page = 0;
   }
   const stats = Object.getOwnPropertyNames(Statistic);
   const result = [];
@@ -35,11 +35,11 @@ function executeStats({ sender, args }) {
       // ignore because fuck it
     }
   }
-  const paginated = textPagination(result, 0, {
+  const paginated = textPagination(result, page, {
     maxPerPage: 10,
     header: 'Stats ({page})',
-    nextPageCommand: (page) => `/stats ${page}`,
-    previousPageCommand: (page) => `/stats ${page}`,
+    nextPageCommand: (page) => `/stats ${page + 1}`,
+    previousPageCommand: (page) => `/stats ${page - 1}`,
   });
   return paginated;
 }
