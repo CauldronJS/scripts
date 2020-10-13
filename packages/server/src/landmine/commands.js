@@ -1,6 +1,6 @@
-import Rinse, { Command } from '@cauldron/rinse';
-import colors from '@cauldron/colors';
-import { getName, getUuid } from '@cauldron/players';
+import Rinse, { Command } from '@cauldronjs/rinse';
+import colors from '@cauldronjs/colors';
+import { getName, getUuid } from '@cauldronjs/players';
 import {
   canClaim,
   claim,

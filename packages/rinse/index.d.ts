@@ -1,4 +1,4 @@
-declare module '@cauldron/rinse' {
+declare module '@cauldronjs/rinse' {
   import { CommandSender } from 'bukkit/command';
   import { Permission } from 'bukkit/permissions';
 

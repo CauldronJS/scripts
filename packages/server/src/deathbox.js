@@ -1,6 +1,6 @@
-import { events } from 'cauldron';
-import useStore from '@cauldron/store';
-import useConfig from '@cauldron/config';
+import { events } from 'cauldronjs';
+import useStore from '@cauldronjs/store';
+import useConfig from '@cauldronjs/config';
 import { Location, Material } from 'bukkit';
 import { EntityType } from 'bukkit/entity';
 

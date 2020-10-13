@@ -1,5 +1,5 @@
 {
-  "name": "@cauldron/rinse2",
+  "name": "@cauldronjs/rinse2",
   "main": "./dist/index.js",
   "source": "./src/index.ts",
   "version": "1.0.0",

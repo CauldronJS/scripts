@@ -1,8 +1,8 @@
-import store from '@cauldron/store';
+import store from '@cauldronjs/store';
 
 const [claimStore, setClaimStore] = store('landmine_claims', {});
 
-const coordsToKey = coords => `${coords.x},${coords.z},${coords.world}`;
+const coordsToKey = (coords) => `${coords.x},${coords.z},${coords.world}`;
 
 /**
  *
@@ -55,7 +55,7 @@ export function isClaimable(coords) {
  * @param {{x: Number, z: Number, world: string}[]} coords
  */
 export function removeClaims(...coords) {
-  coords.forEach(coord => (claimStore[coordsToKey(coord)] = undefined));
+  coords.forEach((coord) => (claimStore[coordsToKey(coord)] = undefined));
   setClaimStore(claimStore);
 }
 

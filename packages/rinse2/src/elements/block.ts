@@ -1,5 +1,5 @@
-import Rinse from '@cauldron/rinse';
+import Rinse from '@cauldronjs/rinse';
 
-const BlockComponent = props => {};
+const BlockComponent = (props) => {};
 
 export default BlockComponent;

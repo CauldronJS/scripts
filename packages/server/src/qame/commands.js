@@ -1,5 +1,5 @@
 import { Command } from '@cauldron';
-import Rinse from '@cauldron/rinse';
+import Rinse from '@cauldronjs/rinse';
 
 const getInfo = ({ isServer }) => {
   if (isServer) {

@@ -17,7 +17,7 @@
  * Usage:
  *
  * // usage in JS
- * const {lts} = require('@cauldron/lts');
+ * const {lts} = require('@cauldronjs/lts');
  *
  * // for player specific
  * player.sendMessage(lts(player, 'cauldron.greetings.helloPlayer'));
@@ -30,4 +30,4 @@ const storedText = Object.create(null);
 
 export const lookupText = (id, language, params) => null;
 
-export const getLang = target => null;
+export const getLang = (target) => null;

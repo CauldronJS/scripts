@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import { Bukkit, World } from 'bukkit';
 import { events } from '@cauldron';
-import useConfig from '@cauldron/config';
+import useConfig from '@cauldronjs/config';
 
 const DEFAULT_CONFIG = new FloorState();
 const CONFIG_SYMBOL = Symbol('floorConfig');
@@ -16,7 +16,7 @@ class FloorState {
       timeSet: 0,
       allowedMobs: [],
       deniedMobs: [],
-      allowAnimals: true
+      allowAnimals: true,
     }
   ) {
     this.difficulty = config.difficulty;

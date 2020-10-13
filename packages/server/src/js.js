@@ -1,7 +1,7 @@
-import Rinse, { Command } from '@cauldron/rinse';
+import Rinse, { Command } from '@cauldronjs/rinse';
 import { parseExpression } from '@babel/parser';
-import pretty from '@cauldron/pretty';
-import colors from '@cauldron/colors';
+import pretty from '@cauldronjs/pretty';
+import colors from '@cauldronjs/colors';
 import { Bukkit } from 'bukkit';
 
 const executeJs = ({ args, sender }) => {

@@ -1,6 +1,6 @@
 // shuts down the server after a given amount of time
 import { subMinutes } from 'date-fns';
-import { scheduleLater } from '@cauldron/spigot';
+import { scheduleLater } from '@cauldronjs/spigot';
 
 /**
  *

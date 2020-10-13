@@ -1,4 +1,4 @@
-import { Command } from 'cauldron';
+import { Command } from 'cauldronjs';
 import { useState, useEffect } from '../hooks';
 
 const { CommandRestriction } = Command;

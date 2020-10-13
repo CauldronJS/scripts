@@ -1,4 +1,4 @@
-declare module '@cauldron/colors' {
+declare module '@cauldronjs/colors' {
   export default class ColorProvider {
     static reset(value: string): string;
     static bold(value: string): string;

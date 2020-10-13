@@ -1,9 +1,9 @@
 import { getClaimFor } from './claim';
 import { getProfileFor, CLAIM_OPTIONS } from './profile';
 import { getChunkCoordsForEntity } from './utils';
-import cauldron from 'cauldron';
+import cauldron from 'cauldronjs';
 import { EntityType } from 'bukkit/entity';
-import colors from '@cauldron/colors';
+import colors from '@cauldronjs/colors';
 
 const MOB_TYPES = [
   EntityType.CAVE_SPIDER,

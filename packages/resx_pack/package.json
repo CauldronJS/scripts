@@ -1,5 +1,5 @@
 {
-  "name": "@cauldron/resx_pack",
+  "name": "@cauldronjs/resx_pack",
   "main": "./dist/index.js",
   "version": "1.0.0",
   "author": "Conji",

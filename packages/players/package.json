@@ -1,5 +1,5 @@
 {
-  "name": "@cauldron/players",
+  "name": "@cauldronjs/players",
   "description": "A library that allows caching of player history",
   "main": "./dist/index.js",
   "version": "1.0.0",

@@ -1,5 +1,5 @@
 // each player is tied to a profile, meaning all of their plots are stored here.
-import store from '@cauldron/store';
+import store from '@cauldronjs/store';
 import { LandClaim } from './claim';
 
 const [profileStore, setProfileStore] = store('landmine_profiles', {});
@@ -34,7 +34,7 @@ export function canClaim(uuid, coords) {
   if (profile.claimsAllowed < profile.claims.length) return false;
   return (
     profile.claims.filter(
-      claim => distance(coords, claim) <= 1 && claim.world === coords.world
+      (claim) => distance(coords, claim) <= 1 && claim.world === coords.world
     ).length > 0
   );
 }
@@ -63,7 +63,7 @@ export function claim(uuid, coords) {
 export function unclaim(uuid, coords) {
   const profile = getProfileFor(uuid);
   profile.claims = profile.claims.filter(
-    c => c.x !== coords.x && c.z !== coords.z && c.world !== coords.world
+    (c) => c.x !== coords.x && c.z !== coords.z && c.world !== coords.world
   );
   setProfileStore({ [uuid]: profile });
 }
@@ -111,7 +111,7 @@ export const CLAIM_OPTIONS = {
   USE: 'use',
   PVP: 'pvp',
   PVMOB: 'pvmob',
-  PVANIMAL: 'pvanimal'
+  PVANIMAL: 'pvanimal',
 };
 
 export const CLAIM_DEFAULTS = {
@@ -121,5 +121,5 @@ export const CLAIM_DEFAULTS = {
   [CLAIM_OPTIONS.USE]: false,
   [CLAIM_OPTIONS.PVP]: false,
   [CLAIM_OPTIONS.PVMOB]: false,
-  [CLAIM_OPTIONS.PVANIMAL]: true
+  [CLAIM_OPTIONS.PVANIMAL]: true,
 };

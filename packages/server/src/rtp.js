@@ -1,19 +1,19 @@
-import Rinse, { Command } from '@cauldron/rinse';
+import Rinse, { Command } from '@cauldronjs/rinse';
 import { Location, Material } from 'bukkit';
-import colors from '@cauldron/colors';
+import colors from '@cauldronjs/colors';
 
 const BAD_BLOCKS = [
   Material.LAVA,
   Material.LEGACY_LAVA,
   Material.WATER,
-  Material.LEGACY_WATER
+  Material.LEGACY_WATER,
 ];
 
 const getLargeRandom = () =>
   parseInt(
-    `${Math.floor(Math.random() * 2) === 1 ? '' : '-'}${Math.sqrt(
-      Math.floor(Math.random() * Date.now())
-    ) / 3}`
+    `${Math.floor(Math.random() * 2) === 1 ? '' : '-'}${
+      Math.sqrt(Math.floor(Math.random() * Date.now())) / 3
+    }`
   );
 
 const executeRtp = ({ sender, args }) => {
@@ -28,7 +28,7 @@ const executeRtp = ({ sender, args }) => {
   let newLocation = {
     x: currentLocation.getBlockX() + getLargeRandom(),
     y: 255,
-    z: currentLocation.getBlockZ() + getLargeRandom()
+    z: currentLocation.getBlockZ() + getLargeRandom(),
   };
   // now we iterate down until we hit solid ground (well, non-air or non-lava)
   while (newLocation.y > 64) {
@@ -42,7 +42,7 @@ const executeRtp = ({ sender, args }) => {
       newLocation = {
         x: currentLocation.getBlockX() + getLargeRandom(),
         y: 255,
-        z: currentLocation.getBlockZ() + getLargeRandom()
+        z: currentLocation.getBlockZ() + getLargeRandom(),
       };
     } else {
       break;

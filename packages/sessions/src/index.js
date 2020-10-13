@@ -1,8 +1,8 @@
-import { events } from 'cauldron';
+import { events } from 'cauldronjs';
 import { UUID } from 'java/util';
 import { Bukkit } from 'bukkit';
 import { Player } from 'bukkit/entity';
-import useStore from '@cauldron/store';
+import useStore from '@cauldronjs/store';
 
 /**
  * @type {Map<string, [object, (updatedProps: any) => void]>}
@@ -22,29 +22,14 @@ function clearSessionData(userId) {
 }
 
 export default function session() {
-  events.on('playerjoin', event =>
-    createSessionData(
-      event
-        .getPlayer()
-        .getUniqueId()
-        .toString()
-    )
+  events.on('playerjoin', (event) =>
+    createSessionData(event.getPlayer().getUniqueId().toString())
   );
-  events.on('playerquit', event =>
-    clearSessionData(
-      event
-        .getPlayer()
-        .getUniqueId()
-        .toString()
-    )
+  events.on('playerquit', (event) =>
+    clearSessionData(event.getPlayer().getUniqueId().toString())
   );
-  events.on('playerkick', event =>
-    clearSessionData(
-      event
-        .getPlayer()
-        .getUniqueId()
-        .toString()
-    )
+  events.on('playerkick', (event) =>
+    clearSessionData(event.getPlayer().getUniqueId().toString())
   );
 }
 
@@ -52,7 +37,7 @@ export default function session() {
  *
  * @param {string|UUID|Player} user The username, UUID, or player entity
  */
-session.for = user => {
+session.for = (user) => {
   /**
    * @type {string}
    */
@@ -64,18 +49,14 @@ session.for = user => {
       id = user;
     } catch (err) {
       // it's a name of a player
-      id = Bukkit.getPlayer(user)
-        .getUniqueId()
-        .toString();
+      id = Bukkit.getPlayer(user).getUniqueId().toString();
     }
   } else if (user.getPlayerTime) {
     // it's a player
     id = user.getUniqueId().toString();
   } else if (user.clockSequence) {
     // it's a UUID
-    id = Bukkit.getPlayer(user)
-      .getUniqueId()
-      .toString();
+    id = Bukkit.getPlayer(user).getUniqueId().toString();
   } else {
     throw new Error(
       'Invalid session search key: requires name, unique ID, or player object'

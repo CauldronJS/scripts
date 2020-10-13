@@ -1,5 +1,5 @@
 {
-  "name": "@cauldron/sessions",
+  "name": "@cauldronjs/sessions",
   "main": "./dist/index.js",
   "version": "1.0.0",
   "scripts": {

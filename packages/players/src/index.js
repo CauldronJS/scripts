@@ -1,5 +1,5 @@
-import useStore from '@cauldron/store';
-import cauldron from 'cauldron';
+import useStore from '@cauldronjs/store';
+import cauldron from 'cauldronjs';
 import { Bukkit } from 'bukkit';
 
 const [history, setHistory] = useStore('players_history');
@@ -11,10 +11,7 @@ function createNewEntry(player) {
 }
 
 function updateHistory(event) {
-  const uuid = event
-    .getPlayer()
-    .getUniqueId()
-    .toString();
+  const uuid = event.getPlayer().getUniqueId().toString();
   const name = event.getPlayer().getName();
   const nameHistory = history[uuid];
   if (!nameHistory) {
@@ -27,19 +24,19 @@ function updateHistory(event) {
       // remove the old entry of what the current name is
       [lastUsedName.toLowerCase()]: undefined,
       // add the new entry of what the current name is
-      [name.toLowerCase()]: uuid
+      [name.toLowerCase()]: uuid,
     });
   }
 }
 
-export const getUuid = name => history[name.toLowerCase()];
+export const getUuid = (name) => history[name.toLowerCase()];
 
-export const getName = uuid => {
+export const getName = (uuid) => {
   const names = getNameHistory(uuid);
   return names[names.length - 1];
 };
 
-export const getNameHistory = uuid => history[uuid];
+export const getNameHistory = (uuid) => history[uuid];
 
 if (!Bukkit.getOnlineMode()) {
   console.error(

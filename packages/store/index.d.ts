@@ -1,4 +1,4 @@
-declare module '@cauldron/store' {
+declare module '@cauldronjs/store' {
   interface SetStoreHandler {
     (newProps: object);
   }

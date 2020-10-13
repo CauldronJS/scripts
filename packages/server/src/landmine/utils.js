@@ -1,5 +1,5 @@
 import { Bukkit } from 'bukkit';
-import { getName, getUuid } from '@cauldron/players';
+import { getName, getUuid } from '@cauldronjs/players';
 import { getClaimFor } from './claim';
 
 export const getChunkCoordsForEntity = (entity) => {

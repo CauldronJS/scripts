@@ -1,7 +1,7 @@
-import Rinse, { Command } from '@cauldron/rinse';
+import Rinse, { Command } from '@cauldronjs/rinse';
 import { Statistic } from 'bukkit';
-import colors from '@cauldron/colors';
-import textPagination from '@cauldron/text-pagination';
+import colors from '@cauldronjs/colors';
+import textPagination from '@cauldronjs/text-pagination';
 
 /**
  *

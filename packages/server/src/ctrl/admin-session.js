@@ -1,7 +1,7 @@
-import useStore from '@cauldron/store';
+import useStore from '@cauldronjs/store';
 import { Command, events } from '@cauldron';
-import Rinse from '@cauldron/rinse';
-import { lockUser, unlockUser } from '@cauldron/user-lock';
+import Rinse from '@cauldronjs/rinse';
+import { lockUser, unlockUser } from '@cauldronjs/user-lock';
 import { differenceInDays } from 'date-fns';
 
 const [storedHistory, updateStoredHistory] = useStore('adminSession');

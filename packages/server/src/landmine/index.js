@@ -1,4 +1,4 @@
-import Rinse from '@cauldron/rinse';
+import Rinse from '@cauldronjs/rinse';
 import { LandmineCommands } from './commands';
 import registerEvents from './events';
 

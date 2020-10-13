@@ -1,8 +1,8 @@
-import Rinse, { Command } from '@cauldron/rinse';
+import Rinse, { Command } from '@cauldronjs/rinse';
 
 /**
  *
- * @param {import('@cauldron/rinse').CommandExecutor} cmd
+ * @param {import('@cauldronjs/rinse').CommandExecutor} cmd
  */
 function executeSetSpawn(cmd) {
   const { sender } = cmd;

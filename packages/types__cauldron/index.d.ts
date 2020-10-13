@@ -1,4 +1,4 @@
-declare module 'cauldron' {
+declare module 'cauldronjs' {
   import { Event } from 'bukkit/event';
   import {
     BlockBreakEvent,

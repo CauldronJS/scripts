@@ -1,4 +1,4 @@
-declare module '@cauldron/config' {
+declare module '@cauldronjs/config' {
   interface SetConfigHandler<T> {
     (newConfig: T);
   }

@@ -1,6 +1,6 @@
 const StyleType = {
   LIG: 0,
-  COLOR: 1
+  COLOR: 1,
 };
 
 class Style {
@@ -43,7 +43,7 @@ const codes = {
   red: new Style('c', StyleType.COLOR),
   pink: new Style('d', StyleType.COLOR),
   yellow: new Style('e', StyleType.COLOR),
-  white: new Style('f', StyleType.COLOR)
+  white: new Style('f', StyleType.COLOR),
 };
 
 function applyStyleFns(target = '') {
@@ -51,8 +51,8 @@ function applyStyleFns(target = '') {
   const styled = new String(target);
   for (const styleName in codes) {
     const style = (codes[styleName] || { code: null }).code;
-    styled[styleName] = input =>
-      applyStyleFns(`${target}${style ? `\xA7${style}` : ''}${input}`);
+    styled[styleName] = (input) =>
+      applyStyleFns(`${target}${style ? `\xA7${style}` : ''}${input}\xA7r`);
   }
   return styled;
 }
@@ -60,5 +60,5 @@ function applyStyleFns(target = '') {
 Object.defineProperty(module, 'exports', {
   get() {
     return applyStyleFns();
-  }
+  },
 });

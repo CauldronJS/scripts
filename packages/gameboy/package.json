@@ -1,5 +1,5 @@
 {
-  "name": "@cauldron/gameboy",
+  "name": "@cauldronjs/gameboy",
   "description": "A minigame framework for CauldronJS",
   "main": "./dist/index.js",
   "version": "1.0.0",

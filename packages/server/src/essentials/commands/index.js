@@ -1,4 +1,4 @@
-import Rinse from '@cauldron/rinse';
+import Rinse from '@cauldronjs/rinse';
 import { GmsCommand, GmcCommand, GmaCommand } from './gamemode';
 import SetSpawnCommand from './setspawn';
 

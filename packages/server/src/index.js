@@ -1,9 +1,10 @@
-import Rinse from '@cauldron/rinse';
+import Rinse from '@cauldronjs/rinse';
 import RtpCommand from './rtp';
 import JsCommand from './js';
 import StatsCommand from './stats';
+import BetterHelpCommand from './better-help';
 import landmine from './landmine';
-import { events, services } from 'cauldron';
+import { events, services } from 'cauldronjs';
 import essentials from './essentials';
 import deathbox from './deathbox';
 
@@ -13,6 +14,7 @@ const App = () => {
       <RtpCommand />
       <JsCommand />
       <StatsCommand />
+      <BetterHelpCommand />
     </>
   );
 };

@@ -1,4 +1,4 @@
-import colors from '@cauldron/colors';
+import colors from '@cauldronjs/colors';
 import { ChatColor } from 'bungee/api';
 import {
   ClickEvent,
@@ -33,7 +33,17 @@ export default function paginate(content, page, config) {
     .replace('{totalPages}', totalPages);
   const formattedContent = content
     .slice(startIndex, startIndex + maxPerPage)
-    .join('\n');
+    .filter((line) => line)
+    .map((line) => {
+      if (line.duplicate) {
+        // it's a BaseComponent
+        line.addExtra('\n');
+        return line;
+      } else {
+        // it's a string
+        return `${line}\n`;
+      }
+    });
   const hasFooterDivider = page + 1 < totalPages && page > 0;
   const footerDivider = hasFooterDivider ? ` ${colors.reset('|')} ` : '';
   const footerPrevious = page > 0 ? colors.yellow('Previous') : '';
@@ -57,7 +67,6 @@ export default function paginate(content, page, config) {
     headerComponent,
     newLineComponent(),
     contentComponent,
-    newLineComponent(),
     footerPreviousComponent,
     footerDividerComponent,
     footerNextComponent,

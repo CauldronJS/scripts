@@ -1,5 +1,5 @@
-import Rinse, { Command } from '@cauldron/rinse';
-import colors from '@cauldron/colors';
+import Rinse, { Command } from '@cauldronjs/rinse';
+import colors from '@cauldronjs/colors';
 import { GameMode, Bukkit } from 'bukkit';
 
 const setGameMode = (gameMode) => ({ sender, args }) => {
