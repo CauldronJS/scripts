@@ -1,5 +1,6 @@
 declare module 'cauldronjs' {
   import { Event } from 'bukkit/event';
+  import { CommandSender } from 'bukkit/command';
   import {
     BlockBreakEvent,
     BlockBurnEvent,
@@ -1009,12 +1010,33 @@ declare module 'cauldronjs' {
     use(handler: CauldronService): CauldronServiceLoader;
   }
 
+  export interface HelpResponse {
+    (command: CauldronCommand): string | string[];
+  }
+
+  export interface CommandExecutor {
+    (sender: any, label: string, args: any[]): string | string[];
+  }
+
+  export class CauldronCommand {
+    name: string;
+    executor: CommandExecutor;
+    description: string;
+    usage: string;
+    aliases: string[];
+    permission: string;
+    restriction: 'none' | 'console' | 'player';
+    tabComplete: () => void;
+    help: HelpResponse;
+  }
+
   export const NAMESPACE_KEY: NamespacedKey;
   export const events: CauldronEvents;
   export function getPlugin(name: string): Plugin;
   export const services: CauldronServiceLoader;
   export const $$cauldron$$: import('me/conji/cauldron').CauldronAPI;
   export const $$isolate$$: Isolate;
+  export function reload(sender: CommandSender): void;
 }
 
 declare module 'me/conji/cauldron' {
@@ -1040,8 +1062,8 @@ declare module 'me/conji/cauldron' {
 
 declare module 'me/conji/cauldron/utils' {
   export class PathHelpers {
-    static join(path1: string, ...paths: string): string;
-    static exists(path1: string, ...paths: string): boolean;
-    static resolveLocalPath(path1: string, ...paths: string): Path;
+    static join(path1: string, ...paths: string[]): string;
+    static exists(path1: string, ...paths: string[]): boolean;
+    static resolveLocalPath(path1: string, ...paths: string[]): Path;
   }
 }

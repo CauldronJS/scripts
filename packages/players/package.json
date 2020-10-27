@@ -4,7 +4,8 @@
   "main": "./dist/index.js",
   "version": "1.0.0",
   "scripts": {
-    "build": "babel src --out-dir dist --copy-files"
+    "build": "babel src --out-dir dist --copy-files",
+    "watch": "babel src --out-dir dist --copy-files --watch"
   },
   "dependencies": {
     "@babel/cli": "^7.11.6",

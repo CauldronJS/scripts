@@ -3,21 +3,21 @@ import RtpCommand from './rtp';
 import JsCommand from './js';
 import StatsCommand from './stats';
 import BetterHelpCommand from './better-help';
+import BetterReloadCommand from './better-reload';
 import landmine from './landmine';
-import { events, services } from 'cauldronjs';
+import { services } from 'cauldronjs';
 import essentials from './essentials';
 import deathbox from './deathbox';
 
-const App = () => {
-  return (
-    <>
-      <RtpCommand />
-      <JsCommand />
-      <StatsCommand />
-      <BetterHelpCommand />
-    </>
-  );
-};
+const App = () => (
+  <>
+    <RtpCommand />
+    <JsCommand />
+    <StatsCommand />
+    <BetterHelpCommand />
+    <BetterReloadCommand />
+  </>
+);
 
 Rinse.mount(<App />, 'commands');
 

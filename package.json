@@ -3,7 +3,8 @@
   "scripts": {
     "build": "lerna run build",
     "start": "lerna run --scope cauldron-src build",
-    "clean": "lerna clean && lerna exec -- rm -rf dist"
+    "clean": "lerna clean && lerna exec -- rm -rf dist",
+    "watch": "lerna run watch"
   },
   "pluginDependencies": {},
   "debugMessages": true,

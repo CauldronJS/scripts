@@ -1,6 +1,7 @@
 declare module '@cauldronjs/rinse' {
   import { CommandSender } from 'bukkit/command';
   import { Permission } from 'bukkit/permissions';
+  import { CauldronCommand } from 'cauldronjs';
 
   export type Rinsed = {};
 
@@ -12,10 +13,18 @@ declare module '@cauldronjs/rinse' {
     (props: RinsableProps & T);
   }
 
-  export type CommandExecutor = {
+  export type CommandExecutorArgs = {
     sender: CommandSender;
     args: any[];
   };
+
+  export interface CommandExecutor {
+    (cmd: CommandExecutorArgs): string | Promise<string>;
+  }
+
+  interface HelpFunction {
+    (command: CauldronCommand): string | string[];
+  }
 
   export type CommandProps = {
     name: string;
@@ -25,10 +34,15 @@ declare module '@cauldronjs/rinse' {
     isForPlayer?: boolean;
     description?: string;
     usage?: string;
+    help?: string | HelpFunction;
     tabComplete?: (sender: CommandSender, ...args: any[]) => boolean;
     restriction?: 'none' | 'console' | 'player';
-    execute: (cmd: CommandExecutor) => string;
+    execute: CommandExecutor;
   };
 
   export function Command(props: CommandProps): Rinsable;
+
+  const RinseContext: any;
+
+  export default RinseContext;
 }

@@ -5,7 +5,7 @@ import useState from '../hooks/useState';
 const { CommandRestriction } = Command;
 
 const CommandComponent = (props) => {
-  const { name, isForConsole, isForPlayer, parent, children } = props;
+  const { name, isForConsole, isForPlayer, parent, children, op } = props;
   let restriction;
   if (isForConsole && isForPlayer) {
     restriction = CommandRestriction.NONE;

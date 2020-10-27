@@ -13,7 +13,7 @@ const noop = () => {};
 
 /**
  *
- * @param {string[]} content
+ * @param {string[]|BaseComponent[]} content
  * @param {number} page
  * @param {{ maxPerPage?: number, header?: string, nextPageCommand?: (page: int) => string, previousPageCommand?: (page: int) => string}} config
  *
@@ -49,7 +49,7 @@ export default function paginate(content, page, config) {
   const footerPrevious = page > 0 ? colors.yellow('Previous') : '';
   const footerNext = page + 1 < totalPages ? colors.aqua('Next') : '';
   const headerComponent = new TextComponent(formattedHeader + '\n');
-  const contentComponent = new TextComponent(formattedContent + '\n');
+  const contentComponent = new TextComponent(formattedContent);
   const footerPreviousComponent = new TextComponent(footerPrevious);
   if (previousPageCommand && previousPageCommand.length > 0) {
     footerPreviousComponent.setClickEvent(
@@ -67,6 +67,7 @@ export default function paginate(content, page, config) {
     headerComponent,
     newLineComponent(),
     contentComponent,
+    newLineComponent(),
     footerPreviousComponent,
     footerDividerComponent,
     footerNextComponent,
