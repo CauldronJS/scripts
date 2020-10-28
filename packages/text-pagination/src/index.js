@@ -41,7 +41,7 @@ export default function paginate(content, page, config) {
         return line;
       } else {
         // it's a string
-        return `${line}\n`;
+        return new TextComponent(`${line}\n`);
       }
     });
   const hasFooterDivider = page + 1 < totalPages && page > 0;

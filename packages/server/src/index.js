@@ -4,6 +4,7 @@ import JsCommand from './js';
 import StatsCommand from './stats';
 import BetterHelpCommand from './better-help';
 import BetterReloadCommand from './better-reload';
+import FeedbackCommand from './feedback';
 import landmine from './landmine';
 import { services } from 'cauldronjs';
 import essentials from './essentials';
@@ -16,14 +17,15 @@ const App = () => (
     <StatsCommand />
     <BetterHelpCommand />
     <BetterReloadCommand />
+    <FeedbackCommand />
   </>
 );
 
 Rinse.mount(<App />, 'commands');
 
-services.use(landmine);
-services.use(essentials);
-services.use(deathbox);
+services.useSync(landmine);
+services.useSync(essentials);
+services.useSync(deathbox);
 
 // const app = express();
 // app.use(express.static('./site/public'));

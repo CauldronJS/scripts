@@ -10,20 +10,35 @@ const [config, setConfig] = useConfig('better-help', { omittedTopics: [] });
 const allTopics = () => [...Bukkit.getHelpMap().getHelpTopics()];
 
 function executeHelp({ sender, args }) {
-  let [page = 0] = args;
+  let [page = 0, findTopic] = args;
+  if (typeof page === 'string') {
+    findTopic = page;
+    page = 0;
+  }
   const topics = allTopics();
   // topic === null ? allTopics : [Bukkit.getHelpMap().getHelpTopic(topic)];
   const paginated = textPagination(
-    topics.map((topic) => {
-      const content = `${colors.gold(
-        topic.getName()
-      )}: ${topic.getShortText()}`;
-      const component = new TextComponent(content);
-      component.setClickEvent(
-        new ClickEvent(ClickEvent.Action.RUN_COMMAND, `${topic.getName()} ?`)
-      );
-      return component;
-    }),
+    topics
+      .map((topic) => {
+        if (
+          findTopic &&
+          topic.getName().substr(1) !== findTopic.toLowerCase()
+        ) {
+          return null;
+        }
+        const content = `${colors.gold(
+          topic.getName()
+        )}: ${topic.getShortText()}`;
+        const component = new TextComponent(content);
+        component.setClickEvent(
+          new ClickEvent(
+            ClickEvent.Action.RUN_COMMAND,
+            `${topic.getName()} help`
+          )
+        );
+        return component;
+      })
+      .filter((item) => item),
     page,
     {
       maxPerPage: 8,
