@@ -1,6 +1,7 @@
 import Rinse, { Command } from '@cauldronjs/rinse';
-import { Location, Material } from 'bukkit';
+import { Bukkit, Location, Material } from 'bukkit';
 import colors from '@cauldronjs/colors';
+import createCallbackTextComponent from './callback-text-component';
 
 const BAD_BLOCKS = [
   Material.LAVA,
@@ -54,8 +55,22 @@ const executeRtp = ({ sender, args }) => {
   return colors.green('\xA7aSuccessfully teleported you!');
 };
 
+const executeRtpForWorld = () => {
+  const worlds = [...Bukkit.getWorlds()];
+  return worlds.map((world) =>
+    createCallbackTextComponent(
+      colors.green(world.getName()) + '\n',
+      (sender) => {
+        executeRtp({ sender, args: [world.getName()] });
+      }
+    )
+  );
+};
+
 const RtpCommand = () => (
-  <Command name="rtp" permission="nn.rtp" execute={executeRtp} isForPlayer />
+  <Command name="rtp" permission="nn.rtp" execute={executeRtp} isForPlayer>
+    <Command name="to" execute={executeRtpForWorld} />
+  </Command>
 );
 
 export default RtpCommand;

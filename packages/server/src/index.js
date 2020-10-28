@@ -1,14 +1,27 @@
 import Rinse from '@cauldronjs/rinse';
+import { events } from 'cauldronjs';
 import RtpCommand from './rtp';
 import JsCommand from './js';
 import StatsCommand from './stats';
 import BetterHelpCommand from './better-help';
 import BetterReloadCommand from './better-reload';
 import FeedbackCommand from './feedback';
+import createCallbackTextComponent from './callback-text-component';
 import landmine from './landmine';
 import { services } from 'cauldronjs';
 import essentials from './essentials';
 import deathbox from './deathbox';
+import { GameMode } from 'bukkit';
+
+events.on('playerjoin', (event) => {
+  const testCallbackHandler = createCallbackTextComponent(
+    'Click me',
+    (sender) => {
+      sender.setGameMode(GameMode.SURVIVAL);
+    }
+  );
+  event.getPlayer().spigot().sendMessage(testCallbackHandler);
+});
 
 const App = () => (
   <>

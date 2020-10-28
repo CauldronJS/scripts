@@ -211,14 +211,6 @@ declare module 'cauldronjs' {
   import { NamespacedKey, Server } from 'bukkit';
   import { EventEmitter } from 'events';
 
-  export class Command {
-    constructor(name: string, options: object);
-    registerCommand(name: string): void;
-    register(): void;
-    addSubcommand(command: Command): Command;
-    static fromPath(path: string): Command;
-  }
-
   export module Command {
     export enum CommandRestriction {
       NONE,
@@ -1011,16 +1003,23 @@ declare module 'cauldronjs' {
   }
 
   export interface HelpResponse {
-    (command: CauldronCommand): string | string[];
+    (command: Command): string | string[];
   }
 
   export interface CommandExecutor {
     (sender: any, label: string, args: any[]): string | string[];
   }
 
-  export class CauldronCommand {
+  type CommandCreationArgs = {
+    description: string;
+    usage: string;
+    aliases: string[];
+    execute: CommandExecutor;
+  };
+
+  export class Command {
     name: string;
-    executor: CommandExecutor;
+    execute: CommandExecutor;
     description: string;
     usage: string;
     aliases: string[];
@@ -1028,6 +1027,10 @@ declare module 'cauldronjs' {
     restriction: 'none' | 'console' | 'player';
     tabComplete: () => void;
     help: HelpResponse;
+
+    static registerCommand(name: string, args: CommandCreationArgs): Command;
+
+    static unregisterCommand(command: Command): void;
   }
 
   export const NAMESPACE_KEY: NamespacedKey;
