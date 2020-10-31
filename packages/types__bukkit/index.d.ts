@@ -234,7 +234,21 @@ declare module 'bukkit' {
     setCustomName(name: string): void;
   }
 
-  export interface OfflinePlayer {}
+  export interface OfflinePlayer {
+    decrementStatistic(statistic: Statistic): void;
+    decrementStatistic(statistic: Statistic, amount: number): void;
+    getBedSpawnLocation(): Location;
+    getFirstPlayed(): number;
+    getLastPlayed(): number;
+    getName(): string;
+    getPlayer(): Player;
+    getStatistic(statistic: Statistic): number;
+    getUniqueId(): UUID;
+    hasPlayedBefore(): boolean;
+    isBanned(): boolean;
+    isOnline(): boolean;
+    isWhitelisted(): boolean;
+  }
 
   export interface Raid {}
 

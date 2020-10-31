@@ -1,5 +1,6 @@
 import { FRAG_SYMBOL } from './fragment';
 import { setCurrentComponent, getCurrentComponent } from './reconciler';
+import elements from './elements';
 
 // I'd like to figure out a way to allow functional components to do
 // logic unhooking/destruction. Perhaps a hook?
@@ -8,7 +9,7 @@ import { setCurrentComponent, getCurrentComponent } from './reconciler';
  *
  * @param {{component: (props) => any, props: any}} rinsed
  */
-export const mount = rinsed => {
+export const mount = (rinsed) => {
   if (!rinsed) return null;
   const { component, props } = rinsed;
   if (!component.__canRemount) return null;
@@ -25,7 +26,7 @@ export const mount = rinsed => {
         parent = parent.props.parent;
       }
       // it returned the children to be executed
-      result.forEach(child => {
+      result.forEach((child) => {
         child.props.parent = parent;
         mount(child);
       });
@@ -41,13 +42,22 @@ export const mount = rinsed => {
   return component;
 };
 
-export const unmount = component => {};
+export const unmount = (component) => {};
+
+const builtInComponents = {
+  a: elements.Link,
+  button: null,
+  span: elements.Span,
+};
 
 export function rinse(Component, attrs, ...children) {
   if (!Component) {
     throw new Error('Component cannot be undefined or null');
   }
-  if (typeof Component !== 'function') {
+  if (typeof Component === 'string') {
+    Component = builtInComponents[Component];
+  }
+  if (typeof Component !== 'function' && typeof Component !== 'string') {
     throw new Error('Component must be a function');
   }
 
@@ -56,7 +66,7 @@ export function rinse(Component, attrs, ...children) {
   const props = {
     ...Component.defaultProps,
     ...attrs,
-    children: Array.isArray(children) ? children : children[0]
+    children: Array.isArray(children) ? children : children[0],
   };
   const component = Component.bind(Component);
   Object.defineProperties(

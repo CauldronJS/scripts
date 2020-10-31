@@ -1,7 +1,7 @@
 declare module '@cauldronjs/rinse' {
   import { CommandSender } from 'bukkit/command';
   import { Permission } from 'bukkit/permissions';
-  import { CauldronCommand } from 'cauldronjs';
+  import { Command as CauldronCommand } from 'cauldronjs';
 
   export type Rinsed = {};
 

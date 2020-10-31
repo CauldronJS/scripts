@@ -986,7 +986,7 @@ declare module 'cauldronjs' {
 
   interface CauldronServiceLoader {
     /**
-     * Immediately loads the service to be used immediately. This is not recommend
+     * Immediately loads the service to be used. This is not recommend
      * in the case the service relies on external plugins a they may not have been
      * loaded yet.
      *
@@ -1031,6 +1031,8 @@ declare module 'cauldronjs' {
     static registerCommand(name: string, args: CommandCreationArgs): Command;
 
     static unregisterCommand(command: Command): void;
+
+    static throwIncorrectUsage(usage: string): void;
   }
 
   export const NAMESPACE_KEY: NamespacedKey;

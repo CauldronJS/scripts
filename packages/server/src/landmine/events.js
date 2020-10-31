@@ -146,14 +146,16 @@ export default function registerEvents() {
     const profile = getProfileFor(player.getUniqueId().toString());
     if (profile.claims[chunkCoords]) return;
     const claim = getClaimFor(chunkCoords);
-    if (!claim) {
-      return;
-    }
-    const owner = getProfileFor(claim.owner);
     if (
-      !owner.rules[CLAIM_OPTIONS.BLOCK_BREAK] &&
-      claim.owner !== player.getUniqueId().toString()
-    ) {
+      !claim ||
+      claim.owner === player.getUniqueId().toString() ||
+      player.hasPermission('landmine.admin') ||
+      player.isOp()
+    )
+      return;
+    const claimProfile = getProfileFor(claim?.owner);
+
+    if (!claimProfile.rules[CLAIM_OPTIONS.BLOCK_BREAK]) {
       player.sendMessage(colors.red("You don't have permission to do that!"));
       event.setCancelled(true);
     }
@@ -165,8 +167,16 @@ export default function registerEvents() {
     const profile = getProfileFor(player.getUniqueId().toString());
     if (profile.claims[chunkCoords]) return;
     const claim = getClaimFor(chunkCoords);
-    const owner = getProfileFor(claim.owner);
-    if (!owner.rules[CLAIM_OPTIONS.BLOCK_BREAK]) {
+    if (
+      !claim ||
+      claim.owner === player.getUniqueId().toString() ||
+      player.hasPermission('landmine.admin') ||
+      player.isOp()
+    )
+      return;
+    const claimProfile = getProfileFor(claim?.owner);
+
+    if (!claimProfile.rules[CLAIM_OPTIONS.BLOCK_PLACE]) {
       player.sendMessage(colors.red("You don't have permission to do that!"));
       event.setCancelled(true);
     }

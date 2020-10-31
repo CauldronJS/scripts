@@ -4,13 +4,15 @@ import pretty from '@cauldronjs/pretty';
 import colors from '@cauldronjs/colors';
 import { Bukkit } from 'bukkit';
 
+const scriptRunner = internalBinding('ScriptRunner');
+
 const executeJs = ({ args, sender }) => {
   let patched = args.join(' ');
   if (patched.indexOf('\n') === -1 && !patched.startsWith('return ')) {
     patched = `return ${patched}`;
   }
   const wrapper = '(function(me,require,server){' + patched + '})';
-  const fn = $$isolate$$.runScript(wrapper, 'repl');
+  const fn = scriptRunner.runScript(wrapper, 'repl');
   const result = fn.call(this, sender, require.mainRequire, Bukkit);
   return `\xA77=> ${pretty(result)}`;
 };

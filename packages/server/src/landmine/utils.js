@@ -22,9 +22,9 @@ export const getChunkCoordsFromArgs = (caller, x, z) => {
 };
 
 export const getPlayerList = (sender) =>
-  [...Bukkit.getOfflinePlayers()].filter(
-    (p) => p.getName() !== sender?.getName()
-  );
+  [...Bukkit.getOfflinePlayers()]
+    .filter((p) => p.getName() !== sender?.getName())
+    .map((p) => p.getDisplayName());
 
 export const getPlayerByName = getUuid;
 

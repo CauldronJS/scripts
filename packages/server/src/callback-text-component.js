@@ -4,6 +4,8 @@ import { UUID } from 'java/util';
 
 const registeredCallbacks = Object.create(null);
 
+// TODO: allow disposal of all callbacks inside a callback block
+
 /**
  *
  * @param {string|TextComponent} text
@@ -23,6 +25,14 @@ export default function createComponent(text, callback) {
       `/callback-text-component ${id}`
     )
   );
+  setTimeout(() => {
+    if (registeredCallbacks[id]) {
+      console.warn(
+        'Undisposed callback component detected. If this is intentional, you can ignore it.'
+      );
+    }
+    delete registeredCallbacks[id];
+  }, 60000); // delete callbacks after 1 minute to prevent unoptimized handling
   return text;
 }
 
@@ -33,7 +43,7 @@ function execute({ sender, args }) {
   }
   const handler = registeredCallbacks[id];
   if (!handler) {
-    // it's already been called, ignore it and move on
+    // it's already been called, inform the sender to re-run the command
     return;
   }
   const result = handler(sender);

@@ -19,7 +19,7 @@ export function getProfileFor(uuid) {
   }
 
   const profile = new Profile(uuid);
-  setProfileStore({ [uuid]: profile });
+  saveProfile(profile);
   return profile;
 }
 
@@ -57,7 +57,7 @@ export function doesOwn(uuid, coords) {
 export function claim(uuid, coords) {
   const profile = getProfileFor(uuid);
   profile.claims.push(coords);
-  setProfileStore({ [uuid]: profile });
+  saveProfile(profile);
 }
 
 export function unclaim(uuid, coords) {
@@ -65,7 +65,7 @@ export function unclaim(uuid, coords) {
   profile.claims = profile.claims.filter(
     (c) => c.x !== coords.x && c.z !== coords.z && c.world !== coords.world
   );
-  setProfileStore({ [uuid]: profile });
+  saveProfile(profile);
 }
 
 /**
@@ -78,12 +78,39 @@ export function unclaimAll(uuid) {
   const profile = getProfileFor(uuid);
   const unclaimed = profile.claims.slice(0);
   profile.claims = [];
-  setProfileStore({ [uuid]: profile });
+  saveProfile(profile);
   return unclaimed;
 }
 
 export function commitProfiles() {
   setProfileStore(profileStore);
+}
+
+/**
+ *
+ * @param {Profile} claim
+ * @param {string} memberId
+ */
+export function addMember(claim, memberId) {
+  claim.members.push(memberId);
+  saveProfile(claim);
+}
+
+/**
+ *
+ * @param {Profile} claim
+ * @param {string} memberId
+ */
+export function removeMember(claim, memberId) {
+  if (claim.members.indexOf(memberId) === -1) {
+    throw new Error("That player isn't a member");
+  }
+  claim.members.splice(memberId);
+  saveProfile(claim);
+}
+
+function saveProfile(profile) {
+  setProfileStore({ [profile.owner]: profile });
 }
 
 const distance = (coord1, coord2) =>
@@ -96,7 +123,8 @@ class Profile {
     return (this.members.length + 1) * 10 + this.bonusClaims;
   }
 
-  constructor() {
+  constructor(owner) {
+    this.owner = owner;
     this.claims = [];
     this.members = [];
     this.rules = CLAIM_DEFAULTS;

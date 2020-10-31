@@ -10,6 +10,8 @@ import {
   getProfileFor,
   commitProfiles,
   CLAIM_OPTIONS,
+  addMember,
+  removeMember,
 } from './profile';
 import { createClaim, isClaimable, removeClaims, getClaimFor } from './claim';
 import {
@@ -23,6 +25,9 @@ import {
 import { ChatColor } from 'bungee/api';
 import { ClickEvent, HoverEvent, TextComponent } from 'bungee/api/chat';
 import { Text } from 'bungee/api/chat/hover/content';
+import createCallbackText from '../callback-text-component';
+import { Bukkit } from 'bukkit';
+import { getPlayerFromName } from '../essentials/services/user-service';
 
 function executeClaim({ sender, args }) {
   const uuid = sender.getUniqueId().toString();
@@ -197,18 +202,59 @@ function executeModify({ sender, args }) {
 function executeMembersInfo({ sender }) {
   const uuid = sender.getUniqueId().toString();
   const profile = getProfileFor(uuid);
+  return profile.members.map((member) =>
+    Bukkit.getOfflinePlayer(member).getName()
+  );
 }
 
 function executeMembersAdd({ sender, args }) {
   const uuid = sender.getUniqueId().toString();
   const profile = getProfileFor(uuid);
-  const coords = getChunkCoordsForEntity(sender);
+  if (args.length === 0) {
+    throw new Error(
+      'Please supply a player name (they must currently be online)'
+    );
+  }
+  const invitee = getPlayerFromName(args[0]);
+  const header = new TextComponent(
+    `${colors.aqua(
+      sender.getDisplayName()
+    )} has invited you to their town. Would you like to join?\n`
+  );
+  const yesButton = createCallbackText(colors.green('Yes'), (invitee) => {
+    sender.sendMessage(
+      `Your invite request to ${invitee.getDisplayName()} has been accepted`
+    );
+    addMember(profile, invitee.getUniqueId().toString());
+    invitee.sendMessage(`You have joined ${sender.getDisplayName()}'s town!`);
+  });
+  const splitter = new TextComponent(' | ');
+  const noButton = createCallbackText(colors.red('No'), (invitee) => {
+    sender.sendMessage(
+      `Your invite request to ${invitee.getDisplayName()} has been rejected`
+    );
+    invitee.sendMessage(
+      `You have rejected ${sender.getDisplayName()}'s join request.`
+    );
+  });
+  invitee.spigot().sendMessage(header, yesButton, splitter, noButton);
+  return `Your invite request has been sent to ${invitee.getDisplayName()}`;
 }
 
 function executeMembersRemove({ sender, args }) {
   const uuid = sender.getUniqueId().toString();
   const profile = getProfileFor(uuid);
-  const coords = getChunkCoordsForEntity(sender);
+  if (args.length === 0) {
+    throw new Error('Please supply a player name');
+  }
+  const toRemove = getPlayerFromName(args[0], true);
+  removeMember(profile, toRemove.getUniqueId().toString());
+  if (toRemove.isOnline()) {
+    toRemove.sendMessage(
+      `You have been removed from ${sender.getDisplayName()}'s claims`
+    );
+  }
+  return `You have successfully removed ${toRemove.getName()} from your claims`;
 }
 
 function executeGiveBonus({ args }) {
