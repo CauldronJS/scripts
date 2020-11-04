@@ -3,6 +3,7 @@ import { Bukkit, Location } from 'bukkit';
 import colors from '@cauldronjs/colors';
 import { getHomeProfile, addHome, deleteHome } from '../services/home-service';
 import createClickHandler from '../../callback-text-component';
+import { TextComponent } from 'bungee/api/chat';
 
 const locationFromHome = (home) =>
   new Location(Bukkit.getWorld(home.world), home.x, home.y, home.z);
@@ -51,7 +52,7 @@ function handleDeleteHome({ sender, args }) {
         'You have no homes! Use /sethome NAME to get started.'
       );
     }
-    return homes;
+    return [new TextComponent('Your homes (click to delete):\n'), ...homes];
   } else {
     deleteHome(sender, name);
     return colors.green(`Deleted home ${name}!`);
@@ -59,7 +60,7 @@ function handleDeleteHome({ sender, args }) {
 }
 
 export const GoHomeCommand = () => (
-  <Command name="homes" execute={handleGoHome}>
+  <Command name="home" aliases={['homes']} execute={handleGoHome}>
     <Command name="set" execute={handleSetHome} />
   </Command>
 );

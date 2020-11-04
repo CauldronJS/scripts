@@ -44,7 +44,6 @@ export default function deathboxService(server) {
     setDeathboxCache({
       [player.getUniqueId().toString()]: locationToJson(block.getLocation()),
     });
-    console.log(state.getBlockInventory().getContents());
   });
 
   events.on('playerinteract', (event) => {

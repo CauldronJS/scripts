@@ -3,6 +3,7 @@ import { GmsCommand, GmcCommand, GmaCommand } from './gamemode';
 import SetSpawnCommand from './setspawn';
 import { TeleportCommand, TeleportRequestCommand } from './teleport';
 import { GoHomeCommand, SetHomeCommand, DeleteHomeCommand } from './home';
+import BackCommand from './back';
 
 const App = () => (
   <>
@@ -15,6 +16,7 @@ const App = () => (
     <GoHomeCommand />
     <SetHomeCommand />
     <DeleteHomeCommand />
+    <BackCommand />
   </>
 );
 

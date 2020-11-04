@@ -176,13 +176,14 @@ function executeModify({ sender, args }) {
   const uuid = sender.getUniqueId().toString();
   const profile = getProfileFor(uuid);
   if (!profile) return colors.red('You have no claims to modify');
-  for (const rule of args) {
-    const name = rule.split('=')[0];
-    if (Object.values(CLAIM_OPTIONS).indexOf(name) === -1) {
-      sender.sendMessage(colors.red(`Unknown rule ${name}`));
-      continue;
+  for (let i = 0; i < args.length; i += 2) {
+    const name = args[i];
+    const value = args[i + 1];
+    if (!value) {
+      return colors.red(
+        `[LandMine] You must provide a value with the rule ${name}`
+      );
     }
-    const value = (rule.split('=')[1] || 'allow').toLowerCase();
     if (value === 'allow' || value === true) {
       profile.rules[name] = true;
     } else if (value === 'deny' || value === false) {
@@ -216,6 +217,9 @@ function executeMembersAdd({ sender, args }) {
     );
   }
   const invitee = getPlayerFromName(args[0]);
+  if (!invitee.isOnline()) {
+    return colors.red('The requested player is not online');
+  }
   const header = new TextComponent(
     `${colors.aqua(
       sender.getDisplayName()
@@ -295,7 +299,17 @@ export const LandmineCommands = () => (
     </Command>
     <Command name="map" aliases={['m']} execute={executeMap} />
     <Command name="info" aliases={['i']} execute={executeInfo} />
-    <Command name="modify" execute={executeModify} />
+    <Command
+      name="modify"
+      execute={executeModify}
+      tabComplete={(sender, ...args) => {
+        if (args.length % 2 === 0) {
+          return ['allow', 'deny'];
+        } else {
+          return Object.values(CLAIM_OPTIONS);
+        }
+      }}
+    />
     <Command name="members" execute={executeMembersInfo}>
       <Command
         name="add"

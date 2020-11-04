@@ -31,7 +31,6 @@ export function getProfileFor(uuid) {
 export function canClaim(uuid, coords) {
   const profile = getProfileFor(uuid);
   if (profile.claims.length === 0) return true;
-  if (profile.claimsAllowed < profile.claims.length) return false;
   return (
     profile.claims.filter(
       (claim) => distance(coords, claim) <= 1 && claim.world === coords.world

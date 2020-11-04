@@ -1,9 +1,11 @@
 import { getClaimFor } from './claim';
 import { getProfileFor, CLAIM_OPTIONS } from './profile';
 import { getChunkCoordsForEntity } from './utils';
-import cauldron from 'cauldronjs';
+import { events } from 'cauldronjs';
 import { EntityType } from 'bukkit/entity';
 import colors from '@cauldronjs/colors';
+import { Bukkit } from 'bukkit';
+import { UUID } from 'java/util';
 
 const MOB_TYPES = [
   EntityType.CAVE_SPIDER,
@@ -60,7 +62,7 @@ const ANIMAL_TYPS = [
 ];
 
 export default function registerEvents() {
-  cauldron.events.on('creaturespawn', (event) => {
+  events.on('creaturespawn', (event) => {
     const entity = event.getEntity();
     const entityType = event.getEntityType();
     const chunkCoords = getChunkCoordsForEntity(entity);
@@ -75,7 +77,22 @@ export default function registerEvents() {
     }
   });
 
-  cauldron.events.on('entitycombust', (event) => {
+  events.on('entityspawn', (event) => {
+    const entity = event.getEntity();
+    const entityType = event.getEntityType();
+    const chunkCoords = getChunkCoordsForEntity(entity);
+    const claim = getClaimFor(chunkCoords);
+    if (!claim) return;
+    const profile = getProfileFor(claim.owner);
+    if (
+      !profile.rules[CLAIM_OPTIONS.PVMOB] &&
+      MOB_TYPES.indexOf(entityType) > -1
+    ) {
+      event.setCancelled(true);
+    }
+  });
+
+  events.on('entitycombust', (event) => {
     const entity = event.getEntity();
     const entityType = event.getEntityType();
     const chunkCoords = getChunkCoordsForEntity(entity);
@@ -90,7 +107,7 @@ export default function registerEvents() {
     }
   });
 
-  cauldron.events.on('entitydamagebyentity', (event) => {
+  events.on('entitydamagebyentity', (event) => {
     const entity = event.getEntity();
     const entityType = event.getEntityType();
     const damager = event.getDamager && event.getDamager();
@@ -114,7 +131,7 @@ export default function registerEvents() {
     }
   });
 
-  cauldron.events.on('entityexplode', (event) => {
+  events.on('entityexplode', (event) => {
     const entity = event.getEntity();
     if (entity.getType() !== EntityType.CREEPER) return;
     const chunkCoords = getChunkCoordsForEntity(entity);
@@ -127,7 +144,7 @@ export default function registerEvents() {
     }
   });
 
-  cauldron.events.on('entityshootbow', (event) => {
+  events.on('entityshootbow', (event) => {
     const entity = event.getEntity();
     if (entity.getType() !== EntityType.SKELETON) return;
     const chunkCoords = getChunkCoordsForEntity(entity);
@@ -140,7 +157,7 @@ export default function registerEvents() {
     }
   });
 
-  cauldron.events.on('blockbreak', (event) => {
+  events.on('blockbreak', (event) => {
     const player = event.getPlayer();
     const chunkCoords = getChunkCoordsForEntity(player);
     const profile = getProfileFor(player.getUniqueId().toString());
@@ -161,7 +178,7 @@ export default function registerEvents() {
     }
   });
 
-  cauldron.events.on('blockplace', (event) => {
+  events.on('blockplace', (event) => {
     const player = event.getPlayer();
     const chunkCoords = getChunkCoordsForEntity(player);
     const profile = getProfileFor(player.getUniqueId().toString());
@@ -179,6 +196,34 @@ export default function registerEvents() {
     if (!claimProfile.rules[CLAIM_OPTIONS.BLOCK_PLACE]) {
       player.sendMessage(colors.red("You don't have permission to do that!"));
       event.setCancelled(true);
+    }
+  });
+
+  const currentlyInLand = Object.create(null);
+
+  events.on('playermove', (event) => {
+    const player = event.getPlayer();
+    const chunkCoords = getChunkCoordsForEntity(player);
+    const claim = getClaimFor(chunkCoords);
+    if (!claim) {
+      if (!currentlyInLand[player.getUniqueId()]) return;
+      delete currentlyInLand[player.getUniqueId()];
+      player.sendMessage(
+        colors.green(`[LandMine] ${colors.gray('~ Wilderness')}`)
+      );
+      return;
+    }
+    if (currentlyInLand[player.getUniqueId()] !== claim.owner) {
+      currentlyInLand[player.getUniqueId()] = claim.owner;
+      player.sendMessage(
+        colors.green(
+          `[LandMine] ${colors.gray(
+            `You've entered land owned by ${colors.aqua(
+              Bukkit.getOfflinePlayer(UUID.fromString(claim.owner)).getName()
+            )}`
+          )}`
+        )
+      );
     }
   });
 }

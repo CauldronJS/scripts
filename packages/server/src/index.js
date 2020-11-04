@@ -26,7 +26,7 @@ Rinse.mount(<App />, 'commands');
 
 services.useSync(landmine);
 services.useSync(essentials);
-services.useSync(deathbox);
+// services.useSync(deathbox);
 services.use(holidays);
 
 // const app = express();
