@@ -33,23 +33,23 @@ function handleTpr({ sender, args }) {
 
   return sendTpRequest(sender, args[0]);
 }
-
-export const TeleportCommand = () => (
-  <Command
-    name="teleport"
-    aliases={['tp']}
-    permission="essentials.tp"
-    usage="/<command <player|coordinates>"
-    execute={handleTp}
-  />
+const TeleportCommands = () => (
+  <>
+    <Command
+      name="teleport"
+      aliases={['tp']}
+      permission="essentials.tp"
+      usage="/<command <player|coordinates>"
+      execute={handleTp}
+    />
+    <Command
+      name="teleportrequest"
+      aliases={['tpr', 'tprequest']}
+      permission="essentials.tprequest"
+      usage="/<command <player>"
+      execute={handleTpr}
+    />
+  </>
 );
 
-export const TeleportRequestCommand = () => (
-  <Command
-    name="teleportrequest"
-    aliases={['tpr', 'tprequest']}
-    permission="essentials.tprequest"
-    usage="/<command <player>"
-    execute={handleTpr}
-  />
-);
+export default TeleportCommands;

@@ -10,6 +10,8 @@ import { services } from 'cauldronjs';
 import essentials from './essentials';
 import deathbox from './deathbox';
 import holidays from './holidays';
+import treefall from './treefall';
+import autofillHand from './autofill-hand';
 
 const App = () => (
   <>
@@ -28,6 +30,8 @@ services.useSync(landmine);
 services.useSync(essentials);
 // services.useSync(deathbox);
 services.use(holidays);
+services.use(treefall);
+services.use(autofillHand);
 
 // const app = express();
 // app.use(express.static('./site/public'));

@@ -3823,7 +3823,7 @@ declare module 'bukkit/event/block' {
   import { Event, Cancellable } from 'bukkit/event';
   import { Block, BlockState } from 'bukkit/block';
   import { Player } from 'bukkit/entity';
-  import { EquipmentSlot } from 'bukkit/inventory';
+  import { EquipmentSlot, ItemStack } from 'bukkit/inventory';
 
   export enum Action {
     LEFT_CLICK_AIR,
@@ -3854,6 +3854,9 @@ declare module 'bukkit/event/block' {
     getBlockPlaced(): Block;
     getBlockReplacedState(): BlockState;
     getHand(): EquipmentSlot;
+    getItemInHand(): ItemStack;
+    getPlayer(): Player;
+    setBuild(canBuild: boolean): void;
   }
   export interface BlockCanBuildEvent extends BlockEvent {}
   export interface BlockCookEvent extends BlockEvent {}
