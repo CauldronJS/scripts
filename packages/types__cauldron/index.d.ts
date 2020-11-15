@@ -127,6 +127,8 @@ declare module 'cauldronjs' {
     PlayerBedEnterEvent,
     PlayerBedLeaveEvent,
     PlayerBucketEmptyEvent,
+    PlayerBucketFillEvent,
+    PlayerChangedMainHandEvent,
     PlayerChangedWorldEvent,
     PlayerChannelEvent,
     PlayerChatEvent,
@@ -153,6 +155,7 @@ declare module 'cauldronjs' {
     PlayerLoginEvent,
     PlayerMoveEvent,
     PlayerPickupArrowEvent,
+    PlayerPickupItemEvent,
     PlayerPortalEvent,
     PlayerPreLoginEvent,
     PlayerQuitEvent,
@@ -166,6 +169,7 @@ declare module 'cauldronjs' {
     PlayerTakeLecternBookEvent,
     PlayerTeleportEvent,
     PlayerToggleFlightEvent,
+    PlayerToggleSneakEvent,
     PlayerToggleSprintEvent,
     PlayerUnleashEntityEvent,
     PlayerUnregisterChannelEvent,
@@ -809,7 +813,7 @@ declare module 'cauldronjs' {
       handler: EventHandler<PlayerStatisticIncrementEvent>
     ): CancelToken;
     on(
-      name: 'playerspawnhanditems',
+      name: 'playerswaphanditems',
       handler: EventHandler<PlayerSwapHandItemsEvent>
     ): CancelToken;
     on(
@@ -823,6 +827,10 @@ declare module 'cauldronjs' {
     on(
       name: 'playertoggleflight',
       handler: EventHandler<PlayerToggleFlightEvent>
+    ): CancelToken;
+    on(
+      name: 'playertogglesneak',
+      handler: EventHandler<PlayerToggleSneakEvent>
     ): CancelToken;
     on(
       name: 'playertogglesprint',

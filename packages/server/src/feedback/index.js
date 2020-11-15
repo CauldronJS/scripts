@@ -6,11 +6,11 @@ const FeedbackCommand = () => (
   <Command
     name="feedback"
     help="Shows the feedback interface"
-    execute={() => (
+    execute={
       <a href={formUrl} color="green">
         Click on me to submit feedback
       </a>
-    )}
+    }
   />
 );
 

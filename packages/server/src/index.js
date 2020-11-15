@@ -6,10 +6,14 @@ import BetterHelpCommand from './better-help';
 import BetterReloadCommand from './better-reload';
 import FeedbackCommand from './feedback';
 import landmine from './landmine';
-import { services } from 'cauldronjs';
+import { services, events } from 'cauldronjs';
 import essentials from './essentials';
 import deathbox from './deathbox';
 import holidays from './holidays';
+import customItems from './custom_items';
+import elevators from './elevators';
+import { ItemStack } from 'bukkit/inventory';
+import { Material } from 'bukkit';
 
 const App = () => (
   <>
@@ -28,6 +32,17 @@ services.useSync(landmine);
 services.useSync(essentials);
 // services.useSync(deathbox);
 services.use(holidays);
+services.use(customItems);
+services.use(elevators);
+
+const item = new ItemStack(Material.IRON_INGOT);
+const meta = item.getItemMeta();
+meta.setCustomModelData(1234567890);
+item.setItemMeta(meta);
+
+events.on('playerjoin', (event) => {
+  event.getPlayer().getInventory().addItem(item.clone());
+});
 
 // const app = express();
 // app.use(express.static('./site/public'));

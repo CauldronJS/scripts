@@ -10,8 +10,8 @@ declare module '@cauldronjs/store' {
    * @param name Name of the store
    * @param defaultStore The default value of the store
    */
-  export default function useStore(
+  export default function useStore<T = any>(
     name: string,
-    defaultStore: any
-  ): [any, SetStoreHandler];
+    defaultStore: T
+  ): [T, SetStoreHandler];
 }
