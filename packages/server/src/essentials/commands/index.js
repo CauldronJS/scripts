@@ -1,22 +1,19 @@
 import Rinse from '@cauldronjs/rinse';
-import { GmsCommand, GmcCommand, GmaCommand } from './gamemode';
+import GameModeCommands from './gamemode';
 import SetSpawnCommand from './setspawn';
-import { TeleportCommand, TeleportRequestCommand } from './teleport';
-import { GoHomeCommand, SetHomeCommand, DeleteHomeCommand } from './home';
+import TeleportCommands from './teleport';
+import HomeCommands from './home';
+import TimeCommands from './time';
 import BackCommand from './back';
 
 const App = () => (
   <>
-    <GmsCommand />
-    <GmcCommand />
-    <GmaCommand />
+    <GameModeCommands />
     <SetSpawnCommand />
-    <TeleportCommand />
-    <TeleportRequestCommand />
-    <GoHomeCommand />
-    <SetHomeCommand />
-    <DeleteHomeCommand />
+    <TeleportCommands />
+    <HomeCommands />
     <BackCommand />
+    <TimeCommands />
   </>
 );
 

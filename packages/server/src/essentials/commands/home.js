@@ -59,16 +59,14 @@ function handleDeleteHome({ sender, args }) {
   }
 }
 
-export const GoHomeCommand = () => (
-  <Command name="home" aliases={['homes']} execute={handleGoHome}>
-    <Command name="set" execute={handleSetHome} />
-  </Command>
+const HomeCommands = () => (
+  <>
+    <Command name="home" aliases={['homes']} execute={handleGoHome}>
+      <Command name="set" execute={handleSetHome} />
+    </Command>
+    <Command name="sethome" execute={handleSetHome} />
+    <Command name="delhome" execute={handleDeleteHome} />
+  </>
 );
 
-export const SetHomeCommand = () => (
-  <Command name="sethome" execute={handleSetHome} />
-);
-
-export const DeleteHomeCommand = () => (
-  <Command name="delhome" execute={handleDeleteHome} />
-);
+export default HomeCommands;

@@ -6,14 +6,13 @@ import BetterHelpCommand from './better-help';
 import BetterReloadCommand from './better-reload';
 import FeedbackCommand from './feedback';
 import landmine from './landmine';
-import { services, events } from 'cauldronjs';
+import { services } from 'cauldronjs';
 import essentials from './essentials';
-import deathbox from './deathbox';
 import holidays from './holidays';
 import customItems from './custom_items';
 import elevators from './elevators';
-import { ItemStack } from 'bukkit/inventory';
-import { Material } from 'bukkit';
+import treefall from './treefall';
+import autofillHand from './autofill-hand';
 
 const App = () => (
   <>
@@ -34,15 +33,8 @@ services.useSync(essentials);
 services.use(holidays);
 services.use(customItems);
 services.use(elevators);
-
-const item = new ItemStack(Material.IRON_INGOT);
-const meta = item.getItemMeta();
-meta.setCustomModelData(1234567890);
-item.setItemMeta(meta);
-
-events.on('playerjoin', (event) => {
-  event.getPlayer().getInventory().addItem(item.clone());
-});
+services.use(treefall);
+services.use(autofillHand);
 
 // const app = express();
 // app.use(express.static('./site/public'));

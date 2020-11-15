@@ -21,22 +21,30 @@ export const GmcCommand = () => (
   />
 );
 
-export const GmsCommand = () => (
-  <Command
-    name="gms"
-    usage="/<command [player]"
-    permission="essentials.gamemode.survival"
-    execute={setGameMode(GameMode.SURVIVAL)}
-    description="Sets a players gamemode to survival"
-  />
+const GameModeCommands = () => (
+  <>
+    <Command
+      name="gmc"
+      usage="/<command [player]"
+      permission="essentials.gamemode.creative"
+      execute={setGameMode(GameMode.CREATIVE)}
+      description="Sets a players gamemode to creative"
+    />
+    <Command
+      name="gms"
+      usage="/<command [player]"
+      permission="essentials.gamemode.survival"
+      execute={setGameMode(GameMode.SURVIVAL)}
+      description="Sets a players gamemode to survival"
+    />
+    <Command
+      name="gma"
+      usage="/<command [player]"
+      permission="essentials.gamemode.adventure"
+      execute={setGameMode(GameMode.ADVENTURE)}
+      description="Sets a players gamemode to adventure"
+    />
+  </>
 );
 
-export const GmaCommand = () => (
-  <Command
-    name="gma"
-    usage="/<command [player]"
-    permission="essentials.gamemode.adventure"
-    execute={setGameMode(GameMode.ADVENTURE)}
-    description="Sets a players gamemode to adventure"
-  />
-);
+export default GameModeCommands;
