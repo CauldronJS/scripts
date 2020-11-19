@@ -30,7 +30,7 @@ const MOB_TYPES = [
   EntityType.SILVERFISH,
 ];
 
-const ANIMAL_TYPS = [
+const ANIMAL_TYPES = [
   EntityType.BAT,
   EntityType.BEE,
   EntityType.CAT,
@@ -72,6 +72,11 @@ export default function registerEvents() {
     if (
       !profile.rules[CLAIM_OPTIONS.PVMOB] &&
       MOB_TYPES.indexOf(entityType) > -1
+    ) {
+      event.setCancelled(true);
+    } else if (
+      !profile.rules[CLAIM_OPTIONS.PVANIMAL] &&
+      ANIMAL_TYPES.indexOf(entityType) > -1
     ) {
       event.setCancelled(true);
     }

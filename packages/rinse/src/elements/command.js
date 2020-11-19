@@ -29,7 +29,11 @@ const CommandComponent = (props) => {
       nextParent = nextParent.props.parent;
     }
     const parentCommand = Command.fromPath(path);
-    parentCommand.addSubcommand(command).register();
+    if (!parentCommand) {
+      command.register();
+    } else {
+      parentCommand.addSubcommand(command).register();
+    }
   }
   useState(command);
   return children;

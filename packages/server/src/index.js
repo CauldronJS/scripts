@@ -31,7 +31,7 @@ services.useSync(landmine);
 services.useSync(essentials);
 // services.useSync(deathbox);
 services.use(holidays);
-services.use(customItems);
+// services.use(customItems);
 services.use(elevators);
 services.use(treefall);
 services.use(autofillHand);
