@@ -22,6 +22,7 @@ const MOB_TYPES = [
   EntityType.VEX,
   EntityType.WITHER,
   EntityType.WITHER_SKELETON,
+  EntityType.WITCH,
   EntityType.SLIME,
   EntityType.DROWNED,
   EntityType.MAGMA_CUBE,
