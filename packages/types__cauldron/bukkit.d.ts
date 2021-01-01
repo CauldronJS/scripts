@@ -4,6 +4,7 @@ declare module 'bukkit' {
     Inventory,
     InventoryType,
     InventoryHolder,
+    Recipe,
   } from 'bukkit/inventory';
   import {
     CommandSender,
@@ -18,15 +19,15 @@ declare module 'bukkit' {
     BarFlag,
   } from 'bukkit/boss';
   import { BukkitScheduler } from 'bukkit/scheduler';
-  import { Class } from 'java/lang';
   import { Collection, List, UUID } from 'java/util';
   import { Entity, Item, Player } from 'bukkit/entity';
   import { Plugin, PluginManager } from 'bukkit/plugin';
-  import { Biome, Block } from 'bukkit/block';
+  import { Biome, Block, BrewingStand } from 'bukkit/block';
   import { BlockData } from 'bukkit/block/data';
   import { RayTraceResult, Vector } from 'bukkit/util';
   import { Advancement } from 'bukkit/advancement';
   import { HelpMap } from 'bukkit/help';
+  import { Class } from 'java/lang';
 
   export const Bukkit: Server;
 
@@ -179,7 +180,6 @@ declare module 'bukkit' {
     static DISABLE_RAIDS: GameRule<boolean>;
     static DO_DAYLIGHT_CYCLE: GameRule<boolean>;
     static DO_ENTITY_DROPS: GameRule<boolean>;
-
   }
 
   export class Location {
@@ -3590,7 +3590,7 @@ declare module 'bukkit/entity' {
       loc: Bukkit.Location,
       lines: string[],
       dyeColor: Bukkit.DyeColor
-    );
+    ): void;
     sendTitle(title: string, subtitle: string): void;
     sendTitle(
       title: string,
@@ -3634,7 +3634,7 @@ declare module 'bukkit/entity' {
       y: number,
       z: number,
       count: number
-    );
+    ): void;
     spawnParticle(
       particle: Bukkit.Particle,
       x: number,
@@ -3885,14 +3885,16 @@ declare module 'bukkit/entity/memory' {}
 declare module 'bukkit/entity/minecart' {}
 
 declare module 'bukkit/event' {
-  import { RegisteredListener, Plugin, Plugin, Plugin } from 'bukkit/plugin';
+  import { RegisteredListener, Plugin } from 'bukkit/plugin';
 
   export interface Listener {}
   export interface Cancellable {
     isCancelled(): boolean;
     setCancelled(cancel: boolean): void;
   }
-  export interface Event {
+  export class Event {
+    constructor();
+    constructor(isAsync: boolean);
     getEventName(): string;
     getHandlers(): HandlerList;
     isAsynchronous(): boolean;
@@ -4063,6 +4065,7 @@ declare module 'bukkit/event/entity' {
   export interface LingeringPotionSplashEvent extends EntityEvent {}
   export interface PigZapEvent extends EntityEvent {}
   export interface PigZombieAngerEvent extends EntityEvent {}
+  // @ts-ignore
   export interface PlayerDeathEvent extends EntityEvent {
     getDeathMessage(): string;
     getEntity(): Player;
@@ -4094,8 +4097,21 @@ declare module 'bukkit/event/hanging' {
 }
 
 declare module 'bukkit/event/inventory' {
-  export interface BrewingStandFuelEvent {}
-  export interface CraftItemEvent {}
+  import { Event, Cancellable } from 'bukkit/event';
+  import { BlockEvent } from 'bukkit/event/block';
+  import { Inventory, InventoryView, BrewerInventory } from 'bukkit/inventory';
+  import { HumanEntity } from 'bukkit/entity';
+  import { List } from 'java/util';
+
+  export interface InventoryEvent extends Event {
+    getInventory(): Inventory;
+    getView(): InventoryView;
+    getViewers(): List<HumanEntity>;
+  }
+
+  export interface BrewEvent extends BlockEvent {}
+  export interface BrewingStandFuelEvent extends InventoryEvent {}
+  export interface CraftItemEvent extends InventoryEvent {}
   export interface FurnaceBurnEvent {}
   export interface FurnaceExtractEvent {}
   export interface FurnaceSmeltEvent {}
@@ -4298,7 +4314,7 @@ declare module 'bukkit/help' {
 
 declare module 'bukkit/inventory' {
   import { Material, Location, Keyed, NamespacedKey } from 'bukkit';
-  import { Block } from 'bukkit/block';
+  import { Block, BrewingStand } from 'bukkit/block';
   import { HumanEntity } from 'bukkit/entity';
   import { Enchantment } from 'bukkit/enchantments';
   import { ItemMeta } from 'bukkit/inventory/meta';
@@ -4581,6 +4597,15 @@ declare module 'bukkit/inventory' {
   export class StonecuttingRecipe implements Recipe {
     getResult(): ItemStack;
   }
+
+  // @ts-ignore
+  export interface BrewerInventory extends Inventory {
+    getFuel(): ItemStack;
+    getHolder(): BrewingStand;
+    getIngredient(): ItemStack;
+    setFuel(fuel: ItemStack): void;
+    setIngredeient(ingredient: ItemStack): void;
+  }
 }
 
 declare module 'bukkit/inventory/meta' {
@@ -4773,7 +4798,7 @@ declare module 'bukkit/plugin' {
   }
 
   export interface PluginManager {
-    addPermission(perm: Permission);
+    addPermission(perm: Permission): void;
     callEvent(event: Event): void;
     clearPlugins(): void;
     disablePlugin(plugin: Plugin): void;
@@ -5120,150 +5145,6 @@ declare module 'spigotmc' {}
 declare module 'spigotmc/event/entity' {}
 
 declare module 'spigotmc/event/player' {}
-
-declare module 'java/lang' {
-  export class Object {
-    constructor();
-    getClass(): Class;
-    equals(obj: object): boolean;
-    hashCode(): number;
-    notify(): void;
-    notifyAll(): void;
-    toString(): string;
-    wait(): void;
-    wait(timeout: number, nanos?: number): void;
-  }
-
-  export class Class<T = any> extends Object {
-    asSubclass<U>(clazz: Class<U>): Class<U>;
-    cast(obj: object): T;
-    desiredAssertionStatus(): boolean;
-    static forName(module, name: string): Class;
-    static forName(name: string): Class;
-  }
-
-  export class Enum<E extends Enum> extends Object implements Comparable<E> {
-    protected constructor(name: string, ordinal: number);
-
-    protected clone(): Object;
-    protected finalize(): void;
-    prototype: null;
-    compareTo(o: E): number;
-    equals(o: object): boolean;
-    getDeclaringClass(): Class<E>;
-    hashCode(): number;
-    name(): string;
-    ordinal(): number;
-    toString(): string;
-    static valueOf<T extends Enum<T>>(enumType: Class<T>, name: string): T;
-  }
-
-  export interface Comparable<T> {
-    compareTo(o: T): number;
-  }
-
-  export interface Cloneable {
-    clone(): object;
-  }
-
-  export class Runnable {}
-}
-
-declare module 'java/nio' {
-  export class ByteBuffer {
-    static allocate(capacity: number): ByteBuffer;
-    static allocateDirect(capacity: number): ByteBuffer;
-    array(): number[];
-    arrayOffset(): number;
-    asCharBuffer();
-    asDoubleBuffer();
-    asFloatBuffer();
-    asIntBuffer();
-    asLongBuffer();
-    asReadOnlyBuffer();
-    asShortBUffer();
-    compareTo(other: ByteBuffer): number;
-    duplicate(): ByteBuffer;
-    get(): number;
-    get(dst: number[]): ByteBuffer;
-    get(dst: number[], offset: number, length: number): ByteBuffer;
-    static wrap(array: number[]): ByteBuffer;
-  }
-}
-
-declare module 'java/util' {
-  export class UUID {
-    toString(): string;
-    clockSequence(): number;
-    compareTo(val: UUID): number;
-    equals(obj: object): boolean;
-    static fromString(uuid: string): UUID;
-    static randomUUID(): UUID;
-  }
-
-  export interface Collection<T> {
-    add(t: T): boolean;
-    addAll(c: Collection<T>): boolean;
-    clear(): void;
-    contains(o: any): boolean;
-    containsAll(c: Collection<any>): boolean;
-    equals(o: any): boolean;
-    hashCode(): number;
-    isEmpty(): boolean;
-    remove(o: any): boolean;
-    removeAll(c: Collection<any>): boolean;
-    removeIf(filter: (item: T) => boolean): boolean;
-    retainAll(c: Collection<any>): boolean;
-    size(): number;
-    toArray(): T[];
-  }
-
-  export interface List<T> extends Collection<T> {
-    add(index: number, element: T): void;
-    add(element: T): boolean;
-    addAll(index: number, elements: T[]): boolean;
-    addAll(elements: T[]): boolean;
-    clear(): void;
-    contains(o: any): boolean;
-    containsAll(c: any[]): boolean;
-    get(index: number): T;
-    indexOf(o: any): number;
-    isEmpty(): boolean;
-    lastIndexOf(o: any): number;
-    remove(index: number): T;
-    remove(o: any): boolean;
-    removeAll(c: any[]): boolean;
-    set(index: number, element: T): T;
-    size(): number;
-    toArray(): T[];
-  }
-}
-
-declare module 'java/util/concurrent' {
-  export interface Future<T> {
-    cancel(mayInterrupt: boolean): boolean;
-    get(): T;
-    get(timeout: number, unit: TimeUnit): T;
-    isCancelled(): boolean;
-    isDone(): boolean;
-  }
-
-  export interface Callable<T> {
-    call(): T;
-  }
-}
-
-declare module 'java/util/function' {
-  export interface Consumer<T> {
-    (t: T): Consumer<T>;
-    accept(t: T): void;
-    andThen(after: Consumer<T>): Consumer<T>;
-  }
-}
-
-declare module 'java/util/regex' {
-  export class Pattern {}
-}
 
 declare module 'bungee/api' {
   import { Pattern } from 'java/util/regex';

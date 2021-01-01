@@ -80,7 +80,7 @@ export class VirtualTree {
         if (this.fiberUpdates.size() === 0) return;
         const fiberEvent = this.fiberUpdates.pop();
         this.currentComponent = fiberEvent.node._id;
-        console.log(`Processing updates for ${fiberEvent.node._id}`);
+        console.debug(`Processing updates for ${fiberEvent.node._id}`);
         if (
           fiberEvent.type !== FiberEventType.UNMOUNT &&
           fiberEvent.node._isMarkedForDelete

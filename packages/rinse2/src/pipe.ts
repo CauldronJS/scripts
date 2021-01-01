@@ -1,6 +1,6 @@
 import { FRAG_SYMBOL } from './fragment';
-import { VirtualTree, getCurrentVtreeInstance, Rinsed } from './vtree';
-import Rinsable, { RinseProps } from './rinsable';
+import { VirtualTree, getCurrentVtreeInstance } from './vtree';
+import { Rinsed, RinseProps, Rinsable } from './types';
 
 /**
  * Mounts an app to the virtual tree

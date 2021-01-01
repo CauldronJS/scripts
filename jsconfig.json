@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
     "jsx": "react",
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
-      "internal/*": ["lib/internal/*"]
+      "internal/*": ["lib/internal/*"],
+      "*": ["lib/"]
     }
   }
 }

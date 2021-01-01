@@ -1,4 +1,5 @@
 declare module 'cauldronjs' {
+  import { Runnable } from 'java/lang';
   import { Event } from 'bukkit/event';
   import { CommandSender } from 'bukkit/command';
   import {
@@ -23,6 +24,7 @@ declare module 'cauldronjs' {
     BlockPhysicsEvent,
     BlockPistonExtendEvent,
     BlockPistonRetractEvent,
+    BlockRedstoneEvent,
     BlockShearEntityEvent,
     BlockSpreadEvent,
     CauldronLevelChangeEvent,
@@ -1042,41 +1044,12 @@ declare module 'cauldronjs' {
 
     static throwIncorrectUsage(usage: string): void;
   }
+  // I want to remove all usages of $$cauldron$$ and $$isolate$$, using only
+  // internalBinding so they aren't able to be globally accessed
 
   export const NAMESPACE_KEY: NamespacedKey;
   export const events: CauldronEvents;
   export function getPlugin(name: string): Plugin;
   export const services: CauldronServiceLoader;
-  export const $$cauldron$$: import('me/conji/cauldron').CauldronAPI;
-  export const $$isolate$$: Isolate;
   export function reload(sender: CommandSender): void;
-}
-
-declare module 'me/conji/cauldron' {
-  import { Runnable } from 'java/lang';
-  export class Cauldron {
-    static isolate(): Cauldron;
-    setIsDebugging(value: boolean): void;
-    getIsDebugging(): boolean;
-    spawn(command: string, directory: string): string;
-  }
-
-  export interface CauldronAPI {
-    isDebugging(): boolean;
-    scheduleRepeatingTask(
-      fn: Runnable,
-      interval: number,
-      timeout: number
-    ): number;
-    scheduleTask(fn: Runnable, timeout: number): number;
-    cancelTask(id: number): void;
-  }
-}
-
-declare module 'me/conji/cauldron/utils' {
-  export class PathHelpers {
-    static join(path1: string, ...paths: string[]): string;
-    static exists(path1: string, ...paths: string[]): boolean;
-    static resolveLocalPath(path1: string, ...paths: string[]): Path;
-  }
 }

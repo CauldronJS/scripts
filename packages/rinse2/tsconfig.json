@@ -4,7 +4,9 @@
     "allowJs": false,
     "target": "ES6",
     "jsx": "react",
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "lib": ["ES2020"],
+    "moduleResolution": "Node"
   },
   "include": ["./src/**/*"]
 }

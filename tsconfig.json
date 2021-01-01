@@ -3,9 +3,10 @@
     "jsx": "react",
     "jsxFactory": "Rinse.createElement",
     "jsxFragmentFactory": "Rinse.Fragment",
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
-      "internal/*": ["lib/internal/*"]
+      "internal/*": ["lib/internal/*"],
+      "*": ["lib/*"]
     }
   }
 }
