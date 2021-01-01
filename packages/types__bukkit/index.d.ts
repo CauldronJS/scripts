@@ -18,10 +18,11 @@ declare module 'bukkit' {
     BarFlag,
   } from 'bukkit/boss';
   import { BukkitScheduler } from 'bukkit/scheduler';
-  import { UUID } from 'java/util';
-  import { Entity, Player } from 'bukkit/entity';
+  import { Class } from 'java/lang';
+  import { Collection, List, UUID } from 'java/util';
+  import { Entity, Item, Player } from 'bukkit/entity';
   import { Plugin, PluginManager } from 'bukkit/plugin';
-  import { Block } from 'bukkit/block';
+  import { Biome, Block } from 'bukkit/block';
   import { BlockData } from 'bukkit/block/data';
   import { RayTraceResult, Vector } from 'bukkit/util';
   import { Advancement } from 'bukkit/advancement';
@@ -164,7 +165,22 @@ declare module 'bukkit' {
 
   export class FireworkEffect {}
 
-  export class GameRule {}
+  export class GameRule<T> {
+    getName(): string;
+    getType(): Class<T>;
+    toString(): string;
+
+    static values(): GameRule<any>[];
+    static getByName(rule: string): GameRule<any>;
+
+    static ANNOUNCE_ADVANCEMENTS: GameRule<boolean>;
+    static COMMAND_BLOCK_OUTPUT: GameRule<boolean>;
+    static DISABLE_ELYTRA_MOVEMENT_CHECK: GameRule<boolean>;
+    static DISABLE_RAIDS: GameRule<boolean>;
+    static DO_DAYLIGHT_CYCLE: GameRule<boolean>;
+    static DO_ENTITY_DROPS: GameRule<boolean>;
+
+  }
 
   export class Location {
     constructor(world: World, x: number, y: number, z: number);
@@ -256,11 +272,80 @@ declare module 'bukkit' {
 
   export interface Server {}
 
-  export interface Tag {}
+  export interface Tag<T = any> {}
 
   export interface UnsafeValues {}
 
-  export interface World {}
+  export interface World {
+    addPluginChunkTicket(x: number, z: number, plugin: Plugin): boolean;
+    canGenerateStructures(): boolean;
+    createExplosion(x: number, y: number, z: number, power: number): boolean;
+    createExplosion(
+      x: number,
+      y: number,
+      z: number,
+      power: number,
+      setFire: boolean
+    ): boolean;
+    createExplosion(
+      x: number,
+      y: number,
+      z: number,
+      power: number,
+      setFire: boolean,
+      breakBlocks: boolean
+    ): boolean;
+    createExplosion(
+      x: number,
+      y: number,
+      z: number,
+      power: number,
+      setFire: boolean,
+      breakBlocks: boolean,
+      source: Entity
+    ): boolean;
+    createExplosion(loc: Location, power: number): boolean;
+    createExplosion(loc: Location, power: number, setFire: boolean): boolean;
+    createExplosion(
+      loc: Location,
+      power: number,
+      setFire: boolean,
+      breakBlocks: boolean
+    ): boolean;
+    createExplosion(
+      loc: Location,
+      power: number,
+      setFire: boolean,
+      breakBlocks: boolean,
+      source: Entity
+    ): boolean;
+    dropItem(loc: Location, item: ItemStack): Item;
+    dropItemNaturally(loc: Location, item: ItemStack): Item;
+    generateTree(loc: Location, type: TreeType): boolean;
+    getAllowAnimals(): boolean;
+    getAllowMonsters(): boolean;
+    getBiome(x: number, z: number): Biome;
+    getBiome(x: number, y: number, z: number): Biome;
+    getBlockAt(x: number, y: number, z: number): Block;
+    getBlockAt(loc: Location): Block;
+    getChunkAt(x: number, z: number): Chunk;
+    getChunkAt(block: Block): Chunk;
+    getChunkAt(loc: Location): Chunk;
+    getDifficulty(): Difficulty;
+    getEmptyChunkSnapshot(
+      x: number,
+      z: number,
+      includeBiome: boolean,
+      includeBiomeTemp: boolean
+    ): ChunkSnapshot;
+    getEntities(): List<Entity>;
+    getEntitiesByClass<T>(cls: Class<T>): Collection<T>;
+    getEntitiesByClasses(...cls: Class<Entity>[]): Collection<Entity>;
+    getEnvironment(): World.Environment;
+    getForceLoadedChunks(): Collection<Chunk>;
+    getFullTime(): BigInt;
+    getGameRuleDefault<T>(rule: GameRule<T>): T;
+  }
 
   export interface WorldBorder {}
 
@@ -2003,7 +2088,11 @@ declare module 'bukkit' {
   export enum WeatherType {}
 
   export module World {
-    export enum Environment {}
+    export enum Environment {
+      NETHER,
+      NORMAL,
+      THE_END,
+    }
   }
 
   export enum WorldType {}
@@ -2451,7 +2540,7 @@ declare module 'bukkit/block/data' {
 }
 
 declare module 'bukkit/block/data/type' {
-  import { Enum } from 'java/lang';
+  import { Class, Enum } from 'java/lang';
   export interface Bamboo {}
 
   export module Bamboo {
@@ -5112,7 +5201,24 @@ declare module 'java/util' {
     static randomUUID(): UUID;
   }
 
-  export interface List<T> {
+  export interface Collection<T> {
+    add(t: T): boolean;
+    addAll(c: Collection<T>): boolean;
+    clear(): void;
+    contains(o: any): boolean;
+    containsAll(c: Collection<any>): boolean;
+    equals(o: any): boolean;
+    hashCode(): number;
+    isEmpty(): boolean;
+    remove(o: any): boolean;
+    removeAll(c: Collection<any>): boolean;
+    removeIf(filter: (item: T) => boolean): boolean;
+    retainAll(c: Collection<any>): boolean;
+    size(): number;
+    toArray(): T[];
+  }
+
+  export interface List<T> extends Collection<T> {
     add(index: number, element: T): void;
     add(element: T): boolean;
     addAll(index: number, elements: T[]): boolean;

@@ -15,7 +15,7 @@ const features = [
         Cauldron was built with the goal of getting your new plugin off the
         ground quicker.
       </>
-    )
+    ),
   },
   {
     title: <>Focus on What Matters</>,
@@ -25,7 +25,7 @@ const features = [
         Instead of worrying about build procceses and deployments, use that time
         to make the best plugins you can make.
       </>
-    )
+    ),
   },
   {
     title: <>Powered by GraalVM</>,
@@ -36,8 +36,8 @@ const features = [
         Cauldron. If you&apos;re familiar with NodeJS, you&apos;re familiar with
         Cauldron.
       </>
-    )
-  }
+    ),
+  },
 ];
 
 function Feature({ imageUrl, title, description }) {
