@@ -9,7 +9,6 @@ import landmine from './landmine';
 import { services } from 'cauldronjs';
 import essentials from './essentials';
 import holidays from './holidays';
-import customItems from './custom_items';
 import elevators from './elevators';
 import treefall from './treefall';
 import autofillHand from './autofill-hand';

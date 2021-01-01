@@ -1,8 +1,5 @@
 {
   "name": "@types/cauldronjs",
   "module": "index.d.ts",
-  "version": "1.0.0",
-  "peerDependencies": {
-    "@types/bukkit": "^1.0.0"
-  }
+  "version": "1.0.0"
 }
